@@ -86,6 +86,9 @@ def request(method, url, **kwargs):
         if remaining % 100 == 0 or remaining < 20:
             logging.info("%d requests remaining this hour", remaining)
     if not from_cache and remaining <= 1:
+        logging.warning(
+            "GitHub API Rate Limit reached. Pausing until Rate Limit reset."
+        )
         rate_limit_reset = datetime.datetime.fromtimestamp(
             int(response.headers["X-RateLimit-Reset"])
         )
