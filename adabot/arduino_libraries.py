@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: MIT
 
 """Adabot utility for Arduino Libraries."""
-
+import time
+import os
 import argparse
 import logging
 import sys
@@ -12,6 +13,8 @@ import semver
 import requests
 
 from adabot import github_requests as gh_reqs
+from adabot import gh_forking_prs
+
 
 logger = logging.getLogger(__name__)
 ch = logging.StreamHandler(stream=sys.stdout)
@@ -39,9 +42,148 @@ cmd_line_parser.add_argument(
     dest="verbose",
     choices=[0, 1],
 )
+#todo: refactor this and remove CI arg to funcs. add to sysv
+cmd_line_parser.add_argument(
+    "-ci",
+    "--ci",
+    help="Set the option to check changes for CI-only and flag if so."
+    " Zero is off; One is on (default).",
+    type=int,
+    default=1,
+    dest="ci",
+    choices=[0, 1],
+)
+#todo: add -bc aka --bump-ci-repos with default dry-run plus --idiot flag to update library.properties if release tag is higher and ci only changes.
+cmd_line_parser.add_argument(
+    "-bc",
+    "--bump-ci-repos",
+    help="Bump the version number in library.properties for CI-only changes."
+    " Zero is off; One is on (default).",
+    type=int,
+    default=0,
+    dest="bump_ci_repos",
+    choices=[0, 1],
+)
+cmd_line_parser.add_argument(
+    "-idiot",
+    "--idiot",
+    help="Opposite of Dry-Run. Set the option to create Pull Requests to update library.properties for CI-only changes if release tag is higher. Zero is off (default); One is on. 'Only an idiot would blindly trust automated scripts'",
+    type=int,
+    default=0,
+    dest="idiot",
+    choices=[0, 1],
+)
 
 all_libraries = []
 adafruit_library_index = []
+
+
+def check_changes_for_ci_only(repo,ref1,ref2):
+    """
+    Checks if all changes between two tags/refs only contain changes in the `.github` folder, and therefore are CI only changes.
+
+    Args:
+        repo (dict): A dictionary representing the repository.
+        ref1 (str): The first tag/ref to compare.
+        ref2 (str): The second tag/ref to compare.
+
+    Returns:
+        bool: True if all changes between the two tags/refs only contain changes in the `.github` folder, False otherwise.
+    """
+    # Check changes in json["files"] affects only /.github/*
+    compare_tags = gh_reqs.get(
+        "/repos/"
+        + repo["full_name"]
+        + "/compare/"
+        + ref1
+        + "..."
+        + ref2
+    )
+    if not compare_tags.ok:
+        logger.error(
+            "Error: failed to compare %s '%s' to '%s' (CI-changes check), maybe the first tag doesn't exist?",
+            repo["name"],
+            ref1,
+            ref2,
+        )
+        return False
+    comparison = compare_tags.json()
+    if "files" not in comparison:
+        return False
+    for file in comparison["files"]:
+        if not file["filename"].startswith(".github/"):
+            return False
+    return True
+
+
+def create_version_update_pr(repo, lib_version, release_version):
+    """
+    Creates a pull request to update the version number in the library.properties file of a given repository.
+
+    Args:
+        repo (dict): A dictionary containing information about the repository, including its name and default branch.
+        lib_version (str): The new version number to be used in the library.properties file.
+        release_version (str): The release version associated with the new library version.
+
+    Returns:
+        bool: False if the bump flag is not set, otherwise None.
+    """
+    global cmd_line_parser
+    try:
+        args = cmd_line_parser.parse_args()
+        if not args.bump_ci_repos:
+            logging.info("Skipping bumping library.properties - CI-only changes - " + repo['name'] + " (-bc=0)")
+            return False
+        owner = os.environ.get("ADABOT_GITHUB_USER")
+        
+        if not args.idiot:
+            logging.info("Not creating Pull Request to bump library.properties for CI-only changes - " + repo['name'] + " (--idiot=0)")
+            return
+        
+        # Check if the user has already forked the repository
+        fork = gh_forking_prs.get_user_fork(owner, repo)
+        if not fork:
+            reponame = "adafruit-" + repo["name"]
+            # If the user hasn't forked the repository, create a new fork
+            fork = gh_forking_prs.create_fork(owner, repo, reponame)
+        else:
+            reponame = fork["name"]
+            # Ensure the fork's default branch matches the upstream repository's default branch
+            gh_forking_prs.sync_fork(repo, fork)
+
+        # Wait for the fork to match the upstream repository, check SHA for 3mins
+        main_ref = gh_forking_prs.get_latest_ref(repo, repo['default_branch'])
+        WAIT_TIME = 300
+        for _ in range(WAIT_TIME):
+            try:
+                if gh_forking_prs.get_latest_ref(fork, repo['default_branch']) == main_ref:
+                    break
+            except Exception:
+                pass
+            time.sleep(1)
+        else:
+            logging.error("Fork still not in sync after " + str(WAIT_TIME) + " seconds, skipping " + repo["name"])
+            return
+
+        # Create a new branch for the changes
+        branch_name = "bump-version-" + time.strftime("%Y-%m-%d-%H-%M-%S")
+        gh_forking_prs.create_branch(owner, repo, fork, branch_name)
+
+        # Update the version number in library.properties
+        file_path = "library.properties"
+        file_contents = gh_forking_prs.get_file_contents(owner, fork, file_path)
+        new_contents = gh_forking_prs.update_version_number(file_contents, lib_version, release_version)
+        gh_forking_prs.update_file_contents(owner, reponame, fork, file_path, new_contents, branch_name)
+
+        # Create a new pull request
+        head = f"{fork['owner']['login']}:{branch_name}"
+        base = repo["default_branch"]
+        gh_forking_prs.create_draft_pull_request(owner, repo, fork,branch_name)
+        logging.info("Pull request created: %s/%s#%s", owner, fork['name'], branch_name)
+    except Exception as e:
+        logging.error(e)
+        logging.error(f"Failed to add PR to bump library.properties for CI-only changes for {repo['name']}")
+
 
 
 def list_repos():
@@ -205,7 +347,7 @@ def validate_example(repo):
 
 # pylint: disable=too-many-branches
 # pylint: disable=too-many-statements
-def run_arduino_lib_checks():
+def run_arduino_lib_checks(ci=0):
     """Run necessary functions and outout the results."""
     logger.info("Running Arduino Library Checks")
     logger.info("Getting list of libraries to check...")
@@ -240,7 +382,7 @@ def run_arduino_lib_checks():
         if not have_examples:
             # not a library, probably worth rechecking that it's got no library.properties file
             no_examples.append(
-                ["  " + str(repo["name"] or repo["clone_url"]), repo["updated_at"]]
+                ["  " + str(repo["name"] or repo["clone_url"]), repo["pushed_at"]]
             )
             continue
 
@@ -249,7 +391,7 @@ def run_arduino_lib_checks():
         lib_check = validate_library_properties(repo)
         if not lib_check:
             missing_library_properties_list.append(
-                ["  " + str(repo["name"]), repo["updated_at"]]
+                ["  " + str(repo["name"]), repo["pushed_at"]]
             )
             continue
 
@@ -258,11 +400,16 @@ def run_arduino_lib_checks():
                 str(repo["html_url"]) + "/compare/" + repo["default_branch"] + "...HEAD"
             )
             needs_release_list.append(
-                ["  " + str(repo["name"]), "*None*", repo["updated_at"], compare_url]
+                ["  " + str(repo["name"]), "*None*", repo["pushed_at"], compare_url]
             )
             continue
 
         if lib_check[0] != lib_check[1]:
+            # version mismatch between release and library.properties
+            release_tag = lib_check[0]
+            libprops_tag = lib_check[1]
+            if ci and check_changes_for_ci_only(repo, libprops_tag, release_tag):
+                lib_check[0] = str(lib_check[0]) + " *CI-only*"
             failed_lib_prop.append(
                 [
                     "  " + str((repo["name"] or repo["clone_url"])),
@@ -270,6 +417,7 @@ def run_arduino_lib_checks():
                     lib_check[1],
                 ]
             )
+            create_version_update_pr(repo, libprops_tag, release_tag)
             continue
 
         for lib in adafruit_library_index:
@@ -290,7 +438,7 @@ def run_arduino_lib_checks():
 
         if "arduino_version" not in entry or not entry["arduino_version"]:
             needs_registration_list.append(
-                ["  " + str(repo["name"]), repo["updated_at"]]
+                ["  " + str(repo["name"]), repo["pushed_at"]]
             )
 
         entry["release"] = lib_check[0]
@@ -303,6 +451,8 @@ def run_arduino_lib_checks():
             compare_url = (
                 str(repo["html_url"]) + "/compare/" + needs_release[0] + "...HEAD"
             )
+            if ci and check_changes_for_ci_only(repo, entry["release"], repo["default_branch"]):
+                needs_release[1] = str(needs_release[1]) + " *CI-only*"
             needs_release_list.append(
                 [
                     "  " + str(repo["name"]),
@@ -357,7 +507,7 @@ def run_arduino_lib_checks():
         )
 
 
-def main(verbosity=1, output_file=None):  # pylint: disable=missing-function-docstring
+def main(verbosity=1, output_file=None, ci=1):  # pylint: disable=missing-function-docstring
     if output_file:
         file_handler = logging.FileHandler(output_file)
         logger.addHandler(file_handler)
@@ -376,7 +526,7 @@ def main(verbosity=1, output_file=None):  # pylint: disable=missing-function-doc
         for lib in arduino_library_index["libraries"]:
             if "adafruit" in lib["url"]:
                 adafruit_library_index.append(lib)
-        run_arduino_lib_checks()
+        run_arduino_lib_checks(ci)
     except:
         _, exc_val, exc_tb = sys.exc_info()
         logger.error("Exception Occurred!", quiet=True)
@@ -392,4 +542,4 @@ def main(verbosity=1, output_file=None):  # pylint: disable=missing-function-doc
 
 if __name__ == "__main__":
     cmd_line_args = cmd_line_parser.parse_args()
-    main(verbosity=cmd_line_args.verbose, output_file=cmd_line_args.output_file)
+    main(verbosity=cmd_line_args.verbose, output_file=cmd_line_args.output_file, ci=cmd_line_args.ci)
