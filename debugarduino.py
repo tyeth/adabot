@@ -2,7 +2,7 @@
 # Update your username and access token below.
 # Set ci=0 to not check changes (for CI only)
 # Set bump-ci-repos=1 to bump version for CI only changes
-# Set idiot=1 to confirm bumping version PRs
+# Set idiot=1 to confirm generating version bump PRs
 
 from adabot import arduino_libraries
 import os

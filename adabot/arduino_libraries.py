@@ -101,7 +101,7 @@ def check_changes_for_ci_only(repo,ref1,ref2):
     )
     if not compare_tags.ok:
         logger.error(
-            "Error: failed to compare %s '%s' to '%s' (CI-changes check), maybe the first tag doesn't exist?",
+            "Error: failed to compare %s '%s' to '%s' (CI/md/img-only changes check), maybe the first tag doesn't exist?",
             repo["name"],
             ref1,
             ref2,
@@ -111,7 +111,9 @@ def check_changes_for_ci_only(repo,ref1,ref2):
     if "files" not in comparison:
         return False
     for file in comparison["files"]:
-        if not file["filename"].startswith(".github/"):
+        if (not file["filename"].startswith(".github/")
+        and not file["filename"].lower().endswith(".md")
+        and file["filename"].lower() not in ["assets/board.jpeg", "assets/board.png", "assets/board.jpg"]):
             return False
     return True
 
@@ -132,12 +134,12 @@ def create_version_update_pr(repo, lib_version, release_version):
     try:
         args = cmd_line_parser.parse_args()
         if not args.bump_ci_repos:
-            logging.info("Skipping bumping library.properties - CI-only changes - " + repo['name'] + " (-bc=0)")
+            logging.info("Skip PR bumping library.properties [CI/md/img-only check] " + repo['name'] + " (-bc=0)")
             return False
         owner = os.environ.get("ADABOT_GITHUB_USER")
         
         if not args.idiot:
-            logging.info("Not creating Pull Request to bump library.properties for CI-only changes - " + repo['name'] + " (--idiot=0)")
+            logging.info("Not creating Pull Request to bump library.properties for CI/md/img-only changes - " + repo['name'] + " (--idiot=0)")
             return
         
         # Check if the user has already forked the repository
@@ -244,11 +246,19 @@ def print_list_output(title, coll):
     for lib in coll:
         logger.info("%s", row_format.format(*lib))
 
-
 def validate_library_properties(repo):
     """Checks if the latest GitHub Release Tag and version in the library_properties
     file match. Will also check if the library_properties is there, but no release
     has been made.
+
+    Args:
+        repo (dict): A dictionary of GitHub API repository state.
+
+    Returns:
+        list: A list of two elements, where the first element is the latest release tag
+        and the second element is the version in the library_properties file. If the
+        library_properties file is not present or the latest release tag cannot be
+        obtained, the method returns None.
     """
     lib_prop_file = None
     lib_version = None
@@ -381,10 +391,15 @@ def run_arduino_lib_checks(ci=0):
         have_examples = validate_example(repo)
         if not have_examples:
             # not a library, probably worth rechecking that it's got no library.properties file
-            no_examples.append(
-                ["  " + str(repo["name"] or repo["clone_url"]), repo["pushed_at"]]
-            )
-            continue
+            if is_arduino_library(repo):
+                no_examples.append(
+                    ["  " + str(repo["name"] or repo["clone_url"]) + " *LibraryNoExamples*", repo["pushed_at"]]
+                )
+            else:
+                no_examples.append(
+                    ["  " + str(repo["name"] or repo["clone_url"]), repo["pushed_at"]]
+                )
+                continue
 
         entry = {"name": repo["name"]}
 
@@ -409,7 +424,7 @@ def run_arduino_lib_checks(ci=0):
             release_tag = lib_check[0]
             libprops_tag = lib_check[1]
             if ci and check_changes_for_ci_only(repo, libprops_tag, release_tag):
-                lib_check[0] = str(lib_check[0]) + " *CI-only*"
+                lib_check[0] = str(lib_check[0]) + " *CI/Md/IMG-only*"
             failed_lib_prop.append(
                 [
                     "  " + str((repo["name"] or repo["clone_url"])),
@@ -418,7 +433,8 @@ def run_arduino_lib_checks(ci=0):
                 ]
             )
             create_version_update_pr(repo, libprops_tag, release_tag)
-            continue
+            # don't loop with continue
+            # we later check changes not between tags, i.e. main vs tag
 
         for lib in adafruit_library_index:
             if (repo["clone_url"] == lib["repository"]) or (
@@ -441,18 +457,18 @@ def run_arduino_lib_checks(ci=0):
                 ["  " + str(repo["name"]), repo["pushed_at"]]
             )
 
-        entry["release"] = lib_check[0]
+        entry["release"] = lib_check[0].split(' ')[0]
         entry["version"] = lib_check[1]
-        repo["tag_name"] = lib_check[0]
+        repo["tag_name"] = lib_check[0].split(' ')[0]
 
         needs_release = validate_release_state(repo)
         entry["needs_release"] = needs_release
         if needs_release:
             compare_url = (
-                str(repo["html_url"]) + "/compare/" + needs_release[0] + "...HEAD"
+                str(repo["html_url"]) + "/compare/" + needs_release[0].split(' ')[0] + "...HEAD"
             )
             if ci and check_changes_for_ci_only(repo, entry["release"], repo["default_branch"]):
-                needs_release[1] = str(needs_release[1]) + " *CI-only*"
+                needs_release[1] = str(needs_release[1]) + " *CI/Md/IMG*"
             needs_release_list.append(
                 [
                     "  " + str(repo["name"]),
