@@ -73,10 +73,19 @@ cmd_line_parser.add_argument(
     dest="idiot",
     choices=[0, 1],
 )
+cmd_line_parser.add_argument(
+    "-prs",
+    "--check-pull-requests-only",
+    help="Check existing PRs for status and merge if possible, followed by open new release page with version prepopulated. Zero is off (default); One is on.",
+    type=int,
+    default=0,
+    dest="check_prs_only",
+    choices=[0, 1],
+)
 
 all_libraries = []
 adafruit_library_index = []
-
+new_PRs = []
 
 def check_changes_for_ci_only(repo,ref1,ref2):
     """
@@ -130,7 +139,7 @@ def create_version_update_pr(repo, lib_version, release_version):
     Returns:
         bool: False if the bump flag is not set, otherwise None.
     """
-    global cmd_line_parser
+    global cmd_line_parser, new_PRs
     try:
         args = cmd_line_parser.parse_args()
         if not args.bump_ci_repos:
@@ -167,21 +176,36 @@ def create_version_update_pr(repo, lib_version, release_version):
             logging.error("Fork still not in sync after " + str(WAIT_TIME) + " seconds, skipping " + repo["name"])
             return
 
+        # Update the version number in library.properties
+        file_path = "library.properties"
+        file_contents = gh_forking_prs.get_file_contents(owner, fork, file_path)
+        new_version = release_version
+        lib_semver = semver.VersionInfo.parse(lib_version)
+        release_semver = semver.VersionInfo.parse(release_version)
+        if release_semver > lib_semver:
+            new_version = str(release_semver.bump_patch())
+        else:
+            new_version = str(lib_semver.bump_patch())
+        new_contents = gh_forking_prs.update_version_number(file_contents, new_version)
+        
+        # check if existing similar PR exists
+        existing_pr = gh_forking_prs.pr_exists_with_same_title(owner, repo, fork, "Update version number to " + new_version)
+        if existing_pr:
+            logging.info("Pull request already exists to update version number to " + new_version + " for " + repo["name"])
+            new_PRs.append(existing_pr)
+            return
+
         # Create a new branch for the changes
         branch_name = "bump-version-" + time.strftime("%Y-%m-%d-%H-%M-%S")
         gh_forking_prs.create_branch(owner, repo, fork, branch_name)
 
-        # Update the version number in library.properties
-        file_path = "library.properties"
-        file_contents = gh_forking_prs.get_file_contents(owner, fork, file_path)
-        new_contents = gh_forking_prs.update_version_number(file_contents, lib_version, release_version)
-        gh_forking_prs.update_file_contents(owner, reponame, fork, file_path, new_contents, branch_name)
+        # Commit the changes
+        gh_forking_prs.update_file_contents(owner, reponame, fork, file_path, new_contents, branch_name, message="Bump version number to " + new_version)
 
         # Create a new pull request
-        head = f"{fork['owner']['login']}:{branch_name}"
-        base = repo["default_branch"]
-        gh_forking_prs.create_draft_pull_request(owner, repo, fork,branch_name)
+        new_pr = gh_forking_prs.create_draft_pull_request(owner, repo, fork, branch_name, draft=False, title="Update version number to " + new_version, body="This pull request updates the version number in library.properties to " + new_version)
         logging.info("Pull request created: %s/%s#%s", owner, fork['name'], branch_name)
+        new_PRs.append(new_pr)
     except Exception as e:
         logging.error(e)
         logging.error(f"Failed to add PR to bump library.properties for CI-only changes for {repo['name']}")
@@ -359,6 +383,13 @@ def validate_example(repo):
 # pylint: disable=too-many-statements
 def run_arduino_lib_checks(ci=0):
     """Run necessary functions and outout the results."""
+    global all_libraries, adafruit_library_index, new_PRs
+    cmd_line_args = cmd_line_parser.parse_args()
+    if cmd_line_args.idiot == 1 and cmd_line_args.bump_ci_repos == 1 and cmd_line_args.ci == 1 and cmd_line_args.check_prs_only == 1:
+        gh_forking_prs.print_load_verify_and_merge_prs()
+        print("Done checking PRs only")
+        return
+    
     logger.info("Running Arduino Library Checks")
     logger.info("Getting list of libraries to check...")
 
@@ -488,12 +519,6 @@ def run_arduino_lib_checks(ci=0):
     for entry in all_libraries:
         logging.info(entry)
 
-    if len(no_examples) > 2:
-        print_list_output(
-            "Repos with no examples (considered non-libraries): ({})",
-            no_examples,
-        )
-
     if len(failed_lib_prop) > 2:
         print_list_output(
             "Libraries Have Mismatched Release Tag and library.properties Version: ({})",
@@ -522,6 +547,16 @@ def run_arduino_lib_checks(ci=0):
             missing_library_properties_list,
         )
 
+    if len(no_examples) > 2:
+        print_list_output(
+            "Repos with no examples (considered non-libraries): ({})",
+            no_examples,
+        )
+    
+    if len(new_PRs) > 0:
+        # idiot mode will be on if any PRs were created, or existing ones found matching needed new ones
+        gh_forking_prs.print_load_verify_and_merge_prs(new_PRs)
+
 
 def main(verbosity=1, output_file=None, ci=1):  # pylint: disable=missing-function-docstring
     if output_file:
@@ -545,8 +580,8 @@ def main(verbosity=1, output_file=None, ci=1):  # pylint: disable=missing-functi
         run_arduino_lib_checks(ci)
     except:
         _, exc_val, exc_tb = sys.exc_info()
-        logger.error("Exception Occurred!", quiet=True)
-        logger.error(("-" * 60), quiet=True)
+        logger.error("Exception Occurred!")
+        logger.error(("-" * 60))
         logger.error("Traceback (most recent call last):")
         trace = traceback.format_tb(exc_tb)
         for line in trace:
