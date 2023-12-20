@@ -9,8 +9,30 @@ import os
 import traceback
 try:
     import webbrowser
-except ImportError:
+    #get(using='google-chrome').open 
+    #https://docs.python.org/3.3/library/webbrowser.html#:~:text=A%20number%20of%20browser%20types%20are%20predefined
+    if sys.platform == 'linux':
+        # check if Github CI or remote vscode/ssh session
+        if os.environ.get('GITHUB_ACTIONS', False) or os.environ.get('SSH_CLIENT', False):
+            webbrowser = None
+        else:
+            webbrowser = webbrowser.get('x-www-browser')
+    elif sys.platform == 'darwin':
+        webbrowser = webbrowser.get('macosx')
+    elif sys.platform == 'win32':
+        webbrowser = webbrowser.get('windows-default')
+    else:
+        webbrowser = None
+except:
     webbrowser = None
+
+def webbrowser_open(url, new=2, autoraise=False):
+    if webbrowser is None:
+        logger.info("*!@!* Open this URL: %s", url)
+    else:
+        webbrowser.open(url=url, new=new, autoraise=autoraise)
+
+logger = logging.getLogger(__name__)
 
 def create_fork(owner,repo, name):
     """
@@ -66,6 +88,21 @@ def load_existing_prs():
     else:
         return []
 
+def open_new_release_webpage(owner, repo, new_version):
+    """
+    Opens the new release page for the repository with the version number pre-populated.
+
+    Args:
+        owner (str): The owner of the repository.
+        repo (str): The name of the repository.
+        new_version (str): The new version number.
+    """
+    release_url = f"https://github.com/{owner}/{repo['name']}/releases/new?tag={new_version}"
+    if webbrowser is None:
+        logger.info("** Open the following URL to create a new release: %s", release_url)
+    else:
+        webbrowser_open(url=release_url, new=2, autoraise=False)
+
 def load_verify_and_merge_prs(extra_prs, idiot_mode):
     """
     Loads the pull requests that have been created and merges them if they are ready.
@@ -91,10 +128,10 @@ def load_verify_and_merge_prs(extra_prs, idiot_mode):
             already_merged = False
             if pr['state'] == 'closed':
                 if not pr['merged_at']:
-                    logging.info("*#* PR %s was closed without merge -- REMOVING FROM LIST", pr['html_url'])
+                    logger.info("*#* PR %s was closed without merge -- REMOVING FROM LIST", pr['html_url'])
                     new_list.remove(pr)
                     continue
-                logging.info("PR %s is already merged", pr['html_url'])
+                logger.info("PR %s is already merged", pr['html_url'])
                 already_merged = True
             else:
                 # Check PR status
@@ -104,10 +141,10 @@ def load_verify_and_merge_prs(extra_prs, idiot_mode):
                     if idiot_mode:
                         ret = merge_pull_request(pr)
                         if ret and ret.get('merged', False) == True:
-                            logging.info("PR %s now merged", pr['html_url'])
+                            logger.info("PR %s now merged", pr['html_url'])
                         else:
-                            logging.info("*#* PR %s merge FAILED (%s)", pr['html_url'], ret)
-                            webbrowser.open(url=pr['html_url'], new=2, autoraise=False)
+                            logger.info("*#* PR %s merge FAILED (%s)", pr['html_url'], ret)
+                            webbrowser_open(url=pr['html_url'], new=2, autoraise=False)
                             continue
                         response = ghr.get(pr_url)
                         if response.status_code != 200:
@@ -116,20 +153,20 @@ def load_verify_and_merge_prs(extra_prs, idiot_mode):
                         pr = response.json()
                         new_list.append(pr)
                     else:
-                        logging.info("*** PR %s is ready to merge", pr['html_url'])
+                        logger.info("*** PR %s is ready to merge", pr['html_url'])
                 elif status == 'pending':
-                    logging.info("PR %s is still pending", pr['html_url'])
+                    logger.info("PR %s is still pending", pr['html_url'])
                     continue
                 elif status == 'failure':
-                    logging.info("*#* PR %s action FAILED", pr['html_url'])
-                    webbrowser.open(url=pr['html_url'], new=2, autoraise=False)
+                    logger.info("*#* PR %s action FAILED", pr['html_url'])
+                    webbrowser_open(url=pr['html_url'], new=2, autoraise=False)
                     continue
                 elif status == 'error':
-                    logging.info("*#* PR %s action ERRORED", pr['html_url'])
-                    webbrowser.open(url=pr['html_url'], new=2, autoraise=False)
+                    logger.info("*#* PR %s action ERRORED", pr['html_url'])
+                    webbrowser_open(url=pr['html_url'], new=2, autoraise=False)
                     continue
                 else:
-                    logging.info("*#*#* PR %s UNKNOWN action status: %s", pr['html_url'], status)
+                    logger.info("*#*#* PR %s UNKNOWN action status: %s", pr['html_url'], status)
                     continue
                 
             
@@ -142,44 +179,28 @@ def load_verify_and_merge_prs(extra_prs, idiot_mode):
                     # if not then create new release tag below
                     try:
                         if get_latest_ref(pr['base']['repo'],new_version, "tags") == pr['merge_commit_sha']:
-                            logging.info("#*# PR %s is already merged and release tag exists - skipping - manually verify!", pr['html_url'])
+                            logger.info("#*# PR %s is already merged and release tag exists - skipping - manually verify!", pr['html_url'])
                             continue
                         pass
                     except:
                         pass # no tag found, so create one below as part of release
 
-                logging.info("New version release page opening for %s", new_version)
+                logger.info("New version release page opening for %s", new_version)
                 # Open GitHub UI for release creation
                 open_new_release_webpage(owner=pr['base']['repo']['owner']['login'], repo=pr['base']['repo'], new_version=new_version)
             else:
-                logging.info("*** PR %s is ready to release", pr['html_url'])
+                logger.info("*** PR %s is ready to release", pr['html_url'])
         except Exception as e:
-            logging.error("Exception Occurred tracking PR %s", pr['html_url'])
+            logger.error("Exception Occurred tracking PR %s", pr['html_url'])
             _, exc_val, exc_tb = sys.exc_info()
-            logging.error("Exception Occurred!")
-            logging.error(("-" * 60))
-            logging.error("Traceback (most recent call last):")
+            logger.error("Exception Occurred!")
+            logger.error(("-" * 60))
+            logger.error("Traceback (most recent call last):")
             trace = traceback.format_tb(exc_tb)
             for line in trace:
-                logging.error(line)
-            logging.error(exc_val)
+                logger.error(line)
+            logger.error(exc_val)
     return new_list
-
-def open_new_release_webpage(owner, repo, new_version):
-    """
-    Opens the new release page for the repository with the version number pre-populated.
-
-    Args:
-        owner (str): The owner of the repository.
-        repo (str): The name of the repository.
-        new_version (str): The new version number.
-    """
-    release_url = f"https://github.com/{owner}/{repo['name']}/releases/new?tag={new_version}"
-    if webbrowser is None:
-        logging.info("** Open the following URL to create a new release: %s", release_url)
-    else:
-        # webbrowser.open_new_tab(release_url)
-        webbrowser.open(url=release_url, new=2, autoraise=False)
 
 def merge_pull_request(pr):
     """
@@ -243,14 +264,22 @@ def get_pull_request_actions_status(pr):
     data = response.json() # change to use pr['url'] and state field, also reuse for statuses_url if 'open'
     return data[0]['state'] if not data == [] else get_pull_request_checks_status(pr)
 
+def should_ignore_repo_for_creating_prs(reponame):
+    # eventually load from json file
+    ignore_list = [
+        "Adafruit_Wippersnapper_Arduino",
+        'Adafruit_TFLite',
+        
+    ]
+    return reponame in ignore_list
 
 def print_load_verify_and_merge_prs(new_PRs=[]):
-    print("")
-    print("###########################################")
-    print("New/existing PRs to monitor:")
+    logger.info("")
+    logger.info("###########################################")
+    logger.info("New/existing PRs to monitor:")
     for pr in new_PRs:
-        print(pr["html_url"])
-    print("Starting load/verify/merge PRs:")
+        logger.info(pr["html_url"])
+    logger.info("Starting load/verify/merge PRs:")
     new_PRs = load_verify_and_merge_prs(new_PRs, idiot_mode=1)
     save_prs(new_PRs)
 
@@ -358,8 +387,10 @@ def create_draft_pull_request(owner, repo, fork, branch_name, draft=True, title=
         "body": body,
         "head": f"{fork['owner']['login']}:{branch_name}",
         "base": repo["default_branch"],
-        "draft": draft,
+        # "draft": draft,  # think theres a bug with releases not being marked latest if pr created with draft=false
     }
+    if draft:
+        pr_data["draft"] = True
     response = ghr.post(pr_url, json=pr_data)
     if response.status_code != 201:
         raise Exception(f"Failed to create pull request: {response.status_code} {response.text}")
@@ -422,7 +453,7 @@ def pr_exists_with_same_title(owner, repo, fork, title):
     pr_list = get_pull_requests(owner, repo)
     for pr in pr_list:
         if pr['head']['repo'] and pr['head']['repo']['owner']['login'] == fork['owner']['login'] and pr['head']['repo']['name'] == fork['name'] and pr['title'] == title:
-            logging.info("PR already exists with same title + fork: %s", pr['html_url'])
+            logger.info("PR already exists with same title + fork: %s", pr['html_url'])
             return pr
     return None
 
@@ -437,7 +468,7 @@ def update_version_number(file_contents, new_version):
     Returns:
         str: The updated contents of the library.properties file.
     """
-    logging.info("Updating version number to %s", new_version)
+    logger.info("Updating version number to %s", new_version)
     lines = file_contents.split("\n")
     for i, line in enumerate(lines):
         if line.startswith("version="):

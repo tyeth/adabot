@@ -17,6 +17,7 @@ import requests_cache
 
 TIMEOUT = 60
 
+logger = logging.getLogger(__name__)
 
 def setup_cache(expire_after=7200):
     """Sets up a cache for requests."""
@@ -65,7 +66,7 @@ def request(method, url, **kwargs):
         )
         from_cache = getattr(response, "from_cache", False)
         remaining = int(response.headers.get("X-RateLimit-Remaining", 0))
-        logging.debug(
+        logger.debug(
             "GET %s %s status=%s",
             url,
             f"{'(cache)' if from_cache else '(%d remaining)' % remaining}",
@@ -77,7 +78,11 @@ def request(method, url, **kwargs):
             exception_text = exception_text.replace(
                 os.environ["ADABOT_GITHUB_ACCESS_TOKEN"], "[secure]"
             )
-        logging.critical("%s", exception_text)
+        logger.critical("%s", exception_text)
+        if(method=="get"): # getting temporary errors with large number of API fetches
+            logger.info("** Sleeping 3 seconds after HTTP Get Error before retrying")
+            time.sleep(3)
+            return request(method, url, **kwargs)
         raise RuntimeError(
             "See log for error text that has been sanitized for secrets"
         ) from None
@@ -86,11 +91,11 @@ def request(method, url, **kwargs):
         if remaining % 100 == 0 or remaining < 20:
             logging.info("%d requests remaining this hour", remaining)
     if not from_cache and remaining <= 1:
-        logging.warning(
+        logger.warning(
             "GitHub API Rate Limit reached. Pausing until Rate Limit reset."
         )
         rate_limit_reset = datetime.datetime.fromtimestamp(
-            int(response.headers["X-RateLimit-Reset"])
+             int(response.headers["X-RateLimit-Reset"]) if hasattr(response.headers, "X-RateLimit-Reset")                 else (datetime.datetime.now() + datetime.timedelta(seconds=-1) )
         )
         logging.warning(
             "GitHub API Rate Limit reached. Pausing until Rate Limit reset."
@@ -101,11 +106,14 @@ def request(method, url, **kwargs):
         # which the rate limit is a UTC time, so it has to be compared to
         # utcnow.
         while datetime.datetime.now() < rate_limit_reset:
-            logging.warning("Rate Limit will reset at: %s", rate_limit_reset)
+            logger.warning("Rate Limit will reset at: %s", rate_limit_reset)
             reset_diff = rate_limit_reset - datetime.datetime.now()
 
-            logging.info("Sleeping %s seconds", reset_diff.seconds)
+            logger.info("Sleeping %s seconds", reset_diff.seconds)
             time.sleep(reset_diff.seconds + 1)
+
+        if remaining % 10 == 0:
+            logger.info(remaining, "requests remaining this hour")
 
     return response
 

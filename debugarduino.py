@@ -15,16 +15,24 @@ os.environ.setdefault(
 
 sys.argv = [
     "arduino_libraries.py",
+    "--markdown",
+    "1",
     "--ci",
     "1",
     "--bump-ci-repos",
-    "0",
+    "1",
     "--idiot",
+    # "0"
     "0",
+    # "--check-pull-requests-only",
+    # "1",
 ]
 timestamp = time.strftime("%Y-%m-%d_%H%M%S")
-
-arduino_libraries.main(verbosity=1, output_file=f"{timestamp}.md",ci=1)
+filename = f"{timestamp}.md"
+arduino_libraries.main(verbosity=1, output_file=filename,ci=1)
+timestamp = time.strftime("%H:%M:%S")
+import logging
+logging.info(f"*** Adabot Arduino Run complete at {timestamp} in file {filename}")
 print("done")
 
 

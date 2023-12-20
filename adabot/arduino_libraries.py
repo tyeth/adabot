@@ -11,7 +11,7 @@ import sys
 import traceback
 import semver
 import requests
-
+import requests_cache
 from adabot import github_requests as gh_reqs
 from adabot import gh_forking_prs
 
@@ -31,6 +31,15 @@ cmd_line_parser.add_argument(
     help="Output log to the filename provided.",
     metavar="<OUTPUT FILENAME>",
     dest="output_file",
+)
+cmd_line_parser.add_argument(
+    "-markdown",
+    "--markdown",
+    help="Output log with markdown tables",
+    type=int,
+    default=0,
+    dest="markdown",
+    choices=[0, 1],
 )
 cmd_line_parser.add_argument(
     "-v",
@@ -143,14 +152,10 @@ def create_version_update_pr(repo, lib_version, release_version):
     try:
         args = cmd_line_parser.parse_args()
         if not args.bump_ci_repos:
-            logging.info("Skip PR bumping library.properties [CI/md/img-only check] " + repo['name'] + " (-bc=0)")
+            logger.info("Skip PR bumping library.properties [CI/md/img-only check] " + repo['name'] + " (-bc=0)")
             return False
         owner = os.environ.get("ADABOT_GITHUB_USER")
-        
-        if not args.idiot:
-            logging.info("Not creating Pull Request to bump library.properties for CI/md/img-only changes - " + repo['name'] + " (--idiot=0)")
-            return
-        
+                
         # Check if the user has already forked the repository
         fork = gh_forking_prs.get_user_fork(owner, repo)
         if not fork:
@@ -173,7 +178,7 @@ def create_version_update_pr(repo, lib_version, release_version):
                 pass
             time.sleep(1)
         else:
-            logging.error("Fork still not in sync after " + str(WAIT_TIME) + " seconds, skipping " + repo["name"])
+            logger.error("Fork still not in sync after " + str(WAIT_TIME) + " seconds, skipping " + repo["name"])
             return
 
         # Update the version number in library.properties
@@ -191,8 +196,24 @@ def create_version_update_pr(repo, lib_version, release_version):
         # check if existing similar PR exists
         existing_pr = gh_forking_prs.pr_exists_with_same_title(owner, repo, fork, "Update version number to " + new_version)
         if existing_pr:
-            logging.info("Pull request already exists to update version number to " + new_version + " for " + repo["name"])
+            logger.info("Pull request already exists to update version number to " + new_version + " for " + repo["name"])
             new_PRs.append(existing_pr)
+            return
+
+        # check if release exists with same tag (likely in error state which should be saved as latest)
+        get_tags = gh_reqs.get(repo["tags_url"])
+        if get_tags.ok:
+            response = get_tags.json() # first release should be latest
+            response = response if isinstance(response, list) and len(response)>0 else []
+            for tag in response:
+                if "name" in tag and tag["name"] == new_version:
+                    logger.info("*** Found tag matching intended release (" + new_version + "): " + repo["html_url"] + "/tags")
+                    logger.info("* All " + repo["name"] + " releases: " + repo["html_url"] + "/releases")
+                    return
+        
+
+        if not args.idiot:
+            logger.info("Not creating actual Pull Request to bump library.properties for CI/md/img-only changes - " + repo['name'] + " (--idiot=0)")
             return
 
         # Create a new branch for the changes
@@ -204,11 +225,12 @@ def create_version_update_pr(repo, lib_version, release_version):
 
         # Create a new pull request
         new_pr = gh_forking_prs.create_draft_pull_request(owner, repo, fork, branch_name, draft=False, title="Update version number to " + new_version, body="This pull request updates the version number in library.properties to " + new_version)
-        logging.info("Pull request created: %s/%s#%s", owner, fork['name'], branch_name)
+        logger.info("Pull request created: %s/%s#%s", owner, fork['name'], branch_name)
+        logger.info("PR URL: %s", new_pr["html_url"])
         new_PRs.append(new_pr)
     except Exception as e:
-        logging.error(e)
-        logging.error(f"Failed to add PR to bump library.properties for CI-only changes for {repo['name']}")
+        logger.error(e)
+        logger.error(f"Failed to add PR to bump library.properties for CI-only changes for {repo['name']}")
 
 
 
@@ -259,16 +281,33 @@ def is_arduino_library(repo):
     return lib_prop_file.ok
 
 
-def print_list_output(title, coll):
+def print_list_output(title, coll, markdown=False):
     """Helper function to format output."""
     logger.info("")
-    logger.info(title.format(len(coll) - 2))
-    long_col = [
-        (max([len(str(row[i])) for row in coll]) + 3) for i in range(len(coll[0]))
-    ]
-    row_format = "".join(["{:<" + str(this_col) + "}" for this_col in long_col])
-    for lib in coll:
-        logger.info("%s", row_format.format(*lib))
+    if(markdown):
+        logger.info(f"\n### {title.format(len(coll) - 2)}\n")
+        #cleanup spaces + header underline
+        for row in coll:
+            for i in range(len(row)):
+                row[i] = str(row[i]).strip()
+        
+        # Create the header row
+        headers = coll[0]
+        header_row = "| " + " | ".join(headers) + " |"
+        logger.info(header_row)
+
+        # Iterate over the separator and data rows and format them
+        for row in coll[1:]:
+            formatted_row = "| " + " | ".join(str(item) for item in row) + " |"
+            logger.info(formatted_row)
+    else:
+        logger.info(title.format(len(coll) - 2))
+        long_col = [
+            (max([len(str(row[i])) for row in coll]) + 3) for i in range(len(coll[0]))
+        ]
+        row_format = "".join(["{:<" + str(this_col) + "}" for this_col in long_col])
+        for lib in coll:
+            logger.info("%s", row_format.format(*lib))
 
 def validate_library_properties(repo):
     """Checks if the latest GitHub Release Tag and version in the library_properties
@@ -295,7 +334,7 @@ def validate_library_properties(repo):
         + "/library.properties"
     )
     if not lib_prop_file.ok:
-        # print("{} skipped".format(repo["name"]))
+        logger.warning("{} skipped - no library.properties file".format(repo["name"]))
         return None  # no library properties file!
 
     lines = lib_prop_file.text.split("\n")
@@ -316,6 +355,18 @@ def validate_library_properties(repo):
             if response["message"] != "Not Found":
                 release_tag = "Unknown"
 
+    # now check for non-latest release that is newer
+    get_latest_release = gh_reqs.get(
+        "/repos/adafruit/" + repo["name"] + "/releases"
+    )
+    if get_latest_release.ok:
+        response = get_latest_release.json() # first release should be latest
+        response = response[0] if isinstance(response, list) and len(response)>0 else {}
+        if "tag_name" in response and semver.compare( response["tag_name"], release_tag) > 0:
+            logger.info("*** Found newer release NOT *marked* LATEST " + response["html_url"].replace("/releases/tag/", "/releases/edit/"))
+            logger.info("* All " + repo["name"] + " releases: " + repo["html_url"] + "/releases")
+            release_tag = response["tag_name"]
+        
     if lib_version:
         return [release_tag, lib_version]
 
@@ -387,7 +438,7 @@ def run_arduino_lib_checks(ci=0):
     cmd_line_args = cmd_line_parser.parse_args()
     if cmd_line_args.idiot == 1 and cmd_line_args.bump_ci_repos == 1 and cmd_line_args.ci == 1 and cmd_line_args.check_prs_only == 1:
         gh_forking_prs.print_load_verify_and_merge_prs()
-        print("Done checking PRs only")
+        logger.info("Done checking PRs only")
         return
     
     logger.info("Running Arduino Library Checks")
@@ -419,12 +470,13 @@ def run_arduino_lib_checks(ci=0):
     ]
 
     for repo in repo_list:
+        should_pr = False
         have_examples = validate_example(repo)
         if not have_examples:
             # not a library, probably worth rechecking that it's got no library.properties file
             if is_arduino_library(repo):
                 no_examples.append(
-                    ["  " + str(repo["name"] or repo["clone_url"]) + " *LibraryNoExamples*", repo["pushed_at"]]
+                    ["  -> " + str(repo["name"] or repo["clone_url"]) + " *LibraryNoExamples*", repo["pushed_at"]]
                 )
             else:
                 no_examples.append(
@@ -463,7 +515,8 @@ def run_arduino_lib_checks(ci=0):
                     lib_check[1],
                 ]
             )
-            create_version_update_pr(repo, libprops_tag, release_tag)
+            if(not gh_forking_prs.should_ignore_repo_for_creating_prs(repo['name'])):
+                should_pr = True
             # don't loop with continue
             # we later check changes not between tags, i.e. main vs tag
 
@@ -500,6 +553,9 @@ def run_arduino_lib_checks(ci=0):
             )
             if ci and check_changes_for_ci_only(repo, entry["release"], repo["default_branch"]):
                 needs_release[1] = str(needs_release[1]) + " *CI/Md/IMG*"
+                if(not gh_forking_prs.should_ignore_repo_for_creating_prs(repo['name'])):
+                    should_pr = True
+            
             needs_release_list.append(
                 [
                     "  " + str(repo["name"]),
@@ -515,42 +571,51 @@ def run_arduino_lib_checks(ci=0):
             missing_actions_list.append(["  " + str(repo["name"])])
 
         all_libraries.append(entry)
+        
+        if should_pr:
+            create_version_update_pr(repo, lib_check[0].split(' ')[0], lib_check[1].split(' ')[0])
 
-    for entry in all_libraries:
-        logging.info(entry)
+    # for entry in all_libraries:
+    #     logger.info(entry)
 
     if len(failed_lib_prop) > 2:
         print_list_output(
             "Libraries Have Mismatched Release Tag and library.properties Version: ({})",
             failed_lib_prop,
+            markdown=cmd_line_args.markdown == 1,
         )
 
     if len(needs_registration_list) > 2:
         print_list_output(
             "Libraries that are not registered with Arduino: ({})",
             needs_registration_list,
+            markdown=cmd_line_args.markdown == 1,
         )
 
     if len(needs_release_list) > 2:
         print_list_output(
-            "Libraries have commits since last release: ({})", needs_release_list
+            "Libraries have commits since last release: ({})", needs_release_list,
+            markdown=cmd_line_args.markdown == 1,
         )
 
     if len(missing_actions_list) > 2:
         print_list_output(
-            "Libraries that is not configured with Actions: ({})", missing_actions_list
+            "Libraries that is not configured with Actions: ({})", missing_actions_list,
+            markdown=cmd_line_args.markdown == 1,
         )
 
     if len(missing_library_properties_list) > 2:
         print_list_output(
             "Libraries that is missing library.properties file: ({})",
             missing_library_properties_list,
+            markdown=cmd_line_args.markdown == 1,
         )
 
     if len(no_examples) > 2:
         print_list_output(
             "Repos with no examples (considered non-libraries): ({})",
             no_examples,
+            markdown=cmd_line_args.markdown == 1,
         )
     
     if len(new_PRs) > 0:
@@ -567,9 +632,10 @@ def main(verbosity=1, output_file=None, ci=1):  # pylint: disable=missing-functi
         logger.setLevel("CRITICAL")
 
     try:
-        reply = requests.get("http://downloads.arduino.cc/libraries/library_index.json")
+        with requests_cache.disabled():
+            reply = requests.get("http://downloads.arduino.cc/libraries/library_index.json",timeout=600)
         if not reply.ok:
-            logging.error(
+            logger.error(
                 "Could not fetch http://downloads.arduino.cc/libraries/library_index.json"
             )
             sys.exit()
