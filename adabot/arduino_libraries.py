@@ -280,34 +280,22 @@ def is_arduino_library(repo):
     )
     return lib_prop_file.ok
 
-
+#TODO: Remove markdown flag or refactor to use it in filename etc
 def print_list_output(title, coll, markdown=False):
     """Helper function to format output."""
     logger.info("")
-    if(markdown):
-        logger.info(f"\n### {title.format(len(coll) - 2)}\n")
-        #cleanup spaces + header underline
-        for row in coll:
-            for i in range(len(row)):
-                row[i] = str(row[i]).strip()
-        
-        # Create the header row
-        headers = coll[0]
-        header_row = "| " + " | ".join(headers) + " |"
-        logger.info(header_row)
-
-        # Iterate over the separator and data rows and format them
-        for row in coll[1:]:
-            formatted_row = "| " + " | ".join(str(item) for item in row) + " |"
-            logger.info(formatted_row)
-    else:
-        logger.info(title.format(len(coll) - 2))
-        long_col = [
-            (max([len(str(row[i])) for row in coll]) + 3) for i in range(len(coll[0]))
-        ]
-        row_format = "".join(["{:<" + str(this_col) + "}" for this_col in long_col])
-        for lib in coll:
-            logger.info("%s", row_format.format(*lib))
+    logger.info(f"\n### {title.format(len(coll) - 2)}\n")
+    logger.info(title.format(len(coll) - 2))
+    for row in coll:
+        for i in range(len(row)):
+            row[i] = str(row[i]).strip()
+    # This was +3 for original formatting instead of +0
+    long_col = [
+        (max([len(str(row[i])) for row in coll])+0) for i in range(len(coll[0]))
+    ]
+    row_format = "| " + " | ".join(["{:<" + str(this_col) + "}" for this_col in long_col]) + " |"
+    for lib in coll:
+        logger.info("%s", row_format.format(*lib))
 
 def validate_library_properties(repo):
     """Checks if the latest GitHub Release Tag and version in the library_properties

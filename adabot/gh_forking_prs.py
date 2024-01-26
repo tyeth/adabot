@@ -285,7 +285,7 @@ def print_load_verify_and_merge_prs(new_PRs=[]):
 
 def save_prs(prs):
     with open('recent_pulls.json', 'w') as f:
-        json.dump(prs, f)
+        json.dump(prs, f, indent=2)
 
 def sync_fork(repo, fork):
     """
