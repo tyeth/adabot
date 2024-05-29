@@ -24,6 +24,8 @@ sys.argv = [
     "--idiot",
     # "0"
     "0",
+    "--verbose",
+    "1",
     # "--check-pull-requests-only",
     # "1",
 ]
