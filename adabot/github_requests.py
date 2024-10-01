@@ -65,7 +65,7 @@ def request(method, url, **kwargs):
             _fix_url(url), timeout=TIMEOUT, **_fix_kwargs(kwargs)
         )
         from_cache = getattr(response, "from_cache", False)
-        remaining = int(response.headers.get("X-RateLimit-Remaining", 0))
+        remaining = int(response.headers.get("X-RateLimit-Remaining", -1))
         logger.debug(
             "GET %s %s status=%s",
             url,
@@ -88,9 +88,9 @@ def request(method, url, **kwargs):
         ) from None
 
     if not from_cache:
-        if remaining % 100 == 0 or remaining < 20:
+        if remaining % 10 == 0 or (-1 < remaining < 20):
             logging.info("%d requests remaining this hour", remaining)
-    if not from_cache and remaining <= 1:
+    if not from_cache and remaining == 0:
         logger.warning(
             "GitHub API Rate Limit reached. Pausing until Rate Limit reset."
         )
@@ -114,6 +114,17 @@ def request(method, url, **kwargs):
 
         if remaining % 10 == 0:
             logger.info(remaining, "requests remaining this hour")
+
+    if remaining == -1:
+        if logger.level == logging.DEBUG:
+            logger.debug(f"-- Github responded with no rate limit info, possible problems, printing reponse ({response.status_code}):")
+            logger.debug(f"Request ({method}) - URL: {url}")
+            logger.debug(f"Response text: {response.text}")
+            for header in response.headers:
+                logger.debug(f"Response header {header}={response.headers.get(header)}")
+            logger.debug("-- Continuing as if nothings wrong 😇")
+        else:
+            logger.warning("GitHub responded with no rate info, continuing as if nothings wrong 😇")
 
     return response
 
