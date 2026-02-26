@@ -1,0 +1,433 @@
+<script>window._lastRepoData = {{ repo | tojson }};
+window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else 'null' }};
+</script>
+
+<!-- Tab: Changes / PRs -->
+<div class="tab-pane active" id="tab-changes">
+  <h3 style="margin-bottom:10px">
+    <a href="{{ repo.html_url }}" target="_blank">{{ repo.name }}</a>
+    {% if repo.release_tag %}
+      <span style="color:var(--muted);font-size:0.85rem">&nbsp;{{ repo.release_tag }}</span>
+    {% endif %}
+    {% if repo.compare_url %}
+      &nbsp;<a href="{{ repo.compare_url }}" target="_blank" style="font-size:0.8rem">compare &#8599;</a>
+    {% endif %}
+  </h3>
+
+  <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;font-size:0.8rem;align-items:center">
+    <span>lib.properties: <strong>{{ repo.lib_version or '—' }}</strong></span>
+    <span>tag: <strong>{{ repo.release_tag or '*None*' }}</strong></span>
+    {% if repo.commits_behind %}
+      <span>+<strong>{{ repo.commits_behind }}</strong> commits</span>
+    {% endif %}
+    {% if repo.ci_only %}<span class="tag tag-ci">CI/MD/IMG-only</span>{% endif %}
+    {% if repo.arduino_registered %}
+      <span style="color:var(--green)">&#10003; Arduino index ({{ repo.arduino_version }})</span>
+    {% else %}
+      <span style="color:var(--yellow)">&#9888; Not in Arduino index</span>
+    {% endif %}
+    {% if repo.has_actions is not none %}
+      {% if repo.has_actions %}
+        <span style="color:var(--green)">&#10003; CI</span>
+      {% else %}
+        <span style="color:var(--red)" title="No .github/workflows/githubci.yml found">&#10007; No CI workflow</span>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  {% if repo.recent_commits %}
+  <h4 style="margin-bottom:6px;color:var(--accent)">Commits since {{ repo.release_tag or 'last release' }}</h4>
+  <table style="margin-bottom:16px">
+    <tr><th>SHA</th><th>Message</th><th>Author</th><th>Date</th></tr>
+    {% for c in repo.recent_commits %}
+    <tr>
+      <td><a href="{{ c.html_url }}" target="_blank">{{ c.sha }}</a></td>
+      <td>{{ c.message }}</td>
+      <td>{{ c.author }}</td>
+      <td>{{ c.date[:10] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="empty" style="margin-top:8px">No commit history (run collection to fetch).</p>
+  {% endif %}
+
+  {% if repo.prs %}
+  <h4 style="margin-bottom:6px;color:var(--accent)">Open Pull Requests</h4>
+  <table>
+    <tr><th>#</th><th>Title</th><th>Author</th><th>Labels</th><th>Opened</th></tr>
+    {% for pr in repo.prs %}
+    <tr>
+      <td><a href="{{ pr.html_url }}" target="_blank">#{{ pr.number }}</a></td>
+      <td>{% if pr.draft %}<em style="color:var(--muted)">[draft] </em>{% endif %}{{ pr.title }}</td>
+      <td>{{ pr.user }}</td>
+      <td style="color:var(--muted)">{{ pr.labels | join(', ') }}</td>
+      <td>{{ pr.created_at[:10] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="empty">No open PRs.</p>
+  {% endif %}
+</div>
+
+<!-- Tab: Release Notes -->
+<div class="tab-pane" id="tab-notes">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <h4 style="color:var(--accent)">Release Notes</h4>
+    <div style="display:flex;gap:6px">
+      <button class="btn" onclick="toggleNotesPreview()">Toggle Preview</button>
+      <button class="btn btn-accent" onclick="saveNotes('{{ repo.name }}')">Save</button>
+    </div>
+  </div>
+  <p style="font-size:0.75rem;color:var(--muted);margin-bottom:10px">
+    Edit below — reword PR titles for clarity. <kbd>Ctrl+S</kbd> to save.
+  </p>
+
+  <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <label style="font-size:0.8rem;color:var(--muted)">New release tag:</label>
+    <input id="release-tag-input" type="text"
+      value="{{ proposed_version or repo.lib_version or '' }}"
+      placeholder="e.g. 1.2.4"
+      style="background:var(--surface);color:var(--text);border:1px solid var(--border);
+             padding:4px 8px;border-radius:4px;font-family:monospace;width:120px">
+    {% if repo.release_tag and repo.lib_version and repo.release_tag != repo.lib_version %}
+    <span style="font-size:0.75rem;color:var(--yellow)">
+      &#9888; lib version ({{ repo.lib_version }}) ≠ release tag ({{ repo.release_tag }}) — bump needed
+    </span>
+    {% endif %}
+  </div>
+
+  <textarea id="notes-editor" class="notes-editor"
+    onkeydown="if(event.ctrlKey&&event.key==='s'){event.preventDefault();saveNotes('{{ repo.name }}')}">{{ repo.release_notes or '' }}</textarea>
+
+  <div id="notes-preview-panel" style="display:none;margin-top:12px;border:1px solid var(--border);padding:12px;border-radius:4px">
+    <div class="notes-preview" id="notes-preview-content"></div>
+  </div>
+
+  {% if release_blocked %}
+  <div style="margin-top:12px;padding:10px;background:#3a2a0a;border-radius:4px;border:1px solid var(--yellow)">
+    <strong style="color:var(--yellow)">&#9888; Release blocked:</strong> {{ release_blocked }}
+  </div>
+  {% endif %}
+
+  <div style="margin-top:12px">
+    <button class="btn btn-green"
+      {% if release_blocked %}disabled title="{{ release_blocked }}" style="opacity:0.4;cursor:not-allowed"{% else %}onclick="doRelease('{{ repo.name }}')"{% endif %}>
+      &#128640; Create Release
+    </button>
+  </div>
+</div>
+
+<!-- Tab: Version Bump -->
+<div class="tab-pane" id="tab-bump">
+  <h4 style="color:var(--accent);margin-bottom:10px">Version Bump</h4>
+
+  {% if repo.release_tag and repo.lib_version %}
+  <div style="font-size:0.85rem;margin-bottom:14px;display:flex;gap:16px;flex-wrap:wrap">
+    <span>Release tag: <strong>{{ repo.release_tag }}</strong></span>
+    <span>library.properties: <strong>{{ repo.lib_version }}</strong></span>
+    {% if repo.release_tag != repo.lib_version %}
+    <span style="color:var(--yellow)">&#9888; Mismatch</span>
+    {% else %}
+    <span style="color:var(--green)">&#10003; In sync</span>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% if repo.lib_version %}
+  <div style="margin-bottom:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span style="font-size:0.8rem;color:var(--muted)">Bump type:</span>
+    {% if has_prerelease %}
+    <label style="font-size:0.85rem;cursor:pointer;display:flex;align-items:center;gap:4px"
+           title="Increment the pre-release identifier (e.g. beta.122 → beta.123)">
+      <input type="radio" name="bump-type" value="prerelease"
+        {% if bump_type == 'prerelease' %}checked{% endif %}
+        onchange="updateBumpPreview(this.value)">
+      prerelease
+    </label>
+    <span style="color:var(--border)">|</span>
+    {% endif %}
+    {% for bt in ['patch', 'minor', 'major'] %}
+    <label style="font-size:0.85rem;cursor:pointer;display:flex;align-items:center;gap:4px"
+           {% if has_prerelease %}title="Stable {{ bt }} release (drops pre-release suffix)"{% endif %}>
+      <input type="radio" name="bump-type" value="{{ bt }}"
+        {% if bump_type == bt %}checked{% endif %}
+        onchange="updateBumpPreview(this.value)">
+      {{ bt }}
+    </label>
+    {% endfor %}
+    {% if bump_justification %}
+    <span style="font-size:0.73rem;color:var(--muted);font-style:italic">{{ bump_justification }}</span>
+    {% endif %}
+  </div>
+  <div class="diff-block" style="margin-bottom:14px">
+    <div class="diff-context">  # library.properties</div>
+    <div class="diff-remove">- version={{ repo.lib_version }}</div>
+    <div class="diff-add" style="display:flex;align-items:center;gap:6px">
+      <span>+ version=</span><input id="bump-target-version" type="text" value="{{ proposed_version or '?' }}" style="background:var(--surface);color:var(--green);border:1px solid var(--border);padding:2px 6px;border-radius:3px;font-family:monospace;width:158px;font-weight:bold" oninput="syncVersionInputs(this.value)">
+      <span style="color:var(--muted);font-size:0.8rem">&larr; edit or pick type above</span>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if repo.version_files %}
+  <h4 style="color:var(--accent);margin-bottom:6px">Other version files found</h4>
+  <table style="margin-bottom:14px">
+    <tr><th>File</th><th>Version found</th><th>Status</th></tr>
+    {% for vf in repo.version_files %}
+    <tr>
+      <td><a href="{{ vf.url }}" target="_blank">{{ vf.path }}</a></td>
+      <td><code>{{ vf.version_found }}</code></td>
+      <td>
+        {% if vf.matches %}
+          <span style="color:var(--green)">&#10003; matches — will be updated in bump PR</span>
+        {% else %}
+          <span style="color:var(--yellow)">&#9888; {{ vf.version_found }} — manual check needed</span>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p style="font-size:0.8rem;color:var(--muted);margin-bottom:14px">
+    No other version files detected.
+    <a href="{{ repo.html_url }}/search?q=version" target="_blank">Search repo &#8599;</a>
+  </p>
+  {% endif %}
+
+  {% if repo.bump_pr %}
+  <div style="padding:10px;background:var(--surface);border-radius:4px;border:1px solid var(--border)">
+    <strong>Bump PR:</strong>
+    <a href="{{ repo.bump_pr.url }}" target="_blank">#{{ repo.bump_pr.number }}</a>
+    &mdash;
+    {% set _cs = repo.bump_pr.ci_status or 'pending' %}
+    <span class="tag tag-{{ _cs }}">CI: {{ _cs }}</span>
+    {% if repo.bump_pr.state == 'merged' %}
+      <span class="tag tag-pass" style="margin-left:4px">merged</span>
+    {% endif %}
+    {% if repo.bump_pr.files_changed and repo.bump_pr.files_changed | length > 1 %}
+      <span style="font-size:0.75rem;color:var(--muted);margin-left:8px">
+        updated: {{ repo.bump_pr.files_changed | join(', ') }}
+      </span>
+    {% endif %}
+  </div>
+  {% else %}
+  <div style="margin-top:4px">
+    <button class="btn btn-accent" onclick="doBump('{{ repo.name }}')">&#8679; Create Bump PR</button>
+    <span style="font-size:0.75rem;color:var(--muted);margin-left:8px">
+      Fork → branch → edit → PR to adafruit/{{ repo.name }}
+    </span>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Tab: CI Status -->
+<div class="tab-pane" id="tab-ci">
+  <h4 style="color:var(--accent);margin-bottom:10px">CI Status</h4>
+
+  {% if repo.bump_pr %}
+  <div style="margin-bottom:10px;font-size:0.85rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <span>Bump PR <a href="{{ repo.bump_pr.url }}" target="_blank">#{{ repo.bump_pr.number }}</a></span>
+    {% set _cs = repo.bump_pr.ci_status or 'pending' %}
+    <span class="tag tag-{{ _cs }}">CI: {{ _cs }}</span>
+    {% if repo.bump_pr.state == 'merged' %}
+      <span class="tag tag-pass">merged</span>
+      {% if repo.branch_ci_status %}
+        <span>&rarr; branch CI:
+          <span class="tag tag-{{ repo.branch_ci_status }}">{{ repo.branch_ci_status }}</span>
+        </span>
+      {% endif %}
+    {% endif %}
+    <button class="btn" onclick="doCheckCI('{{ repo.name }}')">&#9881; Refresh</button>
+  </div>
+
+  {% if repo.bump_pr.checks %}
+  <table style="margin-bottom:12px">
+    <tr><th>Check</th><th>State</th><th style="color:var(--muted);white-space:nowrap">Run</th></tr>
+    {% for check in repo.bump_pr.checks %}
+    {% set check_url = check.get('link') or check.get('url') or check.get('detailsUrl') %}
+    <tr{% if check_url %} style="cursor:pointer" onclick="window.open('{{ check_url }}','_blank')" title="Open in GitHub"{% endif %}>
+      <td>{{ check.name }}{% if check_url %} <span style="color:var(--muted);font-size:0.7rem">&#8599;</span>{% endif %}</td>
+      <td>
+        {% set s = (check.get('state', check.get('status', ''))|upper) %}
+        {% if s in ['PASS','SUCCESS'] %}<span style="color:var(--green)">&#10003; {{ s }}</span>
+        {% elif s in ['FAIL','FAILURE','ERROR','CANCELLED'] %}<span style="color:var(--red)">&#10007; {{ s }}</span>
+        {% else %}<span style="color:var(--yellow)">{{ s or 'pending' }}</span>
+        {% endif %}
+      </td>
+      <td style="color:var(--muted);font-size:0.72rem;white-space:nowrap">
+        {% if check.run_label %}<span title="{{ check.run_id or '' }}">{{ check.run_label }}</span>{% endif %}
+        {% if check.run_id %}<span style="opacity:0.5;margin-left:4px">…{{ check.run_id[-6:] }}</span>{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="empty">No check data yet.</p>
+  {% endif %}
+
+  {# Actions awaiting first-contributor approval #}
+  {% if repo.bump_pr.actions_need_approval %}
+  <div style="padding:10px;background:#2a1a3a;border-radius:4px;border:1px solid #a78bfa;margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <strong style="color:#a78bfa">&#9888; Actions awaiting approval</strong>
+    <span style="font-size:0.85rem">This contributor's workflow runs are blocked pending maintainer approval.</span>
+    <a class="btn" href="https://github.com/adafruit/{{ repo.name }}/actions" target="_blank" style="text-decoration:none">
+      Approve on GitHub &#8599;
+    </a>
+    <span style="font-size:0.75rem;color:var(--muted)">
+      or run <code>approve_actions.py</code> with an Adafruit org token to bulk-approve.
+    </span>
+  </div>
+  {% endif %}
+
+  {# Action banners #}
+  {% if repo.bump_pr.ci_status == 'pass' and repo.bump_pr.state != 'merged' %}
+  <div style="padding:10px;background:#1a3a1a;border-radius:4px;border:1px solid var(--green);margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <strong style="color:var(--green)">&#10003; CI passed!</strong>
+    <span>Merge the bump PR to proceed.</span>
+    <button class="btn btn-green" onclick="doMergeBump('{{ repo.name }}')">&#x2713; Auto-merge</button>
+    <a class="btn" href="{{ repo.bump_pr.url }}" target="_blank" style="text-decoration:none">
+      &#128279; Merge on GitHub &#8599;
+    </a>
+    <span id="merge-fallback-{{ repo.name }}" style="display:none;font-size:0.8rem;color:var(--yellow)">
+      Auto-merge failed &mdash;
+      <a href="{{ repo.bump_pr.url }}" target="_blank">merge manually on GitHub &#8599;</a>
+    </span>
+  </div>
+  {% endif %}
+
+  {% if repo.bump_pr.state == 'merged' and repo.branch_ci_status == 'pass' %}
+  <div style="padding:10px;background:#1a3a1a;border-radius:4px;border:1px solid var(--green);margin-bottom:8px">
+    <strong style="color:var(--green)">&#10003; Bump merged + branch CI passed!</strong>
+    Mark ready for release.
+    <button class="btn btn-green" style="margin-left:8px" onclick="markReady('{{ repo.name }}')">
+      Mark Ready
+    </button>
+  </div>
+  {% endif %}
+
+  {% if repo.bump_pr.ci_status == 'fail' %}
+  <div style="padding:10px;background:#3a1a1a;border-radius:4px;border:1px solid var(--red)">
+    <strong style="color:var(--red)">&#10007; CI failed</strong> — release blocked.
+    <a href="{{ repo.bump_pr.url }}" target="_blank" style="margin-left:8px">View PR &#8599;</a>
+  </div>
+  {% endif %}
+
+  {% if repo.branch_ci_status == 'fail' %}
+  <div style="padding:10px;background:#3a1a1a;border-radius:4px;border:1px solid var(--red);margin-top:8px">
+    <strong style="color:var(--red)">&#10007; Default branch CI failed after merge</strong> — release blocked.
+    <a href="{{ repo.html_url }}/actions" target="_blank" style="margin-left:8px">View Actions &#8599;</a>
+  </div>
+  {% endif %}
+
+  {% else %}
+  <p class="empty">No bump PR yet. Go to Version Bump tab to create one.</p>
+  <p style="font-size:0.8rem;color:var(--muted);margin-top:8px">
+    For repos needing a release, create the bump PR first, wait for CI to pass,
+    merge it, then confirm branch CI passes before releasing.
+  </p>
+  {% endif %}
+</div>
+
+<script>
+// ── Version bump helpers ──────────────────────────────────────────────────
+(function() {
+  const _libVer = {{ repo.lib_version | tojson }};
+  const _relVer = {{ (repo.release_tag or '') | tojson }};
+
+  // Parse "1.2.3-beta.122" → {major,minor,patch,pre:"beta.122"} or null
+  function _parseVer(ver) {
+    if (!ver) return null;
+    ver = ver.replace(/^v/, '');
+    const dashIdx = ver.indexOf('-');
+    const pre = dashIdx >= 0 ? ver.slice(dashIdx + 1) : null;
+    const nums = (dashIdx >= 0 ? ver.slice(0, dashIdx) : ver).split('.');
+    if (nums.length < 2) return null;
+    const [major, minor, patch] = nums.map(Number);
+    if ([major, minor].some(isNaN)) return null;
+    return {major, minor, patch: patch || 0, pre};
+  }
+
+  // Increment last numeric run in a prerelease string:
+  // "beta.122" → "beta.123", "rc1" → "rc2", "alpha" → "alpha.1"
+  function _bumpPre(pre) {
+    const bumped = pre.replace(/(\d+)(?=\D*$)/, (_, n) => String(parseInt(n, 10) + 1));
+    return bumped !== pre ? bumped : pre + '.1';
+  }
+
+  function _maxVer(a, b) {
+    const pa = _parseVer(a), pb = _parseVer(b);
+    if (!pa) return b; if (!pb) return a;
+    for (const k of ['major', 'minor', 'patch']) {
+      if (pb[k] > pa[k]) return b;
+      if (pa[k] > pb[k]) return a;
+    }
+    // Same numeric: release > prerelease
+    if (pa.pre && !pb.pre) return b;
+    if (!pa.pre && pb.pre) return a;
+    return a;
+  }
+
+  function _bumpVer(ver, type) {
+    const p = _parseVer(ver);
+    if (!p) return ver;
+    if (type === 'prerelease' && p.pre) {
+      return `${p.major}.${p.minor}.${p.patch}-${_bumpPre(p.pre)}`;
+    }
+    // Stable bumps: strip prerelease first
+    if (type === 'major') return `${p.major + 1}.0.0`;
+    if (type === 'minor') return `${p.major}.${p.minor + 1}.0`;
+    return `${p.major}.${p.minor}.${p.patch + 1}`;
+  }
+
+  window.updateBumpPreview = function(bumpType) {
+    const base = _maxVer(_libVer, _relVer);
+    window.syncVersionInputs(_bumpVer(base, bumpType));
+  };
+
+  window.syncVersionInputs = function(val) {
+    const bumpEl = document.getElementById('bump-target-version');
+    if (bumpEl && bumpEl !== document.activeElement) bumpEl.value = val;
+    const tagEl = document.getElementById('release-tag-input');
+    if (tagEl) tagEl.value = val;
+  };
+})();
+
+function toggleNotesPreview() {
+  const panel = document.getElementById('notes-preview-panel');
+  const ta = document.getElementById('notes-editor');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  if (panel.style.display === 'block') {
+    let md = ta.value;
+    md = md.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    md = md.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+    md = md.replace(/^\* (.+)$/gm, '<li>$1</li>');
+    md = md.replace(/(<li>.*<\/li>\n?)+/gs, m => '<ul>' + m + '</ul>');
+    document.getElementById('notes-preview-content').innerHTML = md;
+  }
+}
+
+async function doMergeBump(name) {
+  confirm_action('Merge Bump PR', 'Merge the version bump PR for ' + name + '?', async () => {
+    const r = await fetch('/api/repo/' + name + '/merge_bump_pr', {method:'POST'});
+    const d = await r.json();
+    if (d.error) {
+      toast('Auto-merge failed: ' + d.error, 'err');
+      // Show the manual merge fallback link
+      const fb = document.getElementById('merge-fallback-' + name);
+      if (fb) fb.style.display = '';
+      return;
+    }
+    toast('Bump PR merged! Checking branch CI…');
+    // Update cached state so badge reflects merged status without requiring reload
+    if (repoData[name] && repoData[name].bump_pr) {
+      repoData[name].bump_pr.state = 'merged';
+    }
+    updateSidebarBadge(name);
+    setTimeout(() => doCheckCI(name), 3000);
+    // Only reload detail panel if the user is still on this repo
+    if (currentRepo === name) loadDetail(name);
+  });
+}
+</script>

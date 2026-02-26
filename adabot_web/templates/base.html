@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Adabot Arduino Release Manager{% endblock %}</title>
+  <script src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js"></script>
+  <style>
+    :root {
+      --bg: #1a1a2e;
+      --surface: #16213e;
+      --surface2: #0f3460;
+      --accent: #e94560;
+      --accent2: #533483;
+      --text: #eaeaea;
+      --muted: #888;
+      --green: #4caf50;
+      --yellow: #ffc107;
+      --red: #f44336;
+      --blue: #2196f3;
+      --border: #2a2a4a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, monospace; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Header */
+    header { background: var(--surface2); padding: 8px 16px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    header h1 { font-size: 1.1rem; color: var(--accent); }
+    .status-badge { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; background: var(--surface); }
+    .status-running { background: var(--yellow); color: #000; }
+    .status-done { background: var(--green); color: #000; }
+    .status-error { background: var(--red); }
+    .header-actions { margin-left: auto; display: flex; gap: 8px; }
+    .btn { padding: 4px 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; border-radius: 4px; font-size: 0.8rem; }
+    .btn:hover { background: var(--surface2); }
+    .btn-accent { background: var(--accent); border-color: var(--accent); color: white; }
+    .btn-green { background: var(--green); border-color: var(--green); color: #000; font-weight: bold; }
+    .progress-bar-wrap { height: 3px; background: var(--surface); flex-shrink: 0; }
+    .progress-bar { height: 3px; background: var(--accent); transition: width 1s; }
+
+    /* Layout */
+    .main-layout { display: flex; flex: 1; overflow: hidden; }
+
+    /* Sidebar */
+    .sidebar { width: 320px; display: flex; flex-direction: column; border-right: 1px solid var(--border); flex-shrink: 0; }
+    .cat-tabs { display: flex; flex-wrap: wrap; gap: 2px; padding: 6px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .cat-tab { font-size: 0.7rem; padding: 3px 7px; border-radius: 3px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--muted); white-space: nowrap; }
+    .cat-tab:hover { color: var(--text); }
+    .cat-tab.active { background: var(--accent2); border-color: var(--accent2); color: var(--text); }
+    .repo-list { flex: 1; overflow-y: auto; }
+    .repo-item { padding: 8px 12px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
+    .repo-item:hover { background: var(--surface); }
+    .repo-item.selected { background: var(--surface2); border-left: 3px solid var(--accent); }
+    .repo-item:focus { outline: none; }
+    .repo-item.ready { border-left: 3px solid var(--green); }
+    .repo-item.skip { opacity: 0.4; }
+    .repo-name { font-size: 0.9rem; font-weight: 600; }
+    .repo-meta { font-size: 0.72rem; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 3px; }
+    .tag-ci { background: var(--accent2); }
+    .tag-mismatch { background: #5c3317; }
+    .tag-ready { background: var(--green); color: #000; }
+    .tag-released { background: #2a5a2a; }
+    .tag-pass { background: var(--green); color: #000; }
+    .tag-fail { background: var(--red); }
+    .tag-pending { background: var(--yellow); color: #000; }
+    .tag-approval_required { background: #4a1d8a; color: #d8b4fe; border-color: #a78bfa; }
+
+    /* Detail panel */
+    .detail { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .detail-header { padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .detail-header h2 { font-size: 1rem; }
+    .detail-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); flex-shrink: 0; background: var(--surface); }
+    .detail-tab { padding: 7px 16px; font-size: 0.8rem; cursor: pointer; border-bottom: 2px solid transparent; color: var(--muted); }
+    .detail-tab:hover { color: var(--text); }
+    .detail-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .detail-body { flex: 1; overflow-y: auto; padding: 16px; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    th { text-align: left; padding: 6px 8px; background: var(--surface); color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { padding: 5px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:hover td { background: var(--surface); }
+
+    /* Release notes editor */
+    .notes-editor { width: 100%; min-height: 200px; background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 10px; font-family: monospace; font-size: 0.85rem; border-radius: 4px; resize: vertical; }
+    .notes-preview { font-size: 0.85rem; line-height: 1.6; }
+    .notes-preview h3 { color: var(--accent); margin: 8px 0 4px; }
+    .notes-preview li { margin-left: 16px; }
+
+    /* Version bump */
+    .diff-block { background: #0d1117; border: 1px solid var(--border); border-radius: 4px; padding: 10px; font-family: monospace; font-size: 0.8rem; }
+    .diff-add { color: var(--green); }
+    .diff-remove { color: var(--red); }
+    .diff-context { color: var(--muted); }
+
+    /* Keyboard help */
+    .kb-hint { font-size: 0.7rem; color: var(--muted); padding: 4px 8px; border-top: 1px solid var(--border); background: var(--surface); flex-shrink: 0; display: flex; gap: 12px; flex-wrap: wrap; }
+    kbd { background: var(--surface2); padding: 1px 5px; border-radius: 3px; font-family: monospace; font-size: 0.7rem; }
+
+    /* Log drawer */
+    #log-drawer { position: fixed; bottom: 0; left: 0; right: 0; height: 280px; background: #0a0a14; border-top: 2px solid var(--border); display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.25s ease; z-index: 900; }
+    #log-drawer.open { transform: translateY(0); }
+    #log-drawer-header { background: var(--surface); padding: 4px 12px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; font-size: 0.8rem; }
+    #log-drawer-header strong { color: var(--accent); }
+    #log-content { flex: 1; overflow-y: auto; padding: 8px 12px; font-family: monospace; font-size: 0.72rem; line-height: 1.5; white-space: pre-wrap; word-break: break-all; }
+    #log-content .log-error { color: var(--red); }
+    #log-content .log-warn { color: var(--yellow); }
+    #log-content .log-info { color: #aaa; }
+    #log-btn { position: fixed; bottom: 8px; right: 8px; z-index: 950; font-size: 0.75rem; padding: 4px 10px; opacity: 0.7; }
+    #log-btn:hover { opacity: 1; }
+
+    /* Toast */
+    #toast { position: fixed; bottom: 20px; right: 20px; background: var(--surface2); border: 1px solid var(--border); padding: 10px 16px; border-radius: 6px; font-size: 0.85rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1000; }
+    #toast.show { opacity: 1; }
+    #toast.ok { border-color: var(--green); }
+    #toast.err { border-color: var(--red); }
+
+    /* Confirm modal */
+    #confirm-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; }
+    #confirm-modal.show { display: flex; }
+    .modal-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; max-width: 400px; width: 90%; }
+    .modal-box h3 { margin-bottom: 12px; }
+    .modal-box p { font-size: 0.9rem; color: var(--muted); margin-bottom: 20px; }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+    .modal-actions kbd { font-size: 0.7rem; opacity: 0.6; border: 1px solid var(--border); border-radius: 3px; padding: 0 3px; }
+    .loading { color: var(--muted); font-size: 0.85rem; }
+    .empty { color: var(--muted); font-size: 0.85rem; padding: 20px 0; }
+
+    /* Manual release modal */
+    #manual-release-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 2100; align-items: center; justify-content: center; }
+    #manual-release-modal .modal-box { max-width: 620px; }
+    #mr-notes { width: 100%; min-height: 140px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); padding: 8px; font-family: monospace; font-size: 0.8rem; border-radius: 4px; resize: vertical; margin-top: 4px; }
+    .mr-actions { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  </style>
+</head>
+<body>
+{% block body %}{% endblock %}
+<!-- Log drawer -->
+<div id="log-drawer">
+  <div id="log-drawer-header">
+    <strong>&#128220; Server Logs</strong>
+    <span id="log-status" style="color:var(--muted)">idle</span>
+    <button class="btn" style="margin-left:auto;font-size:0.7rem" onclick="refreshLogs()">&#8635; Refresh</button>
+    <button class="btn" onclick="toggleLogs()">&#10005; Close</button>
+  </div>
+  <div id="log-content"></div>
+</div>
+<button id="log-btn" class="btn" onclick="toggleLogs()">&#128220; Logs</button>
+
+<div id="toast"></div>
+<div id="confirm-modal">
+  <div class="modal-box">
+    <h3 id="modal-title">Confirm</h3>
+    <p id="modal-body"></p>
+    <div class="modal-actions">
+      <button class="btn" id="modal-cancel">Cancel <kbd>6</kbd></button>
+      <button class="btn btn-accent" id="modal-ok">Confirm <kbd>9</kbd></button>
+    </div>
+  </div>
+</div>
+<!-- Manual release modal (sequential workflow for permission failures) -->
+<div id="manual-release-modal">
+  <div class="modal-box">
+    <h3>&#128279; Manual Release Required</h3>
+    <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
+      <span id="mr-repo" style="color:var(--accent);font-weight:600;font-size:1rem"></span>
+      <span id="mr-tag" style="color:var(--muted);font-size:0.85rem;font-family:monospace"></span>
+      <span id="mr-counter" style="margin-left:auto;font-size:0.72rem;color:var(--muted)"></span>
+    </div>
+    <div id="mr-error" style="font-size:0.75rem;color:var(--red);margin-bottom:8px;display:none"></div>
+    <label style="font-size:0.75rem;color:var(--muted)">Release Notes (editable — copy before opening GitHub):</label>
+    <textarea id="mr-notes"></textarea>
+    <div class="mr-actions">
+      <button class="btn" onclick="mrCopyNotes()">&#128203; Copy Notes</button>
+      <button class="btn btn-accent" id="mr-open-gh">&#128279; Open GitHub &#8599;</button>
+      <span style="flex:1"></span>
+      <button class="btn" onclick="mrSkip()">Skip &rarr;</button>
+      <button class="btn btn-green" onclick="mrMarkDone()">&#10003; Done &amp; Next</button>
+    </div>
+    <p style="font-size:0.7rem;color:var(--muted);margin-top:8px">
+      Copy the notes, open GitHub, paste them in, then click <strong>Done &amp; Next</strong>.
+    </p>
+  </div>
+</div>
+
+<script>
+function toast(msg, type='ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'show ' + type;
+  setTimeout(() => el.className = '', 4000);
+  if (type === 'err') console.error('[adabot]', msg);
+  else console.log('[adabot]', msg);
+}
+// Log drawer
+let _logOpen = false, _logInterval = null;
+function toggleLogs() {
+  _logOpen = !_logOpen;
+  document.getElementById('log-drawer').classList.toggle('open', _logOpen);
+  if (_logOpen) {
+    refreshLogs();
+    _logInterval = setInterval(refreshLogs, 6000);
+  } else {
+    clearInterval(_logInterval);
+  }
+}
+async function refreshLogs() {
+  document.getElementById('log-status').textContent = 'loading…';
+  try {
+    const r = await fetch('/api/logs?n=300');
+    const d = await r.json();
+    const el = document.getElementById('log-content');
+    el.innerHTML = d.lines.map(line => {
+      const cls = /ERROR/.test(line) ? 'log-error' : /WARNING/.test(line) ? 'log-warn' : 'log-info';
+      return `<span class="${cls}">${line.replace(/</g,'&lt;')}</span>`;
+    }).join('\n');
+    el.scrollTop = el.scrollHeight;
+    document.getElementById('log-status').textContent = `${d.lines.length} lines`;
+  } catch(e) {
+    document.getElementById('log-status').textContent = 'error';
+  }
+}
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+  if (e.key === 'l' || e.key === 'L') toggleLogs();
+});
+
+function confirm_action(title, body, cb) {
+  const modal = document.getElementById('confirm-modal');
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').textContent = body;
+  modal.classList.add('show');
+  const ok = document.getElementById('modal-ok');
+  const cancel = document.getElementById('modal-cancel');
+  const close = () => {
+    modal.classList.remove('show');
+    ok.onclick = null;
+    cancel.onclick = null;
+    document.removeEventListener('keydown', keyHandler);
+  };
+  const keyHandler = (e) => {
+    if (e.key === '6' || e.key === 'Escape') { close(); }
+    else if (e.key === '9' || e.key === 'Enter') { close(); cb(); }
+  };
+  ok.onclick = () => { close(); cb(); };
+  cancel.onclick = close;
+  document.addEventListener('keydown', keyHandler);
+}
+
+// ---------------------------------------------------------------------------
+// Manual release queue  — for when GitHub API lacks release permission
+// ---------------------------------------------------------------------------
+let _mrItems = [], _mrIndex = 0, _mrOnDone = null;
+
+function showManualReleaseQueue(items, onDone) {
+  _mrItems = items;
+  _mrIndex = 0;
+  _mrOnDone = onDone || null;
+  _mrShowCurrent();
+}
+
+function _mrShowCurrent() {
+  const modal = document.getElementById('manual-release-modal');
+  if (_mrIndex >= _mrItems.length) {
+    modal.style.display = 'none';
+    if (_mrOnDone) _mrOnDone();
+    return;
+  }
+  const item = _mrItems[_mrIndex];
+  modal.style.display = 'flex';
+  document.getElementById('mr-repo').textContent = item.name;
+  document.getElementById('mr-tag').textContent = '→ ' + (item.tag || '');
+  document.getElementById('mr-counter').textContent = (_mrIndex + 1) + ' of ' + _mrItems.length;
+  const errEl = document.getElementById('mr-error');
+  if (item.error) { errEl.textContent = item.error; errEl.style.display = ''; }
+  else errEl.style.display = 'none';
+  document.getElementById('mr-notes').value = item.notes || '';
+  const ghBtn = document.getElementById('mr-open-gh');
+  ghBtn.onclick = () => { if (item.manual_release_url) window.open(item.manual_release_url, '_blank'); };
+  ghBtn.style.opacity = item.manual_release_url ? '1' : '0.4';
+}
+
+function mrCopyNotes() {
+  const notes = document.getElementById('mr-notes').value;
+  navigator.clipboard.writeText(notes)
+    .then(() => toast('Notes copied to clipboard'))
+    .catch(() => { document.getElementById('mr-notes').select(); document.execCommand('copy'); toast('Notes copied'); });
+}
+
+function mrMarkDone() { _mrIndex++; _mrShowCurrent(); }
+function mrSkip()     { _mrIndex++; _mrShowCurrent(); }
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

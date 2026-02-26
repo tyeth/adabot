@@ -1,0 +1,687 @@
+{% extends "base.html" %}
+{% block title %}Adabot Release Manager{% endblock %}
+
+{% block body %}
+<header>
+  <h1>Adabot Arduino Release Manager</h1>
+  <span class="status-badge status-{% if state.status in ['running', 'running_basic', 'running_details'] %}running{% else %}{{ state.status }}{% endif %}" id="run-status">
+    {% if state.status == 'running_basic' %}
+      scanning ({{ state.progress }}/{{ state.total }})
+    {% elif state.status == 'running_details' %}
+      loading details ({{ state.progress }}/{{ state.total }})
+    {% elif state.status == 'running' %}
+      ({{ state.progress }}/{{ state.total }})
+    {% elif state.last_run_end %}
+      done &mdash; {{ state.last_run_end[:16] }}
+    {% endif %}
+  </span>
+  {% if data_stale and state.status != 'running' %}
+    <span class="status-badge" style="background:var(--yellow);color:#000;" id="stale-badge">
+      &#9888;
+      {% if data_age_days is not none %}
+        {{ data_age_days }}d old
+      {% else %}
+        no data
+      {% endif %}
+      &mdash; refresh recommended
+    </span>
+  {% elif data_age_days is not none %}
+    <span style="font-size:0.72rem;color:var(--muted)" id="age-badge">
+      {{ data_age_days }}d old
+    </span>
+  {% endif %}
+  <div class="header-actions">
+    <button class="btn" onclick="doRefresh()">&#8635; Refresh Repo Data</button>
+    <button class="btn" onclick="batchCheckCI()" title="Re-run CI checks for every repo that has a bump PR">&#9881; Recheck CI Jobs</button>
+    <button class="btn btn-green" onclick="batchRelease()">&#x1F680; Batch Release Ready</button>
+    <button class="btn btn-green" onclick="batchMergeBumpPRs()" title="Merge all open bump PRs whose CI has passed">&#x2B07; Merge All Ready PRs</button>
+  </div>
+</header>
+<div class="progress-bar-wrap">
+  <div class="progress-bar" id="progress-bar"
+    style="width: {% if state.total %}{{ (state.progress / state.total * 100)|int }}{% else %}0{% endif %}%">
+  </div>
+</div>
+
+<div class="main-layout">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="cat-tabs">
+      <span class="cat-tab {% if active_cat == CATEGORY_NEEDS_RELEASE %}active{% endif %}"
+            onclick="setCategory('{{ CATEGORY_NEEDS_RELEASE }}')">
+        Needs Release ({{ counts[CATEGORY_NEEDS_RELEASE] }})
+      </span>
+      <span class="cat-tab {% if active_cat == CATEGORY_FAILED_LIB_PROP %}active{% endif %}"
+            onclick="setCategory('{{ CATEGORY_FAILED_LIB_PROP }}')">
+        Version Mismatch ({{ counts[CATEGORY_FAILED_LIB_PROP] }})
+      </span>
+      <span class="cat-tab {% if active_cat == CATEGORY_NEEDS_REGISTRATION %}active{% endif %}"
+            onclick="setCategory('{{ CATEGORY_NEEDS_REGISTRATION }}')">
+        Unregistered ({{ counts[CATEGORY_NEEDS_REGISTRATION] }})
+      </span>
+      <span class="cat-tab {% if active_cat == CATEGORY_MISSING_ACTIONS %}active{% endif %}"
+            onclick="setCategory('{{ CATEGORY_MISSING_ACTIONS }}')">
+        No CI ({{ counts[CATEGORY_MISSING_ACTIONS] }})
+      </span>
+      <span class="cat-tab {% if active_cat == CATEGORY_MISSING_LIB_PROPS %}active{% endif %}"
+            onclick="setCategory('{{ CATEGORY_MISSING_LIB_PROPS }}')">
+        No lib.props ({{ counts[CATEGORY_MISSING_LIB_PROPS] }})
+      </span>
+      <span class="cat-tab {% if active_cat == 'all' %}active{% endif %}"
+            onclick="setCategory('all')">
+        All ({{ state.repos|length }})
+      </span>
+    </div>
+    <div class="repo-list" id="repo-list">
+      {% for repo in repos %}
+      <div class="repo-item{% if repo.release_status == 'ready' %} ready{% elif repo.release_status == 'skip' %} skip{% endif %}"
+           id="item-{{ repo.name }}"
+           data-name="{{ repo.name }}"
+           tabindex="-1"
+           onclick="selectRepo('{{ repo.name }}')">
+        <span class="repo-name">{{ repo.name }}{% if not repo.details_loaded %}<span title="Commits/PRs not yet loaded" style="color:var(--muted);font-size:0.65rem;opacity:0.6;margin-left:4px">···</span>{% endif %}</span>
+        <span class="repo-meta">
+          {% if repo.release_tag %}<span>{{ repo.release_tag }}</span>{% endif %}
+          {% if repo.commits_behind %}<span>+{{ repo.commits_behind }} commits</span>{% endif %}
+          {% if repo.ci_only %}<span class="tag tag-ci">CI-only</span>{% endif %}
+          {% if repo.bump_pr %}
+            {% if repo.bump_pr.state == 'merged' %}
+              <span class="tag tag-pass" id="ci-badge-{{ repo.name }}">merged &#10003;</span>
+              <span class="tag tag-{{ repo.branch_ci_status or 'pending' }}" id="bci-badge-{{ repo.name }}">CI:{{ repo.branch_ci_status or 'pending' }}</span>
+            {% else %}
+              <span class="tag tag-{{ repo.bump_pr.ci_status or 'pending' }}" id="ci-badge-{{ repo.name }}">bump {{ repo.bump_pr.ci_status or 'pending' }}</span>
+              <span id="bci-badge-{{ repo.name }}" style="display:none"></span>
+            {% endif %}
+          {% else %}
+            <span id="ci-badge-{{ repo.name }}" style="display:none"></span>
+            <span id="bci-badge-{{ repo.name }}" style="display:none"></span>
+          {% endif %}
+          {% if repo.release_status == 'ready' %}<span class="tag tag-ready">&#10003; ready</span>{% endif %}
+          {% if repo.release_status == 'released' %}<span class="tag tag-released">released</span>{% endif %}
+          {% if repo.release_status == 'skip' %}<span style="color:var(--muted)">skip</span>{% endif %}
+        </span>
+      </div>
+      {% else %}
+      <div class="empty" style="padding:20px">No repos in this category yet.</div>
+      {% endfor %}
+    </div>
+    <div class="kb-hint">
+      <span><kbd>j</kbd>/<kbd>k</kbd> navigate</span>
+      <span><kbd>Enter</kbd> open</span>
+      <span><kbd>m</kbd> mark ready</span>
+      <span><kbd>s</kbd> skip</span>
+      <span><kbd>b</kbd> bump PR</span>
+      <span><kbd>M</kbd> merge bump PR</span>
+      <span><kbd>R</kbd> release</span>
+      <span><kbd>i</kbd> check CI</span>
+      <span><kbd>1</kbd>&ndash;<kbd>4</kbd> tabs</span>
+      <span>confirm dialog: &nbsp;&nbsp;<kbd>6</kbd> cancel &nbsp;&nbsp;&nbsp;<kbd>9</kbd> ok</span>
+    </div>
+  </div>
+
+  <!-- Detail panel -->
+  <div class="detail" id="detail-panel">
+    <div class="detail-header">
+      <h2 id="detail-title" style="color:var(--muted)">Select a repo</h2>
+      <div style="margin-left:auto;display:flex;gap:6px;" id="detail-actions"></div>
+    </div>
+    <div class="detail-tabs" id="detail-tabs" style="display:none">
+      <span class="detail-tab active" data-tab="changes" onclick="switchTab('changes')">Changes / PRs</span>
+      <span class="detail-tab" data-tab="notes" onclick="switchTab('notes')">Release Notes</span>
+      <span class="detail-tab" data-tab="bump" onclick="switchTab('bump')">Version Bump</span>
+      <span class="detail-tab" data-tab="ci" onclick="switchTab('ci')">CI Status</span>
+    </div>
+    <div class="detail-body" id="detail-body">
+      <p class="empty">Select a repo from the list to view details.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// State
+let currentRepo = null;
+let currentActiveTab = 'changes';
+let repoList = [];
+let currentIndex = -1;
+const repoData = {};
+
+// Pre-load repo names for keyboard nav
+document.querySelectorAll('.repo-item').forEach((el) => {
+  repoList.push(el.dataset.name);
+});
+
+// ---------------------------------------------------------------------------
+// Hash-based navigation  #RepoName/tabname
+// ---------------------------------------------------------------------------
+function _parseHash() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  const slash = h.indexOf('/');
+  if (!h) return { repo: null, tab: 'changes' };
+  return slash === -1
+    ? { repo: h, tab: 'changes' }
+    : { repo: h.slice(0, slash), tab: h.slice(slash + 1) || 'changes' };
+}
+
+function _setHash(repo, tab) {
+  const t = (tab && tab !== 'changes') ? '/' + tab : '';
+  const next = '#' + encodeURIComponent(repo) + t;
+  if (location.hash !== next) history.replaceState(null, '', next);
+}
+
+// ---------------------------------------------------------------------------
+// Category tabs (preserve hash across full-page reload)
+// ---------------------------------------------------------------------------
+function setCategory(cat) {
+  window.location.href = '/?cat=' + cat + location.hash;
+}
+
+// ---------------------------------------------------------------------------
+// Repo selection
+// ---------------------------------------------------------------------------
+function selectRepo(name) {
+  if (currentRepo === name) return;
+  currentRepo = name;
+  currentActiveTab = 'changes';
+  currentIndex = repoList.indexOf(name);
+
+  document.querySelectorAll('.repo-item').forEach(el => el.classList.remove('selected'));
+  const item = document.getElementById('item-' + name);
+  if (item) {
+    item.classList.add('selected');
+    item.scrollIntoView({block: 'nearest'});
+    item.focus({preventScroll: true});  // keep keyboard focus in sidebar, away from detail inputs
+  }
+
+  loadDetail(name, 'changes');
+}
+
+// ---------------------------------------------------------------------------
+// Detail panel loader  — restoreTab: which tab to show after load
+//   null  → preserve currentActiveTab (used by refresh-in-place calls)
+//   'changes' / 'notes' / 'bump' / 'ci' → explicit
+// ---------------------------------------------------------------------------
+let detailAbortController = null;
+
+async function loadDetail(name, restoreTab) {
+  if (detailAbortController) detailAbortController.abort();
+  detailAbortController = new AbortController();
+  const signal = detailAbortController.signal;
+
+  const tab = restoreTab != null ? restoreTab : currentActiveTab;
+
+  document.getElementById('detail-title').textContent = name;
+  document.getElementById('detail-title').style.color = '';
+  document.getElementById('detail-tabs').style.display = '';
+  // Show cached data if available, otherwise loading
+  if (repoData[name] && repoData[name].details_loaded) {
+     // If we have data, we could potentially render it if we had the HTML cached.
+     // But we only have metadata. So we still need to fetch HTML.
+     // The todo says "display any current information while waiting for a refresh".
+     // Since we don't have HTML cached, we can't really display much detail yet.
+     // But we can avoid clearing the previous content if we are just refreshing the same repo?
+     // No, we are switching repos.
+  }
+  
+  document.getElementById('detail-body').innerHTML = '<p class="loading">Loading…</p>';
+  document.getElementById('detail-actions').innerHTML = '';
+
+  try {
+    const resp = await fetch('/repo/' + name + '?partial=1', { signal });
+    if (!resp.ok) throw new Error('Network response was not ok');
+    const html = await resp.text();
+    
+    if (signal.aborted) return;
+
+    document.getElementById('detail-body').innerHTML = html;
+    // innerHTML doesn't execute <script> tags — re-run them manually
+    document.getElementById('detail-body').querySelectorAll('script').forEach(old => {
+      const s = document.createElement('script');
+      s.textContent = old.textContent;
+      document.body.appendChild(s);
+      document.body.removeChild(s);
+    });
+    repoData[name] = window._lastRepoData || {};
+
+    buildActions(name);
+    switchTab(tab);
+    updateSidebarBadge(name);
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      console.log('Fetch aborted for ' + name);
+    } else {
+      console.error('Fetch error:', err);
+      document.getElementById('detail-body').innerHTML = '<p class="error">Error loading details.</p>';
+    }
+  }
+}
+
+function updateSidebarBadge(name) {
+  const data = repoData[name];
+  if (!data) return;
+  const bump = data.bump_pr;
+  const ciBadge = document.getElementById('ci-badge-' + name);
+  const bciBadge = document.getElementById('bci-badge-' + name);
+  if (!ciBadge) return;
+  if (bump && bump.state === 'merged') {
+    ciBadge.textContent = 'merged \u2713';
+    ciBadge.className = 'tag tag-pass';
+    ciBadge.style.display = '';
+    if (bciBadge) {
+      const bci = data.branch_ci_status || 'pending';
+      bciBadge.textContent = 'CI:' + bci;
+      bciBadge.className = 'tag tag-' + bci;
+      bciBadge.style.display = '';
+    }
+  } else if (bump) {
+    const ci = bump.ci_status || 'pending';
+    ciBadge.textContent = 'bump ' + ci;
+    ciBadge.className = 'tag tag-' + ci;
+    ciBadge.style.display = '';
+    if (bciBadge) bciBadge.style.display = 'none';
+  }
+}
+
+function buildActions(name) {
+  const bar = document.getElementById('detail-actions');
+  const d = repoData[name] || {};
+  const isReady = d.release_status === 'ready';
+  const readyBtn = isReady
+    ? `<button class="btn btn-green" onclick="markUnready('${name}')" title="Click to unmark ready">&#10003; Ready</button>`
+    : `<button class="btn" onclick="markReady('${name}')">&#10003; Mark Ready</button>`;
+  const bump = d.bump_pr || {};
+  const canMerge = bump.state !== 'merged' && bump.ci_status === 'pass';
+  const mergeBtn = canMerge
+    ? `<button class="btn btn-green" onclick="doMergeBumpPR('${name}')" title="Merge bump PR — CI passed (M)">&#x2B07; Merge Bump PR</button>`
+    : '';
+  bar.innerHTML = `
+    ${readyBtn}
+    <button class="btn" onclick="markSkip('${name}')">&#215; Skip</button>
+    <button class="btn btn-accent" onclick="doBump('${name}')">&#8679; Bump PR</button>
+    <button class="btn" onclick="doCheckCI('${name}')">&#9881; Check CI</button>
+    ${mergeBtn}
+    <button class="btn btn-green" onclick="doRelease('${name}')">&#128640; Release</button>
+    <button class="btn" onclick="doRefreshRepo('${name}')" title="Re-fetch data for this repo only">&#8635; Refresh</button>
+  `;
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.detail-tab').forEach(el => {
+    el.classList.toggle('active', el.dataset.tab === tab);
+  });
+  document.querySelectorAll('.tab-pane').forEach(el => {
+    el.classList.toggle('active', el.id === 'tab-' + tab);
+  });
+  currentActiveTab = tab;
+  if (currentRepo) _setHash(currentRepo, tab);
+}
+
+// ---------------------------------------------------------------------------
+// Actions — each passes the appropriate tab to stay on after reload
+// ---------------------------------------------------------------------------
+async function markReady(name) {
+  await fetch('/api/repo/' + name + '/status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({status:'ready'})});
+  const item = document.getElementById('item-' + name);
+  if (item) { item.classList.add('ready'); item.classList.remove('skip'); }
+  repoData[name] = Object.assign(repoData[name] || {}, {release_status: 'ready'});
+  buildActions(name);
+  toast(name + ' marked ready');
+}
+
+async function markUnready(name) {
+  await fetch('/api/repo/' + name + '/status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({status:null})});
+  const item = document.getElementById('item-' + name);
+  if (item) { item.classList.remove('ready'); }
+  repoData[name] = Object.assign(repoData[name] || {}, {release_status: null});
+  buildActions(name);
+  toast(name + ' unmarked');
+}
+
+async function markSkip(name) {
+  await fetch('/api/repo/' + name + '/status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({status:'skip'})});
+  const item = document.getElementById('item-' + name);
+  if (item) { item.classList.add('skip'); item.classList.remove('ready'); }
+  repoData[name] = Object.assign(repoData[name] || {}, {release_status: 'skip'});
+  buildActions(name);
+  toast(name + ' skipped');
+}
+
+async function saveNotes(name) {
+  const ta = document.getElementById('notes-editor');
+  if (!ta) return;
+  await fetch('/api/repo/' + name + '/release_notes', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({notes: ta.value})});
+  toast('Notes saved');
+}
+
+async function doBump(name) {
+  const overrideEl = document.getElementById('bump-target-version');
+  const targetVer = overrideEl ? overrideEl.value.trim() : '';
+  const label = targetVer ? ` to v${targetVer}` : '';
+  confirm_action('Bump Version', `Create a version bump PR for ${name}${label}?`, async () => {
+    toast('Creating bump PR… (may take ~60s)', 'ok');
+    const r = await fetch('/api/repo/' + name + '/bump', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(targetVer ? {target_version: targetVer} : {}),
+    });
+    const d = await r.json();
+    if (d.error) { toast('Bump PR error (' + name + '): ' + d.error, 'err'); return; }
+    if (d.already_existed) {
+      console.error('[adabot] bump PR for ' + name + ': pr create reported PR already exists — ' +
+        'recovered and now tracking existing PR ' + d.url + '. ' +
+        'This likely means a previous bump run created the PR but failed to save state.');
+      toast('Bump PR already existed for ' + name + ' — checking CI…', 'ok');
+      // Update badge + actions immediately with what we know (ci_status pending for now)
+      if (!repoData[name]) repoData[name] = {};
+      repoData[name].bump_pr = d;
+      updateSidebarBadge(name);
+      buildActions(name);
+      if (currentRepo === name) switchTab('ci');
+      // Await the CI check directly — avoids a race between the immediate loadDetail
+      // (stale pending status) and the setTimeout loadDetail (actual CI result), where
+      // whichever resolves last would win and could overwrite the correct status.
+      await doCheckCI(name);
+      return;
+    }
+    toast('Bump PR created for ' + name + ': ' + (d.url || ''));
+    // Update cached repo data so the sidebar badge reflects the bump PR
+    if (!repoData[name]) repoData[name] = {};
+    repoData[name].bump_pr = d;
+    updateSidebarBadge(name);
+    // Only navigate back to this repo if the user hasn't moved away
+    if (currentRepo === name) loadDetail(name, 'ci');
+  });
+}
+
+async function doCheckCI(name) {
+  const r = await fetch('/api/repo/' + name + '/check_ci', {method:'POST'});
+  const d = await r.json();
+  if (d.error) { toast('CI error (' + name + '): ' + d.error, 'err'); return; }
+  toast('CI (' + name + '): ' + d.ci_status);
+  // Update cached ci_status for the badge without requiring a full reload
+  if (repoData[name] && repoData[name].bump_pr) {
+    repoData[name].bump_pr.ci_status = d.ci_status;
+    if (d.ci_status === 'pass' && repoData[name].bump_pr.state === 'merged') {
+      repoData[name].branch_ci_status = d.ci_status;
+    }
+  }
+  updateSidebarBadge(name);
+  // Only reload the detail panel if the user is still looking at this repo
+  if (currentRepo === name) loadDetail(name, 'ci');
+}
+
+async function doRelease(name) {
+  const ta = document.getElementById('notes-editor');
+  const notes = ta ? ta.value : '';
+  const tagEl = document.getElementById('release-tag-input');
+  const tag = tagEl ? tagEl.value : '';
+  confirm_action('Create Release', 'Release ' + name + ' as ' + (tag || '(tag required)') + '?', async () => {
+    if (!tag) { toast('Set a release tag first', 'err'); return; }
+    const r = await fetch('/api/repo/' + name + '/release', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({tag, notes})});
+    const d = await r.json();
+    if (d.manual_release_url) {
+      toast('Release permission denied — manual release required', 'err');
+      showManualReleaseQueue([{name, tag: d.tag || tag, notes: d.notes || notes, manual_release_url: d.manual_release_url, error: d.error}]);
+      return;
+    }
+    if (d.error) { toast('Error: ' + d.error, 'err'); return; }
+    toast('Released! ' + (d.url || ''));
+    loadDetail(name, null);  // preserve current tab
+  });
+}
+
+async function doRefresh() {
+  confirm_action('Refresh Data', 'This will re-run all API checks (~20 mins). Continue?', async () => {
+    await fetch('/api/refresh', {method:'POST'});
+    toast('Data refresh started…');
+    pollStatus();
+  });
+}
+
+async function doRefreshRepo(name) {
+  const r = await fetch('/api/repo/' + name + '/refresh', {method:'POST'});
+  const d = await r.json();
+  if (d.error) { toast('Error: ' + d.error, 'err'); return; }
+  toast('Refreshing ' + name + '…');
+  // Poll until the repo's details_loaded flips back to true, then reload the panel
+  const poll = setInterval(async () => {
+    const sr = await fetch('/api/state');
+    const sd = await sr.json();
+    const repo = (sd.repos || {})[name];
+    if (repo && repo.details_loaded) {
+      clearInterval(poll);
+      repoData[name] = repo;
+      loadDetail(name, null);
+      toast(name + ' refreshed');
+    }
+  }, 2000);
+  // Safety: stop polling after 2 minutes
+  setTimeout(() => clearInterval(poll), 120000);
+}
+
+async function batchRelease() {
+  confirm_action('Batch Release', 'Release ALL repos marked as ready? This cannot be undone.', async () => {
+    toast('Starting batch release…');
+    const r = await fetch('/api/batch_release', {method:'POST', headers:{'Content-Type':'application/json'}, body:'{}'});
+    const d = await r.json();
+    const ok = d.results.filter(x=>x.ok).length;
+    const manuals = d.results.filter(x=>!x.ok && x.manual_release_url);
+    const errors  = d.results.filter(x=>!x.ok && !x.manual_release_url);
+    let msg = `Released ${ok}`;
+    if (errors.length)  msg += `, ${errors.length} failed`;
+    if (manuals.length) msg += `, ${manuals.length} need manual release`;
+    toast(msg, (errors.length + manuals.length) ? 'err' : 'ok');
+    if (manuals.length) {
+      showManualReleaseQueue(manuals, () => setTimeout(() => location.reload(), 1000));
+    } else {
+      setTimeout(() => location.reload(), 2000);
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Merge bump PR (single repo)
+// ---------------------------------------------------------------------------
+async function doMergeBumpPR(name) {
+  const d = repoData[name] || {};
+  const bump = d.bump_pr || {};
+  if (bump.state === 'merged') { toast(name + ' bump PR already merged', 'ok'); return; }
+  if (bump.ci_status !== 'pass') { toast('CI must pass before merging ' + name, 'err'); return; }
+  confirm_action('Merge Bump PR', `Merge the bump PR for ${name}?`, async () => {
+    const r = await fetch('/api/repo/' + name + '/merge_bump_pr', {method: 'POST'});
+    const rd = await r.json();
+    if (rd.error) { toast('Merge failed (' + name + '): ' + rd.error, 'err'); return; }
+    toast('Bump PR merged for ' + name);
+    if (repoData[name] && repoData[name].bump_pr) {
+      repoData[name].bump_pr.state = 'merged';
+      repoData[name].branch_ci_status = 'pending';
+    }
+    updateSidebarBadge(name);
+    if (currentRepo === name) loadDetail(name, 'ci');
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Batch merge all bump PRs with passing CI
+// ---------------------------------------------------------------------------
+async function batchMergeBumpPRs() {
+  const r = await fetch('/api/repos_ready_to_merge');
+  const d = await r.json();
+  const repos = d.repos || [];
+  if (!repos.length) { toast('No bump PRs ready to merge (CI must pass first)', 'ok'); return; }
+  confirm_action('Merge All Ready Bump PRs',
+    `Merge ${repos.length} open bump PR(s) whose CI has passed?`, async () => {
+    toast('Merging ' + repos.length + ' bump PR(s)…');
+    let merged = 0, failed = 0;
+    for (const name of repos) {
+      const mr = await fetch('/api/repo/' + name + '/merge_bump_pr', {method: 'POST'});
+      const md = await mr.json();
+      if (md.error) {
+        toast('Merge failed (' + name + '): ' + md.error, 'err');
+        failed++;
+      } else {
+        merged++;
+        if (!repoData[name]) repoData[name] = { bump_pr: {} };
+        if (!repoData[name].bump_pr) repoData[name].bump_pr = {};
+        
+        repoData[name].bump_pr.state = 'merged';
+        // When merging, we expect the bump PR CI to have passed, so preserve that if known, or default to pass
+        if (!repoData[name].bump_pr.ci_status) repoData[name].bump_pr.ci_status = 'pass';
+        repoData[name].branch_ci_status = 'pending';
+        
+        updateSidebarBadge(name);
+      }
+      await new Promise(res => setTimeout(res, 300));
+    }
+    toast(`Merged ${merged}` + (failed ? `, ${failed} failed` : ''), failed ? 'err' : 'ok');
+    if (currentRepo && repos.includes(currentRepo)) loadDetail(currentRepo, null);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Batch CI recheck
+// ---------------------------------------------------------------------------
+async function batchCheckCI() {
+  const r = await fetch('/api/repos_with_bump_pr');
+  const d = await r.json();
+  const repos = d.repos || [];
+  if (!repos.length) { toast('No repos with active bump PRs', 'ok'); return; }
+  toast('Rechecking CI for ' + repos.length + ' repo(s)…');
+
+  let checked = 0, passed = 0, failed = 0, approval = 0;
+  for (const name of repos) {
+    const cr = await fetch('/api/repo/' + name + '/check_ci', {method: 'POST'});
+    const cd = await cr.json();
+    if (!cd.error) {
+      checked++;
+      if (cd.ci_status === 'pass') passed++;
+      else if (cd.ci_status === 'fail') failed++;
+      else if (cd.ci_status === 'approval_required') approval++;
+      // Update cached data + sidebar badge
+      if (!repoData[name]) repoData[name] = {};
+      if (!repoData[name].bump_pr) repoData[name].bump_pr = {};
+      
+      if (cd.state) repoData[name].bump_pr.state = cd.state;
+      
+      if (cd.state === 'merged') {
+        repoData[name].branch_ci_status = cd.ci_status;
+        // Bump PR CI status is implicitly pass if merged, or we can keep old value
+        repoData[name].bump_pr.ci_status = 'pass'; 
+      } else {
+        repoData[name].bump_pr.ci_status = cd.ci_status;
+      }
+      
+      updateSidebarBadge(name);
+    }
+    // Stagger requests to avoid rate-limiting GitHub API
+    await new Promise(res => setTimeout(res, 300));
+  }
+
+  const parts = [`${checked}/${repos.length} checked`, `${passed} pass`];
+  if (failed)   parts.push(`${failed} fail`);
+  if (approval) parts.push(`${approval} need approval`);
+  toast(parts.join(' · '), failed ? 'err' : 'ok');
+
+  // Reload detail panel if the currently visible repo was in the batch
+  if (currentRepo && repos.includes(currentRepo)) loadDetail(currentRepo, null);
+}
+
+// ---------------------------------------------------------------------------
+// Status polling
+// ---------------------------------------------------------------------------
+function pollStatus() {
+  const interval = setInterval(async () => {
+    const r = await fetch('/api/state');
+    const d = await r.json();
+    const badge = document.getElementById('run-status');
+    const isRunning = d.status.startsWith('running');
+    badge.className = 'status-badge status-' + (isRunning ? 'running' : d.status);
+    const labels = { running_basic:'scanning', running_details:'loading details', running:'running', done:'done', error:'error', idle:'idle' };
+    const label = labels[d.status] || d.status;
+    badge.textContent = isRunning
+      ? `${label} (${d.progress}/${d.total})`
+      : (d.last_run_end ? `done — ${d.last_run_end.slice(0,16)}` : label);
+    const pct = d.total ? Math.round(d.progress / d.total * 100) : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    const staleBadge = document.getElementById('stale-badge');
+    const ageBadge = document.getElementById('age-badge');
+    if (!isRunning) {
+      if (d.stale && staleBadge) staleBadge.style.display = '';
+      if (!d.stale && staleBadge) staleBadge.style.display = 'none';
+      if (ageBadge) ageBadge.textContent = d.age_days !== null ? d.age_days + 'd old' : '';
+      clearInterval(interval);
+      if (d.status === 'done') setTimeout(() => location.reload(), 1500);
+    }
+  }, 3000);
+}
+
+{% if state.status in ['running', 'running_basic', 'running_details'] %}
+pollStatus();
+{% endif %}
+
+// ---------------------------------------------------------------------------
+// Restore state from hash on page load
+// ---------------------------------------------------------------------------
+(function restoreFromHash() {
+  const { repo, tab } = _parseHash();
+  if (repo && repoList.includes(repo)) {
+    currentRepo = repo;
+    currentIndex = repoList.indexOf(repo);
+    const item = document.getElementById('item-' + repo);
+    if (item) {
+      item.classList.add('selected');
+      item.scrollIntoView({block: 'nearest'});
+      item.focus({preventScroll: true});
+    }
+    document.getElementById('detail-title').textContent = repo;
+    document.getElementById('detail-title').style.color = '';
+    document.getElementById('detail-tabs').style.display = '';
+    loadDetail(repo, tab);
+  }
+})();
+
+// ---------------------------------------------------------------------------
+// Keyboard navigation
+// ---------------------------------------------------------------------------
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  switch(e.key) {
+    case 'j': case 'ArrowDown':
+      e.preventDefault();
+      if (currentIndex < repoList.length - 1) selectRepo(repoList[++currentIndex]);
+      break;
+    case 'k': case 'ArrowUp':
+      e.preventDefault();
+      if (currentIndex > 0) selectRepo(repoList[--currentIndex]);
+      break;
+    case 'Enter':
+      if (currentRepo) switchTab('changes');
+      break;
+    case 'm':
+      if (currentRepo) markReady(currentRepo);
+      break;
+    case 's':
+      if (currentRepo) markSkip(currentRepo);
+      break;
+    case 'b':
+      if (currentRepo) doBump(currentRepo);
+      break;
+    case 'M':
+      if (currentRepo) doMergeBumpPR(currentRepo);
+      break;
+    case 'R':
+      if (currentRepo) doRelease(currentRepo);
+      break;
+    case 'i':
+      if (currentRepo) doCheckCI(currentRepo);
+      break;
+    case '1': switchTab('changes'); break;
+    case '2': switchTab('notes'); break;
+    case '3': switchTab('bump'); break;
+    case '4': switchTab('ci'); break;
+  }
+});
+</script>
+{% endblock %}

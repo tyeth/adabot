@@ -16,3 +16,8 @@ env.sh
 .blinka/*
 .vscode
 .idea/*
+
+*.jpg
+# *.png
+*.log
+20*.md

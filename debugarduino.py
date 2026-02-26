@@ -8,7 +8,7 @@ from adabot import arduino_libraries
 import os
 import sys
 import time
-os.environ.setdefault("ADABOT_GITHUB_USER", "tyeth")
+os.environ.setdefault("ADABOT_GITHUB_USER", "tyeth-ai-assisted")
 os.environ.setdefault(
     "ADABOT_GITHUB_ACCESS_TOKEN", "YOUR_PERSONAL_ACCESS_TOKEN"
 )
