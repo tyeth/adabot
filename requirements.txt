@@ -19,3 +19,4 @@ google-cloud-bigquery~=3.3
 semver
 toml
 jinja2
+flask
