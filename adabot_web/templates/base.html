@@ -113,12 +113,18 @@
     #log-content .log-info { color: #aaa; }
     #log-btn { position: fixed; bottom: 8px; right: 8px; z-index: 950; font-size: 0.75rem; padding: 4px 10px; opacity: 0.7; }
     #log-btn:hover { opacity: 1; }
+    #clear-toasts-btn { position: fixed; bottom: 8px; right: 68px; z-index: 950; font-size: 0.75rem; padding: 4px 6px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+    #clear-toasts-btn.visible { opacity: 0.7; pointer-events: auto; }
+    #clear-toasts-btn:hover { opacity: 1; }
 
-    /* Toast */
-    #toast { position: fixed; bottom: 20px; right: 20px; background: var(--surface2); border: 1px solid var(--border); padding: 10px 16px; border-radius: 6px; font-size: 0.85rem; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 1000; }
-    #toast.show { opacity: 1; }
-    #toast.ok { border-color: var(--green); }
-    #toast.err { border-color: var(--red); }
+    /* Toast container + items */
+    #toast-container { position: fixed; bottom: 38px; right: 8px; z-index: 1000; display: flex; flex-direction: column; gap: 2px; pointer-events: none; max-width: 400px; }
+    .toast-item { background: var(--surface2); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; font-size: 0.82rem; opacity: 0; transition: opacity 0.3s; white-space: pre-line; }
+    .toast-item.show { opacity: 1; }
+    .toast-item.ok { border-color: var(--green); }
+    .toast-item.err { border-color: var(--red); }
+    .toast-item.clickable { pointer-events: auto; cursor: pointer; text-decoration: underline; text-decoration-color: var(--muted); text-underline-offset: 2px; }
+    .toast-item.clickable:hover { background: var(--surface); }
 
     /* Confirm modal */
     #confirm-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; }
@@ -158,13 +164,15 @@
     <strong>&#128220; Server Logs</strong>
     <span id="log-status" style="color:var(--muted)">idle</span>
     <button class="btn" style="margin-left:auto;font-size:0.7rem" onclick="refreshLogs()">&#8635; Refresh</button>
+    <button class="btn" style="font-size:0.7rem" onclick="copyLogs()">&#128203; Copy</button>
     <button class="btn" onclick="toggleLogs()">&#10005; Close</button>
   </div>
   <div id="log-content"></div>
 </div>
+<button id="clear-toasts-btn" class="btn" onclick="clearToasts()" title="Dismiss notifications">&#128277;&#824;</button>
 <button id="log-btn" class="btn" onclick="toggleLogs()">&#128220; Logs</button>
 
-<div id="toast"></div>
+<div id="toast-container"></div>
 <div id="confirm-modal">
   <div class="modal-box">
     <h3 id="modal-title">Confirm</h3>
@@ -201,14 +209,60 @@
 </div>
 
 <script>
-function toast(msg, type='ok') {
-  const el = document.getElementById('toast');
+function toast(msg, type='ok', key=null, link=null) {
+  const box = document.getElementById('toast-container');
+  if (key) {
+    const prev = box.querySelector('[data-key="' + key + '"]');
+    if (prev) {
+      prev.textContent = msg;
+      prev.className = 'toast-item show ' + type + (link ? ' clickable' : '');
+      clearTimeout(prev._tid);
+      prev._tid = setTimeout(() => _removeToast(prev), type === 'err' ? 8000 : 4000);
+      _setToastLink(prev, link);
+      if (type === 'err') console.error('[adabot]', msg);
+      else console.log('[adabot]', msg);
+      return;
+    }
+  }
+  const el = document.createElement('div');
+  el.className = 'toast-item show ' + type + (link ? ' clickable' : '');
   el.textContent = msg;
-  el.className = 'show ' + type;
-  setTimeout(() => el.className = '', 4000);
+  if (key) el.dataset.key = key;
+  _setToastLink(el, link);
+  box.appendChild(el);
+  el._tid = setTimeout(() => _removeToast(el), type === 'err' ? 8000 : 4000);
   if (type === 'err') console.error('[adabot]', msg);
   else console.log('[adabot]', msg);
 }
+
+function _setToastLink(el, link) {
+  if (link && link.repo) {
+    el.onclick = () => {
+      if (typeof selectRepo === 'function') selectRepo(link.repo);
+      if (link.tab && typeof switchTab === 'function') switchTab(link.tab);
+      _removeToast(el);
+    };
+  } else {
+    el.onclick = null;
+  }
+}
+
+function _removeToast(el) {
+  el.classList.remove('show');
+  setTimeout(() => el.remove(), 350);
+}
+
+function clearToasts() {
+  const box = document.getElementById('toast-container');
+  Array.from(box.children).forEach(el => { clearTimeout(el._tid); _removeToast(el); });
+}
+
+// Show/hide clear button when toasts exist
+new MutationObserver(() => {
+  const has = document.getElementById('toast-container').children.length > 0;
+  document.getElementById('clear-toasts-btn').classList.toggle('visible', has);
+}).observe(document.getElementById('toast-container'), { childList: true });
+
 // Log drawer
 let _logOpen = false, _logInterval = null;
 function toggleLogs() {
@@ -236,6 +290,13 @@ async function refreshLogs() {
   } catch(e) {
     document.getElementById('log-status').textContent = 'error';
   }
+}
+function copyLogs() {
+  const el = document.getElementById('log-content');
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text)
+    .then(() => toast('Logs copied to clipboard'))
+    .catch(() => toast('Failed to copy logs', 'err'));
 }
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;

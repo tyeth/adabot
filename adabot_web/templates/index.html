@@ -33,8 +33,9 @@
   <div class="header-actions">
     <button class="btn" onclick="doRefresh()">&#8635; Refresh Repo Data</button>
     <button class="btn" onclick="batchCheckCI()" title="Re-run CI checks for every repo that has a bump PR">&#9881; Recheck CI Jobs</button>
-    <button class="btn btn-green" onclick="batchRelease()">&#x1F680; Batch Release Ready</button>
     <button class="btn btn-green" onclick="batchMergeBumpPRs()" title="Merge all open bump PRs whose CI has passed">&#x2B07; Merge All Ready PRs</button>
+    <button class="btn btn-green" onclick="batchMarkReady()" title="Mark all repos with merged bump PR + passing CI as ready">&#10003; Mark Bumped Repos Ready</button>
+    <button class="btn btn-green" onclick="batchRelease()">&#x1F680; Batch Release Ready</button>
   </div>
 </header>
 <div class="progress-bar-wrap">
@@ -341,7 +342,7 @@ async function markReady(name) {
   if (item) { item.classList.add('ready'); item.classList.remove('skip'); }
   repoData[name] = Object.assign(repoData[name] || {}, {release_status: 'ready'});
   buildActions(name);
-  toast(name + ' marked ready');
+  toast(name + ' marked ready', 'ok', null, {repo: name, tab: 'changes'});
 }
 
 async function markUnready(name) {
@@ -350,7 +351,7 @@ async function markUnready(name) {
   if (item) { item.classList.remove('ready'); }
   repoData[name] = Object.assign(repoData[name] || {}, {release_status: null});
   buildActions(name);
-  toast(name + ' unmarked');
+  toast(name + ' unmarked', 'ok', null, {repo: name, tab: 'changes'});
 }
 
 async function markSkip(name) {
@@ -359,14 +360,38 @@ async function markSkip(name) {
   if (item) { item.classList.add('skip'); item.classList.remove('ready'); }
   repoData[name] = Object.assign(repoData[name] || {}, {release_status: 'skip'});
   buildActions(name);
-  toast(name + ' skipped');
+  toast(name + ' skipped', 'ok', null, {repo: name, tab: 'changes'});
+}
+
+async function batchMarkReady() {
+  const lr = await fetch('/api/repos_ready_to_mark');
+  const ld = await lr.json();
+  const repos = ld.repos || [];
+  if (!repos.length) { toast('No repos to mark ready'); return; }
+  confirm_action('Mark All Ready', 'Mark ' + repos.length + ' repo(s) as ready for release?', async () => {
+    toast('Marking ' + repos.length + ' repo(s) ready…', 'ok', 'batch-mark');
+    let ok = 0;
+    for (const name of repos) {
+      await fetch('/api/repo/' + name + '/status', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({status:'ready'})
+      });
+      repoData[name] = Object.assign(repoData[name] || {}, {release_status: 'ready'});
+      const item = document.getElementById('item-' + name);
+      if (item) { item.classList.add('ready'); item.classList.remove('skip'); }
+      updateSidebarBadge(name);
+      ok++;
+    }
+    if (currentRepo) buildActions(currentRepo);
+    toast(ok + ' repo(s) marked ready', 'ok', 'batch-mark');
+  });
 }
 
 async function saveNotes(name) {
   const ta = document.getElementById('notes-editor');
   if (!ta) return;
   await fetch('/api/repo/' + name + '/release_notes', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({notes: ta.value})});
-  toast('Notes saved');
+  toast('Notes saved', 'ok', null, {repo: name, tab: 'notes'});
 }
 
 async function doBump(name) {
@@ -374,19 +399,19 @@ async function doBump(name) {
   const targetVer = overrideEl ? overrideEl.value.trim() : '';
   const label = targetVer ? ` to v${targetVer}` : '';
   confirm_action('Bump Version', `Create a version bump PR for ${name}${label}?`, async () => {
-    toast('Creating bump PR… (may take ~60s)', 'ok');
+    toast('Creating bump PR… (may take ~60s)', 'ok', 'bump-' + name, {repo: name, tab: 'bump'});
     const r = await fetch('/api/repo/' + name + '/bump', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(targetVer ? {target_version: targetVer} : {}),
     });
     const d = await r.json();
-    if (d.error) { toast('Bump PR error (' + name + '): ' + d.error, 'err'); return; }
+    if (d.error) { toast('Bump PR error (' + name + '): ' + d.error, 'err', 'bump-' + name, {repo: name, tab: 'bump'}); return; }
     if (d.already_existed) {
       console.error('[adabot] bump PR for ' + name + ': pr create reported PR already exists — ' +
         'recovered and now tracking existing PR ' + d.url + '. ' +
         'This likely means a previous bump run created the PR but failed to save state.');
-      toast('Bump PR already existed for ' + name + ' — checking CI…', 'ok');
+      toast('Bump PR already existed for ' + name + ' — checking CI…', 'ok', 'bump-' + name, {repo: name, tab: 'ci'});
       // Update badge + actions immediately with what we know (ci_status pending for now)
       if (!repoData[name]) repoData[name] = {};
       repoData[name].bump_pr = d;
@@ -399,7 +424,7 @@ async function doBump(name) {
       await doCheckCI(name);
       return;
     }
-    toast('Bump PR created for ' + name + ': ' + (d.url || ''));
+    toast('Bump PR created for ' + name + ': ' + (d.url || ''), 'ok', 'bump-' + name, {repo: name, tab: 'ci'});
     // Update cached repo data so the sidebar badge reflects the bump PR
     if (!repoData[name]) repoData[name] = {};
     repoData[name].bump_pr = d;
@@ -412,8 +437,8 @@ async function doBump(name) {
 async function doCheckCI(name) {
   const r = await fetch('/api/repo/' + name + '/check_ci', {method:'POST'});
   const d = await r.json();
-  if (d.error) { toast('CI error (' + name + '): ' + d.error, 'err'); return; }
-  toast('CI (' + name + '): ' + d.ci_status);
+  if (d.error) { toast('CI error (' + name + '): ' + d.error, 'err', null, {repo: name, tab: 'ci'}); return; }
+  toast('CI (' + name + '): ' + d.ci_status, 'ok', null, {repo: name, tab: 'ci'});
   // Update cached ci_status for the badge without requiring a full reload
   if (repoData[name] && repoData[name].bump_pr) {
     repoData[name].bump_pr.ci_status = d.ci_status;
@@ -432,16 +457,16 @@ async function doRelease(name) {
   const tagEl = document.getElementById('release-tag-input');
   const tag = tagEl ? tagEl.value : '';
   confirm_action('Create Release', 'Release ' + name + ' as ' + (tag || '(tag required)') + '?', async () => {
-    if (!tag) { toast('Set a release tag first', 'err'); return; }
+    if (!tag) { toast('Set a release tag first', 'err', null, {repo: name, tab: 'bump'}); return; }
     const r = await fetch('/api/repo/' + name + '/release', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({tag, notes})});
     const d = await r.json();
     if (d.manual_release_url) {
-      toast('Release permission denied — manual release required', 'err');
+      toast('Release permission denied — manual release required', 'err', null, {repo: name, tab: 'bump'});
       showManualReleaseQueue([{name, tag: d.tag || tag, notes: d.notes || notes, manual_release_url: d.manual_release_url, error: d.error}]);
       return;
     }
-    if (d.error) { toast('Error: ' + d.error, 'err'); return; }
-    toast('Released! ' + (d.url || ''));
+    if (d.error) { toast('Error: ' + d.error, 'err', null, {repo: name, tab: 'bump'}); return; }
+    toast('Released! ' + (d.url || ''), 'ok', null, {repo: name, tab: 'changes'});
     loadDetail(name, null);  // preserve current tab
   });
 }
@@ -449,7 +474,7 @@ async function doRelease(name) {
 async function doRefresh() {
   confirm_action('Refresh Data', 'This will re-run all API checks (~20 mins). Continue?', async () => {
     await fetch('/api/refresh', {method:'POST'});
-    toast('Data refresh started…');
+    toast('Data refresh started…', 'ok', 'data-refresh');
     pollStatus();
   });
 }
@@ -457,18 +482,21 @@ async function doRefresh() {
 async function doRefreshRepo(name) {
   const r = await fetch('/api/repo/' + name + '/refresh', {method:'POST'});
   const d = await r.json();
-  if (d.error) { toast('Error: ' + d.error, 'err'); return; }
-  toast('Refreshing ' + name + '…');
+  if (d.error) { toast('Error: ' + d.error, 'err', null, {repo: name, tab: 'changes'}); return; }
+  toast('Refreshing ' + name + '…', 'ok', 'refresh-' + name, {repo: name, tab: 'changes'});
   // Poll until the repo's details_loaded flips back to true, then reload the panel
   const poll = setInterval(async () => {
-    const sr = await fetch('/api/state');
+    const sr = await fetch('/api/repo/' + name + '/status');
     const sd = await sr.json();
-    const repo = (sd.repos || {})[name];
-    if (repo && repo.details_loaded) {
+    if (sd.details_loaded) {
       clearInterval(poll);
-      repoData[name] = repo;
       loadDetail(name, null);
-      toast(name + ' refreshed');
+      toast(name + ' refreshed', 'ok', 'refresh-' + name, {repo: name, tab: 'changes'});
+    } else if (sd.rate_limit_remaining != null && sd.rate_limit_remaining === 0) {
+      clearInterval(poll);
+      toast('Refresh of ' + name + ' blocked — rate limit hit, resets ' +
+        (sd.rate_limit_reset ? new Date(sd.rate_limit_reset).toLocaleTimeString() : 'later'),
+        'err', 'refresh-' + name, {repo: name, tab: 'changes'});
     }
   }, 2000);
   // Safety: stop polling after 2 minutes
@@ -477,7 +505,7 @@ async function doRefreshRepo(name) {
 
 async function batchRelease() {
   confirm_action('Batch Release', 'Release ALL repos marked as ready? This cannot be undone.', async () => {
-    toast('Starting batch release…');
+    toast('Starting batch release…', 'ok', 'batch-release');
     const r = await fetch('/api/batch_release', {method:'POST', headers:{'Content-Type':'application/json'}, body:'{}'});
     const d = await r.json();
     const ok = d.results.filter(x=>x.ok).length;
@@ -486,7 +514,7 @@ async function batchRelease() {
     let msg = `Released ${ok}`;
     if (errors.length)  msg += `, ${errors.length} failed`;
     if (manuals.length) msg += `, ${manuals.length} need manual release`;
-    toast(msg, (errors.length + manuals.length) ? 'err' : 'ok');
+    toast(msg, (errors.length + manuals.length) ? 'err' : 'ok', 'batch-release');
     if (manuals.length) {
       showManualReleaseQueue(manuals, () => setTimeout(() => location.reload(), 1000));
     } else {
@@ -501,13 +529,13 @@ async function batchRelease() {
 async function doMergeBumpPR(name) {
   const d = repoData[name] || {};
   const bump = d.bump_pr || {};
-  if (bump.state === 'merged') { toast(name + ' bump PR already merged', 'ok'); return; }
-  if (bump.ci_status !== 'pass') { toast('CI must pass before merging ' + name, 'err'); return; }
+  if (bump.state === 'merged') { toast(name + ' bump PR already merged', 'ok', null, {repo: name, tab: 'ci'}); return; }
+  if (bump.ci_status !== 'pass') { toast('CI must pass before merging ' + name, 'err', null, {repo: name, tab: 'ci'}); return; }
   confirm_action('Merge Bump PR', `Merge the bump PR for ${name}?`, async () => {
     const r = await fetch('/api/repo/' + name + '/merge_bump_pr', {method: 'POST'});
     const rd = await r.json();
-    if (rd.error) { toast('Merge failed (' + name + '): ' + rd.error, 'err'); return; }
-    toast('Bump PR merged for ' + name);
+    if (rd.error) { toast('Merge failed (' + name + '): ' + rd.error, 'err', null, {repo: name, tab: 'ci'}); return; }
+    toast('Bump PR merged for ' + name, 'ok', null, {repo: name, tab: 'ci'});
     if (repoData[name] && repoData[name].bump_pr) {
       repoData[name].bump_pr.state = 'merged';
       repoData[name].branch_ci_status = 'pending';
@@ -527,13 +555,13 @@ async function batchMergeBumpPRs() {
   if (!repos.length) { toast('No bump PRs ready to merge (CI must pass first)', 'ok'); return; }
   confirm_action('Merge All Ready Bump PRs',
     `Merge ${repos.length} open bump PR(s) whose CI has passed?`, async () => {
-    toast('Merging ' + repos.length + ' bump PR(s)…');
+    toast('Merging ' + repos.length + ' bump PR(s)…', 'ok', 'batch-merge');
     let merged = 0, failed = 0;
     for (const name of repos) {
       const mr = await fetch('/api/repo/' + name + '/merge_bump_pr', {method: 'POST'});
       const md = await mr.json();
       if (md.error) {
-        toast('Merge failed (' + name + '): ' + md.error, 'err');
+        toast('Merge failed (' + name + '): ' + md.error, 'err', null, {repo: name, tab: 'ci'});
         failed++;
       } else {
         merged++;
@@ -549,7 +577,7 @@ async function batchMergeBumpPRs() {
       }
       await new Promise(res => setTimeout(res, 300));
     }
-    toast(`Merged ${merged}` + (failed ? `, ${failed} failed` : ''), failed ? 'err' : 'ok');
+    toast(`Merged ${merged}` + (failed ? `, ${failed} failed` : ''), failed ? 'err' : 'ok', 'batch-merge');
     if (currentRepo && repos.includes(currentRepo)) loadDetail(currentRepo, null);
   });
 }
@@ -562,7 +590,7 @@ async function batchCheckCI() {
   const d = await r.json();
   const repos = d.repos || [];
   if (!repos.length) { toast('No repos with active bump PRs', 'ok'); return; }
-  toast('Rechecking CI for ' + repos.length + ' repo(s)…');
+  toast('Rechecking CI for ' + repos.length + ' repo(s)…', 'ok', 'batch-ci');
 
   let checked = 0, passed = 0, failed = 0, approval = 0;
   for (const name of repos) {
@@ -596,7 +624,7 @@ async function batchCheckCI() {
   const parts = [`${checked}/${repos.length} checked`, `${passed} pass`];
   if (failed)   parts.push(`${failed} fail`);
   if (approval) parts.push(`${approval} need approval`);
-  toast(parts.join(' · '), failed ? 'err' : 'ok');
+  toast(parts.join(' · '), failed ? 'err' : 'ok', 'batch-ci');
 
   // Reload detail panel if the currently visible repo was in the batch
   if (currentRepo && repos.includes(currentRepo)) loadDetail(currentRepo, null);
@@ -619,6 +647,14 @@ function pollStatus() {
       : (d.last_run_end ? `done — ${d.last_run_end.slice(0,16)}` : label);
     const pct = d.total ? Math.round(d.progress / d.total * 100) : 0;
     document.getElementById('progress-bar').style.width = pct + '%';
+    // Surface rate limit warnings
+    if (d.rate_limit_remaining != null && d.rate_limit_remaining === 0) {
+      toast('GitHub API rate limit hit — paused until ' +
+        (d.rate_limit_reset ? new Date(d.rate_limit_reset).toLocaleTimeString() : 'reset'),
+        'err', 'rate-limit');
+    } else if (d.rate_limit_remaining != null && d.rate_limit_remaining > 0 && d.rate_limit_remaining <= 10) {
+      toast('GitHub API: ' + d.rate_limit_remaining + ' requests remaining', 'err', 'rate-limit');
+    }
     const staleBadge = document.getElementById('stale-badge');
     const ageBadge = document.getElementById('age-badge');
     if (!isRunning) {
@@ -626,7 +662,13 @@ function pollStatus() {
       if (!d.stale && staleBadge) staleBadge.style.display = 'none';
       if (ageBadge) ageBadge.textContent = d.age_days !== null ? d.age_days + 'd old' : '';
       clearInterval(interval);
-      if (d.status === 'done') setTimeout(() => location.reload(), 1500);
+      if (d.status === 'done') {
+        toast('Data refresh complete', 'ok', 'data-refresh');
+        setTimeout(() => location.reload(), 1500);
+      }
+      if (d.status === 'error') {
+        toast('Data refresh failed' + (d.error ? ': ' + d.error : ''), 'err', 'data-refresh');
+      }
     }
   }, 3000);
 }
@@ -655,6 +697,17 @@ pollStatus();
     loadDetail(repo, tab);
   }
 })();
+
+// Check rate limit on page load
+fetch('/api/state').then(r => r.json()).then(d => {
+  if (d.rate_limit_remaining != null && d.rate_limit_remaining === 0) {
+    toast('GitHub API rate limit hit — paused until ' +
+      (d.rate_limit_reset ? new Date(d.rate_limit_reset).toLocaleTimeString() : 'reset'),
+      'err', 'rate-limit');
+  } else if (d.rate_limit_remaining != null && d.rate_limit_remaining > 0 && d.rate_limit_remaining <= 10) {
+    toast('GitHub API: ' + d.rate_limit_remaining + ' requests remaining', 'err', 'rate-limit');
+  }
+}).catch(() => {});
 
 // ---------------------------------------------------------------------------
 // Keyboard navigation

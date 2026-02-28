@@ -340,9 +340,10 @@ def repo_detail(name):
 
 @app.route("/api/state")
 def api_state():
+    from adabot import github_requests as gh
     state = collector.load_state()
     age = data_age_days(state)
-    return jsonify({
+    result = {
         "status": state.get("status"),
         "progress": state.get("progress", 0),
         "total": state.get("total", 0),
@@ -351,7 +352,13 @@ def api_state():
         "repo_count": len(state.get("repos", {})),
         "stale": is_stale(state),
         "age_days": round(age, 1) if age is not None else None,
-    })
+    }
+    if state.get("error"):
+        result["error"] = state["error"]
+    if gh.rate_limit_remaining is not None:
+        result["rate_limit_remaining"] = gh.rate_limit_remaining
+        result["rate_limit_reset"] = gh.rate_limit_reset_at
+    return jsonify(result)
 
 
 @app.route("/api/refresh", methods=["POST"])
@@ -381,15 +388,48 @@ def repos_ready_to_merge():
     return jsonify({"repos": sorted(names)})
 
 
+@app.route("/api/repos_ready_to_mark")
+def repos_ready_to_mark():
+    """Repos with merged bump PR + branch CI pass, not yet marked ready."""
+    state = collector.load_state()
+    names = [
+        name for name, r in state.get("repos", {}).items()
+        if (r.get("bump_pr") and
+            (r["bump_pr"].get("state") or "").lower() == "merged" and
+            (r["bump_pr"].get("ci_status") or "") == "pass" and
+            r.get("branch_ci_status") == "pass" and
+            r.get("release_status") not in ("ready", "skip", "released"))
+    ]
+    return jsonify({"repos": sorted(names)})
+
+
 @app.route("/api/repo/<name>/refresh", methods=["POST"])
 def refresh_repo(name):
     state = collector.load_state()
     if name not in state.get("repos", {}):
         return jsonify({"error": "not found"}), 404
+    # Mark details_loaded=false synchronously so the poll sees it immediately
+    state.get("repos", {})[name]["details_loaded"] = False
+    collector.save_state(state)
     started = collector.refresh_single_repo(name)
     if not started:
         return jsonify({"error": "full collection is running — try again shortly"}), 409
     return jsonify({"started": True})
+
+
+@app.route("/api/repo/<name>/status")
+def repo_status(name):
+    """Lightweight check used to poll single-repo refresh progress."""
+    from adabot import github_requests as gh
+    state = collector.load_state()
+    repo = state.get("repos", {}).get(name)
+    if not repo:
+        return jsonify({"error": "not found"}), 404
+    result = {"details_loaded": bool(repo.get("details_loaded"))}
+    if gh.rate_limit_remaining is not None:
+        result["rate_limit_remaining"] = gh.rate_limit_remaining
+        result["rate_limit_reset"] = gh.rate_limit_reset_at
+    return jsonify(result)
 
 
 # ---------------------------------------------------------------------------

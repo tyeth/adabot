@@ -23443,7 +23443,7 @@
       "error": null,
       "lib_name": "Adafruit AS7343",
       "existing_tags": [],
-      "existing_tags_at": 1772241219.658576
+      "existing_tags_at": 1772246464.8021374
     },
     "Adafruit_APDS9999": {
       "name": "Adafruit_APDS9999",
@@ -23564,7 +23564,7 @@
         ],
         "merged_at": "2026-02-26T01:47:12Z"
       },
-      "release_status": null,
+      "release_status": "ready",
       "release_notes": "### Changed\n- Added clang-format CI job for automated code style enforcement\n- Reformatted source code to match coding standards\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_FT6206_Library/compare/1.1.0...1.1.1",
       "prs": [
         {
@@ -23609,19 +23609,8 @@
       "bump_justification": "Added clang-format CI enforcement and reformatted source code for consistency. Maintenance release with no functional changes.",
       "error": null,
       "lib_name": "Adafruit FT6206 Library",
-      "existing_tags": [
-        "1.1.0",
-        "1.0.8",
-        "1.0.7",
-        "1.0.6",
-        "1.0.5",
-        "1.0.4",
-        "1.0.3",
-        "1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772072765.0995095
+      "existing_tags": [],
+      "existing_tags_at": 1772244255.9165826
     },
     "Adafruit_RA8875": {
       "name": "Adafruit_RA8875",
@@ -24227,7 +24216,7 @@
         ],
         "merged_at": "2026-02-26T01:47:42Z"
       },
-      "release_status": null,
+      "release_status": "ready",
       "release_notes": "### Changed\n- Add .clang-format configuration for consistent code formatting\n- Update CI workflow for clang-format checks\n- Reformat code to match clang-format standards\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_SGP40/compare/1.1.3...1.1.4",
       "prs": [
         {
@@ -24281,16 +24270,8 @@
       "bump_justification": "Infrastructure improvements only: added clang-format configuration and updated CI workflow; code formatting has no functional impact.",
       "error": null,
       "lib_name": "Adafruit SGP40 Sensor",
-      "existing_tags": [
-        "1.1.3",
-        "1.1.2",
-        "1.1.1",
-        "1.1.0",
-        "1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772072778.4975784
+      "existing_tags": [],
+      "existing_tags_at": 1772244260.5838776
     },
     "Adafruit_NeoTrellisM4": {
       "name": "Adafruit_NeoTrellisM4",
@@ -24386,18 +24367,8 @@
       "bump_justification": "Code formatting standardization and CI infrastructure improvement. No functional or API changes.",
       "error": null,
       "lib_name": "Adafruit NeoTrellis M4 Library",
-      "existing_tags": [
-        "1.3.3",
-        "1.3.2",
-        "1.3.1",
-        "1.3.0",
-        "1.2.1",
-        "1.2.0",
-        "1.1.2",
-        "1.1.1",
-        "1.1.0"
-      ],
-      "existing_tags_at": 1772072767.54473
+      "existing_tags": [],
+      "existing_tags_at": 1772244259.7122753
     },
     "Adafruit_Motor_Shield_V2_Library": {
       "name": "Adafruit_Motor_Shield_V2_Library",
@@ -24511,36 +24482,22 @@
       "bump_justification": "CI infrastructure improvements and code formatting cleanup; no functional changes to library behavior or API.",
       "error": null,
       "lib_name": "Adafruit Motor Shield V2 Library",
-      "existing_tags": [
-        "1.1.3",
-        "1.1.2",
-        "1.1.1",
-        "1.1.0",
-        "1.0.11",
-        "1.0.10",
-        "1.0.9",
-        "1.0.8",
-        "1.0.7",
-        "1.0.6",
-        "1.0.5",
-        "1.0.4",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772072766.935227
+      "existing_tags": [],
+      "existing_tags_at": 1772244259.2143283
     },
     "DHT-sensor-library": {
       "name": "DHT-sensor-library",
       "full_name": "adafruit/DHT-sensor-library",
       "html_url": "https://github.com/adafruit/DHT-sensor-library",
-      "pushed_at": "2026-02-13T15:59:06Z",
+      "pushed_at": "2026-02-26T01:48:06Z",
       "default_branch": "master",
       "categories": [
+        "failed_lib_prop",
         "needs_release"
       ],
       "release_tag": "1.4.6",
-      "lib_version": "1.4.6",
-      "commits_behind": 3,
+      "lib_version": "1.4.7",
+      "commits_behind": 4,
       "compare_url": "https://github.com/adafruit/DHT-sensor-library/compare/1.4.6...HEAD",
       "ci_only": false,
       "arduino_registered": true,
@@ -24581,15 +24538,6 @@
       "release_status": "ready",
       "release_notes": "### Bug Fixes\n- Fixed clang-format CI configuration by adding .clang-format file and updating workflow\n- Fixed macro formatting to comply with CI clang-format version\n\n**Full Changelog**: https://github.com/adafruit/DHT-sensor-library/compare/1.4.6...1.4.7",
       "prs": [
-        {
-          "number": 232,
-          "title": "Update version to 1.4.7",
-          "html_url": "https://github.com/adafruit/DHT-sensor-library/pull/232",
-          "user": "tyeth-ai-assisted",
-          "created_at": "2026-02-25T23:33:18Z",
-          "labels": [],
-          "draft": false
-        },
         {
           "number": 230,
           "title": "Updating refresh rate",
@@ -24774,13 +24722,20 @@
           "author": "Limor \"Ladyada\" Fried",
           "date": "2026-02-13T15:27:31Z",
           "html_url": "https://github.com/adafruit/DHT-sensor-library/commit/1c68266905e8cfc2d3f2b985b5f43bf51b0aa04b"
+        },
+        {
+          "sha": "f7d6254",
+          "message": "Bump version to 1.4.7",
+          "author": "tyeth-ai-assisted",
+          "date": "2026-02-26T01:48:06Z",
+          "html_url": "https://github.com/adafruit/DHT-sensor-library/commit/f7d625462e6033f373e51f8c67f88fc429535b47"
         }
       ],
       "version_files": [],
       "branch_ci_status": "pass",
-      "details_loaded": true,
+      "details_loaded": false,
       "bump_type": "patch",
-      "bump_justification": "CI and code formatting fixes; added .clang-format configuration and updated workflow for clang-format compatibility.",
+      "bump_justification": "Fixes clang-format CI configuration and macro formatting to address code style validation issues.",
       "error": null,
       "lib_name": "DHT sensor library",
       "example_releases": [
@@ -24790,24 +24745,25 @@
         }
       ],
       "existing_tags": [],
-      "existing_tags_at": 1772242257.4750645
+      "existing_tags_at": 1772245555.2865303
     },
     "Adafruit-MLX90614-Library": {
       "name": "Adafruit-MLX90614-Library",
       "full_name": "adafruit/Adafruit-MLX90614-Library",
       "html_url": "https://github.com/adafruit/Adafruit-MLX90614-Library",
-      "pushed_at": "2026-02-13T15:59:10Z",
+      "pushed_at": "2026-02-26T01:46:44Z",
       "default_branch": "master",
       "categories": [
+        "failed_lib_prop",
         "needs_release"
       ],
       "release_tag": "2.1.5",
-      "lib_version": "2.1.5",
-      "commits_behind": 2,
+      "lib_version": "2.1.6",
+      "commits_behind": 3,
       "compare_url": "https://github.com/adafruit/Adafruit-MLX90614-Library/compare/2.1.5...HEAD",
       "ci_only": false,
       "arduino_registered": true,
-      "arduino_version": "2.1.5",
+      "arduino_version": "1.0.0",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
@@ -24895,17 +24851,22 @@
           "author": "Limor \"Ladyada\" Fried",
           "date": "2026-02-13T15:31:08Z",
           "html_url": "https://github.com/adafruit/Adafruit-MLX90614-Library/commit/f7e808454a9836fa14e57ab3c1573f1c5f422d74"
+        },
+        {
+          "sha": "8c32c95",
+          "message": "Bump version to 2.1.6",
+          "author": "tyeth-ai-assisted",
+          "date": "2026-02-26T01:46:44Z",
+          "html_url": "https://github.com/adafruit/Adafruit-MLX90614-Library/commit/8c32c95768e0960d7c27258b1d9bac16b8d7fdfc"
         }
       ],
       "version_files": [],
       "branch_ci_status": "pass",
       "details_loaded": true,
       "bump_type": "patch",
-      "bump_justification": "CI/tooling improvement: added .clang-format config, updated workflow, and applied code formatting. No functional library changes.",
+      "bump_justification": "Adds .clang-format configuration and updates CI workflow; code formatting changes don't affect library functionality.",
       "error": null,
-      "lib_name": "Adafruit MLX90614 Library",
-      "existing_tags": [],
-      "existing_tags_at": 1772242257.7964377
+      "lib_name": "Adafruit MLX90614 Library"
     },
     "Adafruit-PWM-Servo-Driver-Library": {
       "name": "Adafruit-PWM-Servo-Driver-Library",
@@ -25153,7 +25114,7 @@
         ],
         "merged_at": "2026-02-26T01:47:18Z"
       },
-      "release_status": null,
+      "release_status": "ready",
       "release_notes": "### Changed\n\n- Add `.clang-format` configuration for code style consistency\n- Update GitHub Actions workflow for CI/formatting integration\n- Apply code formatting to align with project standards\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_HMC5883_Unified/compare/1.2.3...1.2.4",
       "prs": [
         {
@@ -25207,15 +25168,8 @@
       "bump_justification": "Code formatting and CI workflow improvements; no functional library changes.",
       "error": null,
       "lib_name": "Adafruit HMC5883 Unified",
-      "existing_tags": [
-        "1.2.3",
-        "1.2.2",
-        "1.2.1",
-        "1.2.0",
-        "1.1.0",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772072766.23355
+      "existing_tags": [],
+      "existing_tags_at": 1772244258.938612
     },
     "Adafruit_ImageCapture": {
       "name": "Adafruit_ImageCapture",
@@ -25364,36 +25318,26 @@
       "bump_justification": "Added .clang-format configuration and CI workflow updates for consistent code formatting; no user-facing feature changes or bug fixes.",
       "error": null,
       "lib_name": "Adafruit Si5351 Library",
-      "existing_tags": [
-        "1.4.2",
-        "1.4.1",
-        "1.4.0",
-        "1.3.0",
-        "1.2.1",
-        "1.2.0",
-        "1.1.0",
-        "1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772072773.2762697
+      "existing_tags": [],
+      "existing_tags_at": 1772244260.3782136
     },
     "Adafruit_TMP007_Library": {
       "name": "Adafruit_TMP007_Library",
       "full_name": "adafruit/Adafruit_TMP007_Library",
       "html_url": "https://github.com/adafruit/Adafruit_TMP007_Library",
-      "pushed_at": "2026-02-13T17:46:24Z",
+      "pushed_at": "2026-02-26T01:47:51Z",
       "default_branch": "master",
       "categories": [
+        "failed_lib_prop",
         "needs_release"
       ],
       "release_tag": "1.1.2",
-      "lib_version": "1.1.2",
-      "commits_behind": 2,
+      "lib_version": "1.1.3",
+      "commits_behind": 3,
       "compare_url": "https://github.com/adafruit/Adafruit_TMP007_Library/compare/1.1.2...HEAD",
       "ci_only": false,
       "arduino_registered": true,
-      "arduino_version": "1.1.2",
+      "arduino_version": "1.0.0",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
@@ -25426,42 +25370,19 @@
         ],
         "merged_at": "2026-02-26T01:47:51Z"
       },
-      "release_status": null,
+      "release_status": "ready",
       "release_notes": "### Changed\n- Updated CI workflow and added .clang-format configuration for consistent code formatting\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP007_Library/compare/1.1.2...1.1.3",
       "prs": [],
-      "recent_commits": [
-        {
-          "sha": "1cb9a5f",
-          "message": "Fix clang-format CI: add .clang-format, update workflow, format code",
-          "author": "piclaw",
-          "date": "2026-02-05T14:49:42Z",
-          "html_url": "https://github.com/adafruit/Adafruit_TMP007_Library/commit/1cb9a5febf01c2eed237743a441e746e9b973277"
-        },
-        {
-          "sha": "2eef27e",
-          "message": "Merge pull request #11 from ladyada-piclaw/fix-clang-format-ci",
-          "author": "Limor \"Ladyada\" Fried",
-          "date": "2026-02-13T17:42:25Z",
-          "html_url": "https://github.com/adafruit/Adafruit_TMP007_Library/commit/2eef27efdf9912c7b908399092350da1ea018831"
-        }
-      ],
+      "recent_commits": [],
       "version_files": [],
       "branch_ci_status": "pass",
-      "details_loaded": true,
+      "details_loaded": false,
       "bump_type": "patch",
-      "bump_justification": "CI/tooling maintenance: added .clang-format config and updated GitHub workflow. No functional changes to library code.",
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
       "error": null,
       "lib_name": "Adafruit TMP007 Library",
-      "existing_tags": [
-        "1.1.2",
-        "1.1.1",
-        "1.1.0",
-        "1.0.3",
-        "1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772072777.6685886
+      "existing_tags": [],
+      "existing_tags_at": 1772244914.6477528
     },
     "Adafruit_VL53L0X": {
       "name": "Adafruit_VL53L0X",
@@ -25556,28 +25477,8 @@
       "bump_justification": "Code formatting and CI improvements (clang-format configuration, workflow updates). No functional changes to library code.",
       "error": null,
       "lib_name": "Adafruit_VL53L0X",
-      "existing_tags": [
-        "1.2.4",
-        "1.2.3",
-        "1.2.2",
-        "1.2.1",
-        "1.2.0",
-        "1.1.3",
-        "1.1.2",
-        "1.1.1",
-        "1.1.0",
-        "1.0.10",
-        "1.0.9",
-        "1.0.8",
-        "1.0.7",
-        "1.0.6",
-        "1.0.5",
-        "1.0.4",
-        "1.0.3",
-        "1.0.2",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772067822.5704215
+      "existing_tags": [],
+      "existing_tags_at": 1772244261.7170765
     },
     "Adafruit_ZeroPDM": {
       "name": "Adafruit_ZeroPDM",
@@ -25627,7 +25528,7 @@
         ],
         "merged_at": "2026-02-26T01:47:58Z"
       },
-      "release_status": null,
+      "release_status": "ready",
       "release_notes": "### Changed\n- Added .clang-format configuration for consistent code style\n- Updated CI workflow\n- Applied code formatting\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_ZeroPDM/compare/1.2.3...1.2.4",
       "prs": [],
       "recent_commits": [
@@ -25653,18 +25554,8 @@
       "bump_justification": "Code formatting standardization and CI tooling updates. No functional or API changes.",
       "error": null,
       "lib_name": "Adafruit Zero PDM Library",
-      "existing_tags": [
-        "1.2.3",
-        "1.2.2",
-        "1.2.1",
-        "1.2.0",
-        "1.1.2",
-        "1.1.1",
-        "1.1.0",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772072776.858472
+      "existing_tags": [],
+      "existing_tags_at": 1772246543.0801167
     },
     "Pro_Trinket_USB_Mouse": {
       "name": "Pro_Trinket_USB_Mouse",
@@ -26338,7 +26229,9 @@
           "tag": "1.0.0",
           "body": "w00t"
         }
-      ]
+      ],
+      "existing_tags": [],
+      "existing_tags_at": 1772246350.2861445
     },
     "Adafruit-Fingerprint-Sensor-Library": {
       "name": "Adafruit-Fingerprint-Sensor-Library",
@@ -27341,7 +27234,7 @@
       "error": null,
       "lib_name": "Adafruit Faux86",
       "existing_tags": [],
-      "existing_tags_at": 1772241922.9863284
+      "existing_tags_at": 1772246475.7351375
     },
     "Adafruit_uBlox": {
       "name": "Adafruit_uBlox",

@@ -19,6 +19,10 @@ TIMEOUT = 60
 
 logger = logging.getLogger(__name__)
 
+# Last-seen rate limit info (updated on each non-cached response)
+rate_limit_remaining = None
+rate_limit_reset_at = None
+
 def setup_cache(expire_after=7200):
     """Sets up a cache for requests."""
     requests_cache.install_cache(
@@ -60,6 +64,7 @@ def _fix_kwargs(kwargs):
 
 def request(method, url, **kwargs):
     """Processes request for `url`."""
+    global rate_limit_remaining, rate_limit_reset_at
     try:
         response = getattr(requests, method)(
             _fix_url(url), timeout=TIMEOUT, **_fix_kwargs(kwargs)
@@ -87,15 +92,23 @@ def request(method, url, **kwargs):
             "See log for error text that has been sanitized for secrets"
         ) from None
 
-    if not from_cache:
-        if remaining % 10 == 0 or (-1 < remaining < 20):
+    if not from_cache and remaining >= 0:
+        rate_limit_remaining = remaining
+        reset_ts = response.headers.get("X-RateLimit-Reset")
+        if reset_ts:
+            rate_limit_reset_at = datetime.datetime.fromtimestamp(int(reset_ts)).isoformat()
+        else:
+            rate_limit_reset_at = None
+        if remaining % 10 == 0 or remaining < 20:
             logging.info("%d requests remaining this hour", remaining)
     if not from_cache and remaining == 0:
         logger.warning(
             "GitHub API Rate Limit reached. Pausing until Rate Limit reset."
         )
+        reset_header = response.headers.get("X-RateLimit-Reset")
         rate_limit_reset = datetime.datetime.fromtimestamp(
-             int(response.headers["X-RateLimit-Reset"]) if hasattr(response.headers, "X-RateLimit-Reset")                 else (datetime.datetime.now() + datetime.timedelta(seconds=-1) )
+             int(reset_header) if reset_header
+             else (datetime.datetime.now() + datetime.timedelta(seconds=-1) )
         )
         logging.warning(
             "GitHub API Rate Limit reached. Pausing until Rate Limit reset."
@@ -115,7 +128,10 @@ def request(method, url, **kwargs):
         if remaining % 10 == 0:
             logger.info(remaining, "requests remaining this hour")
 
-    if remaining == -1:
+    if not from_cache and remaining == -1:
+        # No rate limit headers — assume we're fine; clear any stale warning
+        rate_limit_remaining = None
+        rate_limit_reset_at = None
         if logger.level == logging.DEBUG:
             logger.debug(f"-- Github responded with no rate limit info, possible problems, printing reponse ({response.status_code}):")
             logger.debug(f"Request ({method}) - URL: {url}")
