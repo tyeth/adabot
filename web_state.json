@@ -23267,14 +23267,15 @@
       "name": "Adafruit_AS7343",
       "full_name": "adafruit/Adafruit_AS7343",
       "html_url": "https://github.com/adafruit/Adafruit_AS7343",
-      "pushed_at": "2026-02-12T15:15:08Z",
+      "pushed_at": "2026-02-26T01:46:58Z",
       "default_branch": "main",
       "categories": [
+        "failed_lib_prop",
         "needs_release"
       ],
       "release_tag": "1.0.0",
-      "lib_version": "1.0.0",
-      "commits_behind": 18,
+      "lib_version": "1.1.0",
+      "commits_behind": 19,
       "compare_url": "https://github.com/adafruit/Adafruit_AS7343/compare/1.0.0...HEAD",
       "ci_only": false,
       "arduino_registered": true,
@@ -23305,7 +23306,7 @@
         "merged_at": "2026-02-26T01:46:58Z"
       },
       "release_status": "ready",
-      "release_notes": "### New Features\n- Add TFT spectral bar chart demo for ESP32-S2 TFT Feather\n- Update examples to use readAllChannels() with improved default gain configuration\n\n### Bug Fixes\n- Fix 18CH auto-SMUX to use single start and burst read for all registers\n- Fix measurement lockup by clearing AVALID flag between reads\n- Reset SMUX state machine between measurements to prevent state corruption\n- Add software reset in begin() for clean initialization\n- Ensure LED is off in begin() to prevent flickering\n- Stop re-writing SMUX mode on every readAllChannels() call\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_AS7343/compare/1.0.0...1.1.0",
+      "release_notes": "## Bug Fixes\n- Fix 18CH auto-SMUX: single start, burst read all registers ([`c14e438`](https://github.com/adafruit/Adafruit_AS7343/commit/c14e438b2b77f84eb2d1a8369833b01868ae1e34)) by @clawpi\n- Fix measurement lockup: clear AVALID between reads ([`39675ae`](https://github.com/adafruit/Adafruit_AS7343/commit/39675ae65a459527320bb8fc47265e5978dca497)) by @clawpi\n- Reset SMUX state machine between measurements ([`10fac2f`](https://github.com/adafruit/Adafruit_AS7343/commit/10fac2ffb6236d4c33afec11186769e5f74ff982)) by @clawpi\n- Add software reset in begin() for clean initialization ([`2f7c23a`](https://github.com/adafruit/Adafruit_AS7343/commit/2f7c23a4af1f0856086f841cdfb98ea70ce3b501)) by @clawpi\n- Ensure LED off in begin() to prevent flickering ([`db44e14`](https://github.com/adafruit/Adafruit_AS7343/commit/db44e14d90388b9d95ffd60b8c63b05e7da05fbf)) by @clawpi\n- Stop re-writing SMUX mode every readAllChannels() call ([`2f41124`](https://github.com/adafruit/Adafruit_AS7343/commit/2f41124fefd3772eeeac62523b4a15eb182e05a5)) by @clawpi\n\n## Examples\n- Update examples to use readAllChannels(), default gain 64x ([`1e91ea2`](https://github.com/adafruit/Adafruit_AS7343/commit/1e91ea2942495019b736c33bc66dd910e5246d92)) by @clawpi\n- Add TFT spectral bar chart demo for ESP32-S2 TFT Feather ([`d4cb3b2`](https://github.com/adafruit/Adafruit_AS7343/commit/d4cb3b27a38383ee2e7e628a221911e3016afbfc)) by @clawpi\n- Add test.only marker to tft_spectraldemo ([`f7f7f6c`](https://github.com/adafruit/Adafruit_AS7343/commit/f7f7f6c1864baade2eeded961cc2389f1dfa99d5)) by @ladyada\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_AS7343/compare/1.0.0...1.1.0",
       "prs": [],
       "recent_commits": [
         {
@@ -23433,17 +23434,60 @@
           "author": "ladyada",
           "date": "2026-02-12T15:09:11Z",
           "html_url": "https://github.com/adafruit/Adafruit_AS7343/commit/f7f7f6c1864baade2eeded961cc2389f1dfa99d5"
+        },
+        {
+          "sha": "21e3a81",
+          "message": "Bump version to 1.1.0",
+          "author": "tyeth-ai-assisted",
+          "date": "2026-02-26T01:46:58Z",
+          "html_url": "https://github.com/adafruit/Adafruit_AS7343/commit/21e3a81db1e346e4c3ec2ec305fb9a81bf481baf"
         }
       ],
       "version_files": [],
       "branch_ci_status": "pass",
       "details_loaded": true,
       "bump_type": "minor",
-      "bump_justification": "Multiple bug fixes to SMUX state handling and initialization, plus new TFT demo and improved examples. No API changes.",
+      "bump_justification": "Fixes measurement stability issues (software reset, LED control, SMUX handling) and updates examples with improved readAllChannels() API and better default gain settings.",
       "error": null,
       "lib_name": "Adafruit AS7343",
-      "existing_tags": [],
-      "existing_tags_at": 1772246464.8021374
+      "compare_files": [
+        {
+          "filename": "Adafruit_AS7343.cpp",
+          "status": "modified",
+          "patch": "@@ -72,6 +72,21 @@ bool Adafruit_AS7343::_init() {\n     return false;\n   }\n \n+  // Software reset \u2014 forces a full power-on reset to clear any stale state\n+  {\n+    uint8_t buf[2] = {AS7343_CONTROL, 0x08}; // bit 3 = SW_RESET\n+    i2c_dev->write(buf, 2);\n+    delay(200); // Wait for reset to complete\n+\n+    // Chip reboots with REG_BANK=0, PON=0 \u2014 poll until I2C responds\n+    for (uint8_t retries = 0; retries < 20; retries++) {\n+      if (i2c_dev->detected()) {\n+        break;\n+      }\n+      delay(50);\n+    }\n+  }\n+\n   // Power on\n   if (!powerOn(true)) {\n     return false;\n@@ -100,6 +115,9 @@ bool Adafruit_AS7343::_init() {\n     return false;\n   }\n \n+  // Ensure LED is off \u2014 stale state or power-on defaults may leave it enabled\n+  enableLED(false);\n+\n   return true;\n }\n \n@@ -307,6 +325,7 "
+        },
+        {
+          "filename": "examples/basic_readings/basic_readings.ino",
+          "status": "modified",
+          "patch": "@@ -29,7 +29,7 @@ void setup() {\n   Serial.println(\"AS7343 found!\");\n \n   // Configure sensor\n-  as7343.setGain(AS7343_GAIN_256X);\n+  as7343.setGain(AS7343_GAIN_64X);\n   as7343.setATIME(29);  // Integration cycles\n   as7343.setASTEP(599); // Step size\n \n@@ -41,15 +41,13 @@ void setup() {\n void loop() {\n   uint16_t readings[18];\n \n-  // Start measurement and wait for data\n-  as7343.startMeasurement();\n-  while (!as7343.dataReady()) {\n-    delay(1);\n+  // Read all channels (starts measurement, waits, reads internally)\n+  if (!as7343.readAllChannels(readings)) {\n+    Serial.println(\"Read failed!\");\n+    delay(500);\n+    return;\n   }\n \n-  // Read all channels\n-  as7343.readAllChannels(readings);\n-\n   // Print spectral channels (wavelength order)\n   Serial.println(\"\\n--- Spectral Readings ---\")"
+        },
+        {
+          "filename": "examples/fulltest/fulltest.ino",
+          "status": "modified",
+          "patch": "@@ -39,7 +39,7 @@ void setup() {\n   // === Spectral Engine Configuration ===\n   Serial.println(F(\"\\n--- Spectral Configuration ---\"));\n \n-  as7343.setGain(AS7343_GAIN_256X);\n+  as7343.setGain(AS7343_GAIN_64X);\n   Serial.print(F(\"Gain: \"));\n   switch (as7343.getGain()) {\n   case AS7343_GAIN_0_5X:\n@@ -171,30 +171,12 @@ void setup() {\n void loop() {\n   uint16_t readings[18];\n \n-  // Start measurement\n-  as7343.startMeasurement();\n-\n-  // Wait for data with timeout\n-  uint32_t start = millis();\n-  while (!as7343.dataReady()) {\n-    if (millis() - start > 500) {\n-      Serial.println(F(\"Timeout waiting for data!\"));\n-      return;\n-    }\n-    delay(1);\n+  if (!as7343.readAllChannels(readings)) {\n+    Serial.println(F(\"Read failed!\"));\n+    delay(500);\n+    return;\n   }\n \n-  // Check saturation\n"
+        },
+        {
+          "filename": "examples/plotter/plotter.ino",
+          "status": "modified",
+          "patch": "@@ -27,7 +27,7 @@ void setup() {\n   }\n \n   // Configure for good plotter response\n-  as7343.setGain(AS7343_GAIN_256X);\n+  as7343.setGain(AS7343_GAIN_64X);\n   as7343.setATIME(29);\n   as7343.setASTEP(599);\n   as7343.setSMUXMode(AS7343_SMUX_18CH);\n@@ -36,11 +36,10 @@ void setup() {\n void loop() {\n   uint16_t readings[18];\n \n-  as7343.startMeasurement();\n-  while (!as7343.dataReady()) {\n-    delay(1);\n+  if (!as7343.readAllChannels(readings)) {\n+    delay(500);\n+    return;\n   }\n-  as7343.readAllChannels(readings);\n \n   // Output in wavelength order for spectrum visualization\n   // Format: label:value with tabs between for Serial Plotter"
+        },
+        {
+          "filename": "examples/tft_spectraldemo/tft_spectraldemo.ino",
+          "status": "added",
+          "patch": "@@ -0,0 +1,151 @@\n+/*\n+ * AS7343 Spectral Display Demo for ESP32-S2 TFT Feather\n+ *\n+ * Displays a real-time spectral bar chart on the built-in 1.14\" TFT.\n+ * Each bar is colored to match the channel's wavelength.\n+ *\n+ * Written by Limor 'ladyada' Fried with assistance from Claude Code for\n+ * Adafruit Industries. MIT license, check license.txt for more information\n+ */\n+\n+#include <Adafruit_AS7343.h>\n+#include <Adafruit_ST7789.h>\n+#include <Fonts/FreeSans9pt7b.h>\n+\n+Adafruit_AS7343 as7343;\n+Adafruit_ST7789 display = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);\n+GFXcanvas16 canvas(240, 135);\n+\n+// 12 spectral channels in wavelength order\n+const uint8_t NUM_BARS = 12;\n+const as7343_channel_t channels[NUM_BARS] = {\n+    AS7343_CHANNEL_F1,  AS7343_CHANNEL_F2,  AS7343_CHANNEL_FZ,\n+    AS7343_CHA"
+        }
+      ],
+      "example_releases": [
+        {
+          "tag": "1.0.0",
+          "body": "woot"
+        }
+      ],
+      "gh_auto_notes": "## What's Changed\n* Update version to 1.1.0 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_AS7343/pull/4\n\n## New Contributors\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_AS7343/pull/4\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_AS7343/compare/1.0.0...1.2.0",
+      "existing_tags": [
+        "1.0.0"
+      ],
+      "existing_tags_at": 1772250705.515682
     },
     "Adafruit_APDS9999": {
       "name": "Adafruit_APDS9999",
@@ -27233,8 +27277,11 @@
       "bump_justification": "Fixes CI/build failures and corrects dependency declarations for TouchLib and XPT2046_Touchscreen to properly install during CI workflows.",
       "error": null,
       "lib_name": "Adafruit Faux86",
-      "existing_tags": [],
-      "existing_tags_at": 1772246475.7351375
+      "existing_tags": [
+        "0.2.0",
+        "0.1.0"
+      ],
+      "existing_tags_at": 1772251176.595768
     },
     "Adafruit_uBlox": {
       "name": "Adafruit_uBlox",
@@ -28241,7 +28288,7 @@
         "merged_at": "2026-02-26T02:22:00Z"
       },
       "release_status": "ready",
-      "release_notes": "### New Features\n\n- SGP41 (VOC/NOx index) component support\n\n### Changed\n\n- Code formatting with clang-format\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.122...1.0.0-beta.123",
+      "release_notes": null,
       "prs": [
         {
           "number": 868,
@@ -28475,8 +28522,61 @@
           "body": "## Installing WipperSnapper\r\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\r\n\r\n## Upgrade a device running WipperSnapper\r\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\r\n\r\n## What's Changed\r\n\r\n## New Board \ud83c\udd95\ud83c\udd95\ud83c\udd95\r\n* Add Espressif C5 devkit by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/835\r\n\r\n## Tooling changes\r\n* ignore wifi nina fork by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/834\r\n* Migrate to Arduino-ESP32 core Board Support Package version 3.3.3 (ESP IDF 5.5.1+)\r\n* Update esptool merge-bin process in CI to latest version (previous pinned at 4.6) and use \"keep\" flash args\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.119...1.0.0-beta.120"
         }
       ],
-      "existing_tags": [],
-      "existing_tags_at": 1772242256.9372845
+      "existing_tags": [
+        "1.0.0-beta.122",
+        "1.0.0-beta.121",
+        "1.0.0-beta.120",
+        "1.0.0-beta.119",
+        "1.0.0-beta.118",
+        "1.0.0-beta.117",
+        "1.0.0-beta.116",
+        "1.0.0-offline-beta.5",
+        "1.0.0-beta.115",
+        "1.0.0-beta.114",
+        "1.0.0-beta.113",
+        "1.0.0-beta.112",
+        "1.0.0-beta.111",
+        "1.0.0-offline-beta.4",
+        "1.0.0-beta.110",
+        "1.0.0-beta.109",
+        "1.0.0-beta.108",
+        "1.0.0-beta.107",
+        "1.0.0-beta.106",
+        "1.0.0-beta.105",
+        "1.0.0-beta.104",
+        "1.0.0-beta.103",
+        "1.0.0-beta.102",
+        "1.0.0-beta.101",
+        "1.0.0-offline-beta.3",
+        "1.0.0-offline-beta.2",
+        "1.0.0-beta.100",
+        "1.0.0-beta.99",
+        "1.0.0-beta.98",
+        "1.0.0-offline-beta.1",
+        "1.0.0-beta.97",
+        "1.0.0-beta.96",
+        "1.0.0-beta.95",
+        "1.0.0-beta.94",
+        "1.0.0-beta.93",
+        "1.0.0-beta.92",
+        "1.0.0-beta.91",
+        "1.0.0-beta.90",
+        "1.0.0-beta.89",
+        "1.0.0-alpha.89",
+        "1.0.0-beta.88",
+        "1.0.0-beta.87",
+        "1.0.0-beta.86",
+        "1.0.0-beta.85",
+        "1.0.0-beta.84",
+        "1.0.0-beta.83",
+        "1.0.0-beta.82",
+        "1.0.0-alpha.82",
+        "1.0.0-alpha.81",
+        "1.0.0-alpha.80"
+      ],
+      "existing_tags_at": 1772252442.3585,
+      "gh_auto_notes": "## What's Changed\n* add(component): SGP41 (VOC/NOx index) by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/869\n* Update version to 1.0.0-beta.123 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/872\n\n## New Contributors\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/872\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.122...1.0.0-beta.123",
+      "compare_files": []
     },
     "Adafruit_Learning_System_Guides": {
       "name": "Adafruit_Learning_System_Guides",

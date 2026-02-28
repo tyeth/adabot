@@ -142,11 +142,15 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
     <h4 style="color:var(--accent)">Release Notes</h4>
     <div style="display:flex;gap:6px">
       <button class="btn" onclick="toggleNotesPreview()">Toggle Preview</button>
-      <button class="btn btn-accent" onclick="saveNotes('{{ repo.name }}')">Save</button>
+      <button class="btn" onclick="regenerateNotes('{{ repo.name }}')" title="Clear user edit lock and regenerate notes via LLM">Regenerate</button>
+      <button id="notes-save-btn" class="btn" style="opacity:0.4;cursor:default" onclick="saveNotes('{{ repo.name }}')">Save</button>
     </div>
   </div>
   <p style="font-size:0.75rem;color:var(--muted);margin-bottom:10px">
     Edit below — reword PR titles for clarity. <kbd>Ctrl+S</kbd> to save.
+    {% if repo.release_notes_user_edited %}
+    <span style="color:var(--green);margin-left:8px" title="Edits locked to {{ repo.release_notes_user_edited }}. Will auto-clear if tag or commit count changes.">&#128274; User-edited ({{ repo.release_notes_user_edited.split('@')[0] }})</span>
+    {% endif %}
   </p>
 
   <div style="margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -165,6 +169,91 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
 
   <textarea id="notes-editor" class="notes-editor"
     onkeydown="if(event.ctrlKey&&event.key==='s'){event.preventDefault();saveNotes('{{ repo.name }}')}">{{ repo.release_notes or '' }}</textarea>
+  {% if needs_notes_gen %}
+  <div id="notes-gen-status" style="margin-top:6px;font-size:0.8rem;color:var(--accent)">
+    &#9881; Generating release notes via AI&hellip;
+  </div>
+  <script>
+  (function() {
+    var name = '{{ repo.name }}';
+    var editor = document.getElementById('notes-editor');
+    var status = document.getElementById('notes-gen-status');
+    editor.placeholder = 'Generating release notes via AI\u2026';
+    fetch('/api/repo/' + name + '/generate_notes', {method:'POST'})
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.notes) {
+          editor.value = data.notes;
+          if (typeof repoData !== 'undefined' && repoData[name])
+            repoData[name].release_notes = data.notes;
+        }
+        // Reset dirty baseline to the newly generated notes
+        if (window._notesBaseline !== undefined) window._notesBaseline = editor.value;
+        if (window._notesDirtyCheck) window._notesDirtyCheck();
+        status.innerHTML = '&#10003; Notes generated (' + (data.source || 'unknown') + ')';
+        status.style.color = 'var(--green)';
+        setTimeout(function() { status.style.display = 'none'; }, 3000);
+      })
+      .catch(function(err) {
+        status.innerHTML = '&#9888; Generation failed — click Regenerate to retry';
+        status.style.color = 'var(--red)';
+        console.error('Notes generation error:', err);
+      });
+  })();
+  </script>
+  {% endif %}
+
+  <script>
+  // Track dirty state: save button starts muted, lights up when content changes
+  (function() {
+    var editor = document.getElementById('notes-editor');
+    var saveBtn = document.getElementById('notes-save-btn');
+    var repoName = '{{ repo.name }}';
+    if (!editor || !saveBtn) return;
+
+    window._notesBaseline = editor.value;
+
+    function setDirty(dirty) {
+      if (dirty) {
+        saveBtn.className = 'btn btn-accent';
+        saveBtn.style.opacity = '';
+        saveBtn.style.cursor = '';
+        saveBtn.style.animation = 'notes-pulse 1.5s ease-in-out 2';
+      } else {
+        saveBtn.className = 'btn';
+        saveBtn.style.opacity = '0.4';
+        saveBtn.style.cursor = 'default';
+        saveBtn.style.animation = '';
+      }
+    }
+
+    window._notesDirtyCheck = function() {
+      setDirty(editor.value !== window._notesBaseline);
+    };
+
+    editor.addEventListener('input', window._notesDirtyCheck);
+
+    // Auto-save on blur if dirty
+    editor.addEventListener('blur', function() {
+      if (editor.value !== window._notesBaseline) {
+        saveNotes(repoName).then(function() {
+          window._notesBaseline = editor.value;
+          setDirty(false);
+        });
+      }
+    });
+
+    // After explicit save, reset baseline
+    var origSave = window.saveNotes;
+    window.saveNotes = async function(name) {
+      await origSave(name);
+      if (name === repoName) {
+        window._notesBaseline = editor.value;
+        setDirty(false);
+      }
+    };
+  })();
+  </script>
 
   <div id="notes-preview-panel" style="display:none;margin-top:12px;border:1px solid var(--border);padding:12px;border-radius:4px">
     <div class="notes-preview" id="notes-preview-content"></div>

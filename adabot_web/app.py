@@ -114,6 +114,33 @@ def _bump_version(base_sv, bump_type):
         return base_sv.bump_patch()
 
 
+def _ensure_changelog_link(notes, repo, proposed_version=None):
+    """Strip any existing Full Changelog link and re-append a current one.
+
+    Returns the (possibly updated) notes string.
+    """
+    if not notes:
+        return notes
+    name = repo.get("name", "")
+    release_tag = (repo.get("release_tag") or "").strip()
+    # Compute proposed_version from bump_type if not provided
+    if not proposed_version:
+        lib_version = repo.get("lib_version")
+        bump_type = repo.get("bump_type") or "patch"
+        if lib_version:
+            base_sv = _coerce_version(release_tag) if release_tag else None
+            lib_sv = _coerce_version(lib_version)
+            sv = max(base_sv, lib_sv) if base_sv and lib_sv else (lib_sv or base_sv)
+            if sv:
+                proposed_version = str(_bump_version(sv, bump_type))
+    # Strip any existing changelog line
+    notes = re.sub(r'\n*\*\*Full Changelog\*\*:.*$', '', notes, flags=re.MULTILINE).rstrip()
+    if proposed_version and release_tag and release_tag.lower() not in ("none", ""):
+        html_url = repo.get("html_url") or f"https://github.com/adafruit/{name}"
+        notes += f"\n\n**Full Changelog**: {html_url}/compare/{release_tag}...{proposed_version}"
+    return notes
+
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -255,23 +282,24 @@ def repo_detail(name):
     repo = state.get("repos", {}).get(name)
     if not repo:
         return "Repo not found", 404
-    if not repo.get("release_notes"):
-        # Try LLM first; fall back to heuristic if not available or failed
-        from adabot_web.collector import _llm_analyse_changes
+    # User-edited notes are scoped to release_tag + commit count.
+    # If either changed since the edit, the notes are stale and should be regenerated.
+    if repo.get("release_notes_user_edited") and not collector.user_notes_current(repo):
+        logger.info("%s: user-edited notes stale (stamp %s) — clearing",
+                    name, repo.get("release_notes_user_edited"))
+        repo["release_notes"] = None
+        repo["release_notes_user_edited"] = None
+        _merge_repo_fields(name, repo, "release_notes", "release_notes_user_edited")
+
+    # Signal to the template whether notes still need async generation
+    needs_notes_gen = False
+    if not repo.get("release_notes") and not repo.get("release_notes_user_edited"):
         commits = repo.get("recent_commits", [])
         if commits and collector.CATEGORY_NEEDS_RELEASE in repo.get("categories", []):
-            _, _, llm_notes = _llm_analyse_changes(
-                commits,
-                name,
-                repo.get("release_tag") or "initial",
-                repo.get("lib_version") or "0.0.0",
-                example_releases=repo.get("example_releases", []),
-            )
-            repo["release_notes"] = llm_notes or generate_release_notes(repo)
+            needs_notes_gen = True  # frontend will trigger async generation
         else:
             repo["release_notes"] = generate_release_notes(repo)
-        # Persist — re-load state to avoid clobbering concurrent status updates
-        _merge_repo_fields(name, repo, "release_notes")
+            _merge_repo_fields(name, repo, "release_notes")
     blocked = _release_blocked(repo)
 
     # Fetch and cache existing release tags so we can avoid version conflicts.
@@ -319,13 +347,7 @@ def repo_detail(name):
         proposed_version = bump["new_version"]
 
     # Keep the changelog link current (strip old one if present, then re-add)
-    clean_tag = (release_tag or "").strip()
-    notes = repo.get("release_notes") or ""
-    # Strip any stale changelog line
-    notes = re.sub(r'\n*\*\*Full Changelog\*\*:.*$', '', notes, flags=re.MULTILINE).rstrip()
-    if proposed_version and clean_tag and clean_tag.lower() not in ("none", "") and notes:
-        html_url = repo.get("html_url") or f"https://github.com/adafruit/{name}"
-        notes += f"\n\n**Full Changelog**: {html_url}/compare/{clean_tag}...{proposed_version}"
+    notes = _ensure_changelog_link(repo.get("release_notes") or "", repo, proposed_version)
     if notes != (repo.get("release_notes") or "").rstrip():
         repo["release_notes"] = notes
         _merge_repo_fields(name, repo, "release_notes")
@@ -335,7 +357,8 @@ def repo_detail(name):
                            proposed_version=proposed_version,
                            bump_type=bump_type,
                            bump_justification=bump_justification,
-                           has_prerelease=has_prerelease)
+                           has_prerelease=has_prerelease,
+                           needs_notes_gen=needs_notes_gen)
 
 
 @app.route("/api/state")
@@ -442,9 +465,116 @@ def update_release_notes(name):
     repo = state.get("repos", {}).get(name)
     if not repo:
         return jsonify({"error": "not found"}), 404
-    repo["release_notes"] = request.get_json().get("notes", "")
+    notes = request.get_json().get("notes", "")
+    # Stamp with the *proposed* (bumped) version + commit count so we can
+    # detect staleness if the tag changes OR new commits land months later.
+    # The proposed version is what the user sees in the tag input field.
+    bump_type = repo.get("bump_type") or "patch"
+    lib_version = repo.get("lib_version")
+    release_tag = repo.get("release_tag")
+    proposed = None
+    if lib_version:
+        base_sv = _coerce_version(release_tag) if release_tag else None
+        lib_sv = _coerce_version(lib_version)
+        sv = max(base_sv, lib_sv) if base_sv and lib_sv else (lib_sv or base_sv)
+        if sv:
+            proposed = str(_bump_version(sv, bump_type))
+    bump = repo.get("bump_pr")
+    if bump and bump.get("new_version"):
+        proposed = bump["new_version"]
+    stamp_tag = proposed or release_tag or ""
+    n_commits = len(repo.get("recent_commits", []))
+    merged = {
+        "release_notes": notes,
+        "release_notes_user_edited": f"{stamp_tag}@{n_commits}",
+    }
+    _merge_repo_fields(name, merged, "release_notes", "release_notes_user_edited")
+    return jsonify({"ok": True})
+
+
+@app.route("/api/repo/<name>/regenerate_notes", methods=["POST"])
+def regenerate_notes(name):
+    """Clear user-edit lock and release_notes so they will be regenerated on next load."""
+    state = collector.load_state()
+    repo = state.get("repos", {}).get(name)
+    if not repo:
+        return jsonify({"error": "not found"}), 404
+    repo.pop("release_notes_user_edited", None)
+    repo["release_notes"] = None
     collector.save_state(state)
     return jsonify({"ok": True})
+
+
+@app.route("/api/repo/<name>/generate_notes", methods=["POST"])
+def generate_notes_async(name):
+    """Generate release notes via LLM (called async by the frontend).
+
+    Returns JSON with the generated notes text, or an error.
+    """
+    state = collector.load_state()
+    repo = state.get("repos", {}).get(name)
+    if not repo:
+        return jsonify({"error": "not found"}), 404
+
+    # Don't regenerate if user-edited or already present
+    if repo.get("release_notes_user_edited") and collector.user_notes_current(repo):
+        return jsonify({"notes": repo.get("release_notes", ""), "source": "user_edited"})
+    if repo.get("release_notes"):
+        return jsonify({"notes": repo["release_notes"], "source": "cached"})
+
+    from adabot_web.collector import (
+        _llm_analyse_changes, _fetch_gh_auto_notes, _compute_proposed_version,
+    )
+    commits = repo.get("recent_commits", [])
+    if not commits:
+        notes = generate_release_notes(repo)
+        repo["release_notes"] = notes
+        _merge_repo_fields(name, repo, "release_notes")
+        return jsonify({"notes": notes, "source": "heuristic"})
+
+    # Compute proposed_version: prefer bump_pr.new_version, then check if
+    # lib_version is already ahead of release_tag (i.e. already bumped),
+    # otherwise bump from the higher of lib_version/release_tag.
+    proposed_version = None
+    bump = repo.get("bump_pr")
+    if bump and bump.get("new_version"):
+        proposed_version = bump["new_version"]
+    else:
+        lib_version = repo.get("lib_version")
+        release_tag = repo.get("release_tag")
+        bump_type = repo.get("bump_type") or "patch"
+        if lib_version:
+            lib_sv = _coerce_version(lib_version)
+            rel_sv = _coerce_version(release_tag) if release_tag else None
+            if lib_sv and rel_sv and lib_sv > rel_sv:
+                # lib_version already bumped past release_tag — use it directly
+                proposed_version = str(lib_sv)
+            elif lib_sv:
+                base_sv = max(lib_sv, rel_sv) if (lib_sv and rel_sv) else lib_sv
+                proposed_version = str(_bump_version(base_sv, bump_type))
+
+    # Lazily fetch GH auto-notes if missing
+    if not repo.get("gh_auto_notes"):
+        proposed_tag = proposed_version or repo.get("lib_version") or "0.0.0"
+        lazy_repo = {"name": name, "default_branch": repo.get("default_branch", "main")}
+        _fetch_gh_auto_notes(lazy_repo, repo, proposed_tag)
+        if repo.get("gh_auto_notes"):
+            _merge_repo_fields(name, repo, "gh_auto_notes")
+
+    _, _, llm_notes = _llm_analyse_changes(
+        commits,
+        name,
+        repo.get("release_tag") or "initial",
+        repo.get("lib_version") or "0.0.0",
+        example_releases=repo.get("example_releases", []),
+        gh_auto_notes=repo.get("gh_auto_notes"),
+        compare_files=repo.get("compare_files", []),
+    )
+    notes = llm_notes or generate_release_notes(repo)
+    notes = _ensure_changelog_link(notes, repo, proposed_version)
+    repo["release_notes"] = notes
+    _merge_repo_fields(name, repo, "release_notes")
+    return jsonify({"notes": notes, "source": "llm" if llm_notes else "heuristic"})
 
 
 @app.route("/api/repo/<name>/status", methods=["POST"])
@@ -1015,6 +1145,7 @@ def create_release(name):
     repo["released_tag"] = new_tag
     repo.pop("existing_tags", None)
     repo.pop("existing_tags_at", None)
+    repo.pop("release_notes_user_edited", None)
     collector.save_state(state)
     _append_release_log(name, repo.get("release_tag"), new_tag, notes, out.strip())
     return jsonify({"ok": True, "url": out})
@@ -1050,6 +1181,7 @@ def batch_release():
             repo["released_tag"] = tag
             repo.pop("existing_tags", None)
             repo.pop("existing_tags_at", None)
+            repo.pop("release_notes_user_edited", None)
             _append_release_log(name, repo.get("release_tag"), tag, notes, out.strip())
             results.append({"name": name, "ok": True, "url": out})
         else:
@@ -1066,7 +1198,6 @@ def batch_release():
             })
 
         collector.save_state(state)
-        time.sleep(2)  # throttle
 
     return jsonify({"results": results})
 

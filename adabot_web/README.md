@@ -14,7 +14,8 @@ Adabot periodically audits hundreds of Adafruit Arduino libraries for release hy
 4. Monitor CI on the bump PR and merge it when green
 5. Watch branch CI after the merge
 6. Create the GitHub release (or get a pre-filled manual URL if the token lacks permission)
-
+7. This will kill and restart the server with gh creds (gh auth status to see who):
+`kill $(ps aux | grep '[r]un_web.py --port 8080' | awk '{print $2}') 2>/dev/null; ADABOT_GITHUB_ACCESS_TOKEN=$(gh auth token) .venv/bin/python run_web.py --port 8080`
 ---
 
 ## Quick Start

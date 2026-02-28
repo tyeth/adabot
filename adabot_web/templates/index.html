@@ -394,6 +394,26 @@ async function saveNotes(name) {
   toast('Notes saved', 'ok', null, {repo: name, tab: 'notes'});
 }
 
+async function regenerateNotes(name) {
+  confirm_action('Regenerate Notes', 'Discard your edits and regenerate release notes via LLM?', async () => {
+    toast('Regenerating notes…', 'ok', 'regen-' + name, {repo: name, tab: 'notes'});
+    await fetch('/api/repo/' + name + '/regenerate_notes', {method:'POST'});
+    // Generate new notes async, then reload panel to show them
+    const editor = document.getElementById('notes-editor');
+    if (editor) editor.value = '';
+    if (editor) editor.placeholder = 'Generating release notes via AI\u2026';
+    try {
+      const r = await fetch('/api/repo/' + name + '/generate_notes', {method:'POST'});
+      const data = await r.json();
+      if (data.notes && editor) editor.value = data.notes;
+      if (repoData[name]) repoData[name].release_notes = data.notes;
+      toast('Notes regenerated', 'ok', 'regen-' + name, {repo: name, tab: 'notes'});
+    } catch (err) {
+      toast('Notes generation failed', 'error', 'regen-' + name, {repo: name, tab: 'notes'});
+    }
+  });
+}
+
 async function doBump(name) {
   const overrideEl = document.getElementById('bump-target-version');
   const targetVer = overrideEl ? overrideEl.value.trim() : '';

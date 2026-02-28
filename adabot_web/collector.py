@@ -92,6 +92,23 @@ def is_stale(state):
     return age is None or age > STALE_DAYS
 
 
+def user_notes_current(repo_data):
+    """Check whether user-edited release notes are still current.
+
+    The stamp is ``"<release_tag>@<commit_count>"``; notes are stale if
+    the release tag changed OR the number of commits changed.
+
+    Returns True if notes are current and should be kept, False if stale.
+    Returns False if there is no user-edit stamp.
+    """
+    stamp = repo_data.get("release_notes_user_edited")
+    if not stamp:
+        return False
+    cur_tag = repo_data.get("release_tag") or ""
+    n_commits = len(repo_data.get("recent_commits", []))
+    return stamp == f"{cur_tag}@{n_commits}"
+
+
 def is_running():
     global _collection_thread
     return _collection_thread is not None and _collection_thread.is_alive()
@@ -184,12 +201,14 @@ def _run_single_repo(name):
 # ---------------------------------------------------------------------------
 
 _USER_PRESERVED = (
-    "release_notes", "release_status", "bump_pr", "released_tag",
+    "release_notes", "release_notes_user_edited",
+    "release_status", "bump_pr", "released_tag",
     "branch_ci_status",
 )
 _ENRICHMENT_CACHE = (
     "recent_commits", "prs", "version_files",
     "bump_type", "bump_justification", "example_releases",
+    "compare_files", "gh_auto_notes",
     "details_loaded",
 )
 
@@ -583,6 +602,34 @@ def _fetch_prs(repo, entry):
         pass
 
 
+_SKIP_DIFF_PATTERNS = {
+    ".github/", ".circleci/", ".travis", "makefile",
+    ".gitignore", ".clang-format", ".pre-commit",
+    "library.properties",  # version-only bump
+    ".pylintrc", ".flake8", "pyproject.toml",
+    "requirements.txt",    # dependency-only
+}
+
+
+def _is_diff_relevant(filename):
+    """True if the file is likely relevant to release notes."""
+    lower = filename.lower()
+    return not any(skip in lower for skip in _SKIP_DIFF_PATTERNS)
+
+
+def _is_whitespace_only_diff(patch):
+    """True if a unified diff patch only adds/removes whitespace."""
+    for line in patch.splitlines():
+        if not line.startswith("+") and not line.startswith("-"):
+            continue
+        if line.startswith("+++") or line.startswith("---"):
+            continue
+        content = line[1:]
+        if content.strip():
+            return False
+    return True
+
+
 def _fetch_commits(repo, entry, from_ref, to_ref):
     try:
         resp = gh_reqs.get(
@@ -600,6 +647,18 @@ def _fetch_commits(repo, entry, from_ref, to_ref):
                 }
                 for c in data.get("commits", [])[:30]
                 if isinstance(c, dict)
+            ]
+            # Capture file diffs for LLM context
+            entry["compare_files"] = [
+                {
+                    "filename": f["filename"],
+                    "status": f.get("status", "modified"),
+                    "patch": (f.get("patch") or "")[:800],
+                }
+                for f in data.get("files", [])[:40]
+                if f.get("patch")
+                and _is_diff_relevant(f["filename"])
+                and not _is_whitespace_only_diff(f.get("patch", ""))
             ]
     except Exception:
         pass
@@ -675,24 +734,127 @@ def _find_version_files(repo, lib_version):
 # Recent releases (for LLM style examples)
 # ---------------------------------------------------------------------------
 
-def _fetch_recent_releases(repo, repo_data, count=3):
-    """Fetch the last `count` GitHub releases and store in repo_data['example_releases']."""
-    name = repo["name"]
+def _release_qualifier(tag):
+    """Extract the prerelease qualifier from a tag, e.g. 'beta' from '1.0.0-beta.3'.
+
+    Returns the qualifier string (e.g. 'beta', 'offline') or '' for stable releases.
+    """
+    raw = tag.strip().lstrip("v")
     try:
+        sv = semver.VersionInfo.parse(raw)
+        if sv.prerelease:
+            # e.g. 'beta.122' → 'beta', 'offline.5' → 'offline'
+            return sv.prerelease.split(".")[0]
+    except ValueError:
+        # Fallback: look for -qualifier.N pattern
+        m = re.search(r'-([a-zA-Z]+)', raw)
+        if m:
+            return m.group(1).lower()
+    return ""
+
+
+def _fetch_recent_releases(repo, repo_data, count=3):
+    """Fetch the last `count` GitHub releases matching the current qualifier.
+
+    Repos may publish releases with different qualifiers (e.g. -beta, -offline)
+    that use different release note styles. We filter to only return examples
+    that match the current version's qualifier so the LLM gets consistent style.
+    """
+    name = repo["name"]
+    current_tag = repo_data.get("release_tag") or repo_data.get("lib_version") or ""
+    target_qual = _release_qualifier(current_tag)
+
+    try:
+        # Fetch more than needed so we can filter by qualifier
         resp = gh_reqs.get(
             f"/repos/adafruit/{name}/releases",
-            params={"per_page": count},
+            params={"per_page": min(count * 5, 30)},
         )
         if not resp.ok:
             return
         releases = []
-        for r in resp.json()[:count]:
+        for r in resp.json():
+            tag = r.get("tag_name", "")
             body = (r.get("body") or "").strip()
-            if body:
-                releases.append({"tag": r.get("tag_name", ""), "body": body})
+            if not body:
+                continue
+            if _release_qualifier(tag) != target_qual:
+                continue
+            releases.append({"tag": tag, "body": body})
+            if len(releases) >= count:
+                break
         repo_data["example_releases"] = releases
     except Exception as e:
         logger.debug("Failed to fetch releases for %s: %s", name, e)
+
+
+# ---------------------------------------------------------------------------
+# GitHub auto-generated release notes
+# ---------------------------------------------------------------------------
+
+def _fetch_gh_auto_notes(repo, repo_data, proposed_tag):
+    """Fetch GitHub's auto-generated release notes via the generate-notes API.
+
+    Stores the result in repo_data["gh_auto_notes"].
+    Gracefully handles failures (logs + returns None).
+    """
+    name = repo["name"]
+    default_branch = repo.get("default_branch", "main")
+    release_tag = repo_data.get("release_tag")
+
+    payload = {
+        "tag_name": proposed_tag,
+        "target_commitish": default_branch,
+    }
+    if release_tag and release_tag not in ("None", "Unknown"):
+        payload["previous_tag_name"] = release_tag
+
+    try:
+        resp = gh_reqs.post(
+            f"/repos/adafruit/{name}/releases/generate-notes",
+            json=payload,
+        )
+        if resp.ok:
+            body = resp.json().get("body", "")
+            repo_data["gh_auto_notes"] = body
+            return body
+        else:
+            logger.debug("generate-notes API returned %s for %s: %s",
+                         resp.status_code, name, resp.text[:200])
+    except Exception as e:
+        logger.debug("generate-notes failed for %s: %s", name, e)
+
+    return None
+
+
+def _compute_proposed_version(lib_version, bump_type):
+    """Compute a proposed version string from lib_version and bump_type.
+
+    Returns a version string or None if lib_version can't be parsed.
+    """
+    if not lib_version:
+        return None
+    raw = lib_version.strip().lstrip("v")
+    try:
+        sv = semver.VersionInfo.parse(raw)
+    except ValueError:
+        return None
+
+    if bump_type == "prerelease" and (sv.prerelease or sv.build):
+        # Increment prerelease: beta.3 → beta.4
+        pre = sv.prerelease or ""
+        m = re.search(r'(\d+)(?=\D*$)', pre)
+        if m:
+            new_pre = pre[:m.start()] + str(int(m.group(1)) + 1) + pre[m.end():]
+        else:
+            new_pre = pre + ".1"
+        return str(sv.replace(prerelease=new_pre, build=None))
+    elif bump_type == "major":
+        return str(sv.bump_major())
+    elif bump_type == "minor":
+        return str(sv.bump_minor())
+    else:
+        return str(sv.bump_patch())
 
 
 # ---------------------------------------------------------------------------
@@ -700,7 +862,8 @@ def _fetch_recent_releases(repo, repo_data, count=3):
 # ---------------------------------------------------------------------------
 
 _NOISE_PREFIXES = (
-    "merge pull request", "merge branch", "bump version",
+    "merge pull request", "merge branch", "merge remote",
+    "bump version",
     "update github", "update ci ", "add .github", "update .github",
     "fix github", "ci:", "docs:", "chore:", "style:",
 )
@@ -781,31 +944,38 @@ def _suggest_bump_type(commits, current_version=None):
     return "patch", "Fixes, cleanup, or CI-only changes"
 
 
-def _llm_analyse_changes(commits, lib_name, since_tag, current_version, example_releases=None):
+def _llm_analyse_changes(commits, lib_name, since_tag, current_version,
+                         example_releases=None, gh_auto_notes=None,
+                         compare_files=None):
     """
     Call claude CLI to analyse commits and return (bump_type, justification, release_notes).
     Returns (None, None, None) on failure — caller should fall back to heuristic.
+
+    Parameters:
+        gh_auto_notes: GitHub's auto-generated release notes (string) for reference
+        compare_files: list of {filename, status, patch} dicts for file-level context
     """
     clean = [
-        c.get("message", "").split("\n")[0].strip()
-        for c in commits
+        c for c in commits
         if not _is_noise(c.get("message", ""))
     ]
     if not clean:
         return None, None, None
 
-    commit_list = "\n".join(f"- {msg}" for msg in clean[:35])
-
-    style_block = ""
-    if example_releases:
-        examples = "\n\n".join(
-            f"Release {r['tag']}:\n{r['body'][:600]}"
-            for r in example_releases[:3]
-        )
-        style_block = (
-            f"\n\nHere are the last few release notes for this library as style examples "
-            f"(match tone, structure, and level of detail):\n{examples}\n"
-        )
+    commit_lines = []
+    for c in clean[:35]:
+        msg = c.get("message", "").split("\n")[0].strip()
+        sha = c.get("sha", "")
+        url = c.get("html_url", "")
+        author = c.get("author", "")
+        # Format: - {sha} {msg} by @{author} {url}
+        parts = [f"- {sha} {msg}" if sha else f"- {msg}"]
+        if author:
+            parts.append(f"by @{author}")
+        if url:
+            parts.append(url)
+        commit_lines.append(" ".join(parts))
+    commit_list = "\n".join(commit_lines)
 
     # Detect whether current_version is a prerelease (e.g. 1.0.0-beta.3)
     is_prerelease = False
@@ -830,18 +1000,87 @@ def _llm_analyse_changes(commits, lib_name, since_tag, current_version, example_
             f"  bump_type: \"patch\", \"minor\", or \"major\""
         )
 
-    prompt = (
+    # -- TOP: Role + instructions + JSON output format --
+    has_examples = bool(example_releases)
+    if has_examples:
+        notes_instructions = (
+            "  release_notes: markdown release notes that CLOSELY MATCH the "
+            "structure, headings, formatting, and tone of the style examples below. "
+            "Preserve any recurring boilerplate sections (e.g. install instructions, "
+            "upgrade notes) exactly as they appear in the examples, then add the "
+            "changes from this release using the same heading style and bullet format. "
+            "Include contributor mentions and PR links from the GitHub auto-generated "
+            "notes when available. For each change, link the PR number or short commit "
+            "SHA, e.g. ([`abc1234`](url)) or (#123). Do NOT just list every commit — "
+            "group related commits into single bullet points with clear descriptions. "
+            "Do NOT include a **Full Changelog** link — that is added automatically."
+        )
+    else:
+        notes_instructions = (
+            "  release_notes: markdown release notes, concise and human-readable. "
+            "Group changes under ### What's Changed with bullet points. "
+            "Each bullet should describe the change in user-friendly language "
+            "(do NOT just copy commit messages verbatim — summarize and clarify). "
+            "For each change, link the PR number or short commit SHA, e.g. "
+            "([`abc1234`](url)) or (#123). Mention contributors with @username. "
+            "No h1/h2 headers. Do NOT list every commit individually — "
+            "group related commits into single bullet points. "
+            "Do NOT echo the raw commit list. "
+            "Do NOT include a **Full Changelog** link — that is added automatically."
+        )
+
+    prompt_parts = [
         f"You are preparing a release for the Arduino library '{lib_name}' "
         f"(current version: {current_version}, since tag: {since_tag}).\n\n"
-        f"Commits in this release:\n{commit_list}"
-        f"{style_block}\n\n"
         f"Return ONLY a JSON object (no markdown fences, no extra text) with exactly these keys:\n"
         f"{bump_type_instructions}\n"
         f"  bump_justification: 1-2 terse sentences — what changed and why that semver level\n"
-        f"  release_notes: markdown release notes, concise, "
-        f"grouped under ### New Features / ### Bug Fixes / ### Changed headings as appropriate; "
-        f"omit any section that has no entries; use bullet points; no h1/h2 headers"
+        f"{notes_instructions}",
+    ]
+
+    # -- MIDDLE: GitHub auto-generated notes + style examples --
+    if gh_auto_notes:
+        prompt_parts.append(
+            f"\nGitHub's auto-generated release notes for reference "
+            f"(use contributor mentions and PR links from here):\n{gh_auto_notes[:3000]}"
+        )
+
+    if example_releases:
+        examples = "\n\n".join(
+            f"Release {r['tag']}:\n{r['body'][:600]}"
+            for r in example_releases[:3]
+        )
+        prompt_parts.append(
+            f"\nIMPORTANT — Style examples from this library's previous releases. "
+            f"Your release_notes MUST follow this same structure and formatting:\n{examples}"
+        )
+
+    # -- BOTTOM: Commits + file diffs (most likely to be truncated) --
+    prompt_parts.append(
+        f"\nReference data — commits in this release (use for context, "
+        f"do NOT copy this list into release_notes verbatim):\n{commit_list}"
     )
+
+    if compare_files:
+        diff_lines = []
+        total_chars = 0
+        for f in compare_files:
+            patch = f.get("patch", "")
+            if not patch:
+                continue
+            entry = f"--- {f['filename']} ({f.get('status', 'modified')})\n{patch}"
+            if total_chars + len(entry) > 8000:
+                diff_lines.append("(remaining diffs truncated)")
+                break
+            diff_lines.append(entry)
+            total_chars += len(entry)
+        if diff_lines:
+            prompt_parts.append(
+                "\nFile diffs (for context — may be truncated):\n"
+                + "\n\n".join(diff_lines)
+            )
+
+    prompt = "\n".join(prompt_parts)
 
     try:
         # Strip CLAUDECODE so we can call claude from inside a Claude Code session
@@ -904,6 +1143,7 @@ def _enrich_details(repo_data):
     try:
         _fetch_prs(repo, repo_data)
 
+        # 1. Fetch commits + diffs
         if release_tag:
             _fetch_commits(repo, repo_data, from_ref=release_tag, to_ref=default_branch)
         elif repo_data.get("compare_url"):
@@ -912,31 +1152,71 @@ def _enrich_details(repo_data):
         if repo_data.get("lib_version"):
             repo_data["version_files"] = _find_version_files(repo, repo_data["lib_version"])
 
+        # 2. Fetch recent releases (for style examples)
         _fetch_recent_releases(repo, repo_data)
+
+        # Invalidate stale user-edited notes (tag or commit count changed)
+        if repo_data.get("release_notes_user_edited") and not user_notes_current(repo_data):
+            logger.info("%s: user-edited notes stale (stamp %s) — clearing",
+                        name, repo_data.get("release_notes_user_edited"))
+            repo_data["release_notes"] = None
+            repo_data["release_notes_user_edited"] = None
 
         _VALID_BUMP_TYPES = {"patch", "minor", "major", "prerelease"}
         lib_version = repo_data.get("lib_version") or "0.0.0"
         commits = repo_data.get("recent_commits", [])
         if CATEGORY_NEEDS_RELEASE in repo_data.get("categories", []) and commits:
-            # LLM analysis for repos that need releasing
+            # 3. Compute heuristic bump first (cheap, needed for proposed version)
+            h_bump_type, h_justification = _suggest_bump_type(commits, lib_version)
+
+            # 4. Compute proposed version: prefer bump_pr.new_version, then
+            # check if lib_version is already ahead of release_tag (already bumped),
+            # otherwise bump from the higher of lib_version/release_tag.
+            bump_pr = repo_data.get("bump_pr")
+            release_tag = repo_data.get("release_tag")
+            if bump_pr and bump_pr.get("new_version"):
+                proposed_version = bump_pr["new_version"]
+            else:
+                try:
+                    lib_sv = semver.VersionInfo.parse(lib_version.strip().lstrip("v"))
+                except (ValueError, AttributeError):
+                    lib_sv = None
+                try:
+                    rel_sv = semver.VersionInfo.parse(
+                        release_tag.strip().lstrip("v")) if release_tag else None
+                except (ValueError, AttributeError):
+                    rel_sv = None
+                if lib_sv and rel_sv and lib_sv > rel_sv:
+                    # lib_version already bumped past release_tag — use directly
+                    proposed_version = str(lib_sv)
+                else:
+                    proposed_version = _compute_proposed_version(lib_version, h_bump_type)
+            proposed_tag = proposed_version or lib_version
+
+            # 5. Fetch GitHub's auto-generated release notes
+            _fetch_gh_auto_notes(repo, repo_data, proposed_tag)
+
+            # 6. LLM analysis with all data
             bump_type, justification, llm_notes = _llm_analyse_changes(
                 commits,
                 name,
                 repo_data.get("release_tag") or "initial",
                 lib_version,
                 example_releases=repo_data.get("example_releases", []),
+                gh_auto_notes=repo_data.get("gh_auto_notes"),
+                compare_files=repo_data.get("compare_files", []),
             )
+            # 7. Use LLM result or fall back to heuristic
             if bump_type and bump_type in _VALID_BUMP_TYPES:
                 repo_data["bump_type"] = bump_type
                 repo_data["bump_justification"] = justification
             else:
-                # LLM failed or returned unknown type — fall back to heuristic
-                bump_type, justification = _suggest_bump_type(commits, lib_version)
-                repo_data["bump_type"] = bump_type
-                repo_data["bump_justification"] = justification
-            # Store LLM notes only if the user hasn't edited them
-            if llm_notes and not repo_data.get("release_notes"):
-                repo_data["release_notes"] = llm_notes
+                repo_data["bump_type"] = h_bump_type
+                repo_data["bump_justification"] = h_justification
+            # Store LLM notes only if the user hasn't manually edited them
+            if llm_notes and not repo_data.get("release_notes_user_edited"):
+                if not repo_data.get("release_notes"):
+                    repo_data["release_notes"] = llm_notes
         else:
             bump_type, justification = _suggest_bump_type(
                 repo_data.get("recent_commits", []), lib_version
