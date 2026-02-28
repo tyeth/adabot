@@ -119,11 +119,27 @@ def refresh_single_repo(name):
     return True
 
 
+def _save_repo_merge(name, repo_data):
+    """Re-load fresh state, preserve user fields from disk, save only this repo.
+
+    This avoids a race where a background refresh holds a stale snapshot and
+    clobbers user-set fields (like release_status) that were updated by a
+    concurrent request (e.g. POST /api/repo/<name>/status).
+    """
+    fresh = load_state()
+    fresh_repos = fresh.setdefault("repos", {})
+    prev = fresh_repos.get(name, {})
+    for k in _USER_PRESERVED:
+        if prev.get(k) is not None:
+            repo_data[k] = prev[k]
+    fresh_repos[name] = repo_data
+    save_state(fresh)
+
+
 def _run_single_repo(name):
     """Phase 1 + Phase 2 for a single named repo, writing back to web_state.json."""
     logger.info("Single-repo refresh starting: %s", name)
     state = load_state()
-    repos = state.setdefault("repos", {})
 
     # Fetch the repo metadata directly from GitHub API
     resp = gh_reqs.get(f"/repos/adafruit/{name}")
@@ -152,20 +168,14 @@ def _run_single_repo(name):
         logger.warning("Single-repo refresh: could not fetch Arduino index: %s", e)
         arduino_index = state.get("arduino_library_index", {})
 
-    # Preserve user-set fields from the previous entry
-    prev = repos.get(name, {})
     repo_data = _process_repo(repo, arduino_index)
-    for k in _USER_PRESERVED:
-        if prev.get(k) is not None:
-            repo_data[k] = prev[k]
 
     # Always re-enrich (clear details_loaded so _enrich_details runs)
     repo_data["details_loaded"] = False
-    repos[name] = repo_data
-    save_state(state)
+    _save_repo_merge(name, repo_data)
 
     _enrich_details(repo_data)
-    save_state(state)
+    _save_repo_merge(name, repo_data)
     logger.info("Single-repo refresh done: %s", name)
 
 
@@ -175,6 +185,7 @@ def _run_single_repo(name):
 
 _USER_PRESERVED = (
     "release_notes", "release_status", "bump_pr", "released_tag",
+    "branch_ci_status",
 )
 _ENRICHMENT_CACHE = (
     "recent_commits", "prs", "version_files",
@@ -182,10 +193,25 @@ _ENRICHMENT_CACHE = (
     "details_loaded",
 )
 
+def _freshen_user_fields(state):
+    """Re-read user-preserved fields from disk before saving.
+
+    This avoids a race where the long-running collection thread holds a stale
+    snapshot and clobbers user-set fields (like release_status) that were
+    updated by a concurrent request during the run.
+    """
+    fresh = load_state()
+    fresh_repos = fresh.get("repos", {})
+    for name, repo in state.get("repos", {}).items():
+        fresh_repo = fresh_repos.get(name, {})
+        for k in _USER_PRESERVED:
+            if fresh_repo.get(k) is not None:
+                repo[k] = fresh_repo[k]
+
+
 def _run_collection():
     state = load_state()
-    # Snapshot previous run: user-set fields always restored;
-    # enrichment cache restored only when pushed_at is unchanged.
+    # Snapshot previous run: enrichment cache restored when pushed_at unchanged.
     preserved = {
         name: {k: v for k, v in repo.items()
                if k in _USER_PRESERVED + _ENRICHMENT_CACHE + ("pushed_at",)}
@@ -249,15 +275,17 @@ def _run_collection():
                         repo_data[k] = saved[k]
                 logger.debug("Enrichment cache hit (pushed_at unchanged): %s", repo["name"])
 
-            # Always restore user-set fields
+            # Restore user-set fields from preserved snapshot (freshened at save time)
             for k in _USER_PRESERVED:
                 if saved.get(k) is not None:
                     repo_data[k] = saved[k]
 
             state["repos"][repo["name"]] = repo_data
             if i % 20 == 0:
+                _freshen_user_fields(state)
                 save_state(state)
 
+        _freshen_user_fields(state)
         save_state(state)
         logger.info("Basic scan done. Enriching details…")
 
@@ -269,12 +297,14 @@ def _run_collection():
         ]
         state["total"] = len(to_enrich)
         state["progress"] = 0
+        _freshen_user_fields(state)
         save_state(state)
 
         for i, name in enumerate(to_enrich):
             state["progress"] = i + 1
             _enrich_details(state["repos"][name])
             if i % 10 == 0:
+                _freshen_user_fields(state)
                 save_state(state)
 
         state["status"] = "done"
@@ -285,6 +315,7 @@ def _run_collection():
         state["error"] = str(e)
         logger.exception("Collector failed: %s", e)
 
+    _freshen_user_fields(state)
     save_state(state)
 
 

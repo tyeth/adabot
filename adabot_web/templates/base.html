@@ -131,6 +131,18 @@
     .loading { color: var(--muted); font-size: 0.85rem; }
     .empty { color: var(--muted); font-size: 0.85rem; padding: 20px 0; }
 
+    /* Pipeline banner */
+    .pipeline-banner { display: flex; align-items: center; gap: 6px; padding: 8px 10px; margin-bottom: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; font-size: 0.78rem; flex-wrap: wrap; }
+    .pipeline-version-arrow { font-family: monospace; font-weight: 600; color: var(--text); margin-right: 6px; white-space: nowrap; }
+    .pipeline-step { padding: 2px 8px; border-radius: 3px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+    .step-done { background: var(--green); color: #000; }
+    .step-active { background: var(--yellow); color: #000; animation: pulse-step 1.5s ease-in-out infinite; }
+    .step-fail { background: var(--red); color: #fff; }
+    .step-todo { background: var(--border); color: var(--muted); }
+    .step-ready { background: var(--accent2); color: #d8b4fe; border: 1px solid #a78bfa; }
+    .pipeline-arrow { color: var(--muted); font-size: 0.7rem; }
+    @keyframes pulse-step { 0%, 100% { opacity: 1; } 50% { opacity: 0.65; } }
+
     /* Manual release modal */
     #manual-release-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 2100; align-items: center; justify-content: center; }
     #manual-release-modal .modal-box { max-width: 620px; }

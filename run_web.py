@@ -17,11 +17,11 @@ import os
 import sys
 
 # Set credentials if not already in environment
-os.environ.setdefault("ADABOT_GITHUB_USER", "tyeth-ai-assisted")
-os.environ.setdefault(
-    "ADABOT_GITHUB_ACCESS_TOKEN",
-    "MISSING_TOKEN",
-)
+os.environ.setdefault("ADABOT_GITHUB_USER", "tyeth")
+# os.environ.setdefault(
+#     "ADABOT_GITHUB_ACCESS_TOKEN",
+#     "MISSING_TOKEN",
+# )
 
 LOG_FILE = os.path.join(os.path.dirname(__file__), "adabot_web.log")
 

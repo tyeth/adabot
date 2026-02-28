@@ -2,8 +2,72 @@
 window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else 'null' }};
 </script>
 
+{# ── Pipeline status macro ─────────────────────────────────────────────── #}
+{% macro pipeline_banner() %}
+{% set bump = repo.bump_pr %}
+{% if bump %}
+  {% set ci = (bump.ci_status or 'pending')|lower %}
+  {% set pr_state = (bump.state or 'open')|lower %}
+  {% set bci = (repo.branch_ci_status or '')|lower %}
+  {% set released = (repo.release_status or '')|lower == 'released' %}
+  {# Step states: done / active (CI running) / ready (user action needed) / fail / todo #}
+  {% set s1 = 'done' %}
+  {% if ci == 'pass' %}
+    {% set s2 = 'done' %}
+  {% elif ci == 'fail' %}
+    {% set s2 = 'fail' %}
+  {% else %}
+    {% set s2 = 'active' %}
+  {% endif %}
+  {% if pr_state == 'merged' %}
+    {% set s2 = 'done' %}
+    {% set s3 = 'done' %}
+    {% if bci == 'pass' %}
+      {% set s4 = 'done' %}
+    {% elif bci == 'fail' %}
+      {% set s4 = 'fail' %}
+    {% elif bci %}
+      {% set s4 = 'active' %}
+    {% else %}
+      {% set s4 = 'active' %}
+    {% endif %}
+  {% elif ci == 'pass' %}
+    {% set s3 = 'ready' %}
+    {% set s4 = 'todo' %}
+  {% else %}
+    {% set s3 = 'todo' %}
+    {% set s4 = 'todo' %}
+  {% endif %}
+  {% if released %}
+    {% set s4 = 'done' %}
+    {% set s5 = 'done' %}
+  {% elif pr_state == 'merged' and bci == 'pass' %}
+    {% set s5 = 'ready' %}
+  {% else %}
+    {% set s5 = 'todo' %}
+  {% endif %}
+  <div class="pipeline-banner">
+    <span class="pipeline-version-arrow">{{ repo.release_tag or repo.lib_version or '?' }} &rarr; {{ bump.new_version or proposed_version or '?' }}</span>
+    <span class="pipeline-step step-{{ s1 }}">Bump PR</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-step step-{{ s2 }}">PR CI</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-step step-{{ s3 }}">Merged</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-step step-{{ s4 }}">Branch CI</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-step step-{{ s5 }}">{% if s5 == 'ready' %}Needs Release{% elif s5 == 'done' %}Released{% else %}Release{% endif %}</span>
+  </div>
+{% else %}
+  <div class="pipeline-banner">
+    <span style="color:var(--muted)">No bump PR &mdash; create one from the Version Bump tab to start the release pipeline</span>
+  </div>
+{% endif %}
+{% endmacro %}
+
 <!-- Tab: Changes / PRs -->
 <div class="tab-pane active" id="tab-changes">
+  {{ pipeline_banner() }}
   <h3 style="margin-bottom:10px">
     <a href="{{ repo.html_url }}" target="_blank">{{ repo.name }}</a>
     {% if repo.release_tag %}
@@ -73,6 +137,7 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
 
 <!-- Tab: Release Notes -->
 <div class="tab-pane" id="tab-notes">
+  {{ pipeline_banner() }}
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
     <h4 style="color:var(--accent)">Release Notes</h4>
     <div style="display:flex;gap:6px">
@@ -121,7 +186,15 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
 
 <!-- Tab: Version Bump -->
 <div class="tab-pane" id="tab-bump">
+  {{ pipeline_banner() }}
   <h4 style="color:var(--accent);margin-bottom:10px">Version Bump</h4>
+  {% if repo.bump_pr and repo.bump_pr.state == 'merged' %}
+  <div style="padding:8px 10px;background:#1a3a1a;border-radius:4px;border:1px solid var(--green);margin-bottom:12px;font-size:0.85rem">
+    <strong style="color:var(--green)">&#10003; Version already bumped to {{ repo.bump_pr.new_version or '?' }}</strong>
+    &mdash; bump PR <a href="{{ repo.bump_pr.url }}" target="_blank">#{{ repo.bump_pr.number }}</a> has been merged.
+    The diff below is informational.
+  </div>
+  {% endif %}
 
   {% if repo.release_tag and repo.lib_version %}
   <div style="font-size:0.85rem;margin-bottom:14px;display:flex;gap:16px;flex-wrap:wrap">
@@ -224,11 +297,15 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
 
 <!-- Tab: CI Status -->
 <div class="tab-pane" id="tab-ci">
+  {{ pipeline_banner() }}
   <h4 style="color:var(--accent);margin-bottom:10px">CI Status</h4>
 
   {% if repo.bump_pr %}
   <div style="margin-bottom:10px;font-size:0.85rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
     <span>Bump PR <a href="{{ repo.bump_pr.url }}" target="_blank">#{{ repo.bump_pr.number }}</a></span>
+    {% if repo.bump_pr.new_version %}
+      <span style="font-family:monospace;color:var(--text)">&rarr; {{ repo.bump_pr.new_version }}</span>
+    {% endif %}
     {% set _cs = repo.bump_pr.ci_status or 'pending' %}
     <span class="tag tag-{{ _cs }}">CI: {{ _cs }}</span>
     {% if repo.bump_pr.state == 'merged' %}

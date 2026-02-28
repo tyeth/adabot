@@ -178,6 +178,23 @@ def _release_blocked(repo):
     return None
 
 
+def _merge_repo_fields(name, repo, *fields):
+    """Re-load state fresh and update only the specified fields for a repo.
+
+    This avoids a race where repo_detail() holds a stale state snapshot
+    and overwrites fields (like release_status) that were updated by
+    a concurrent request (e.g. POST /api/repo/<name>/status).
+    """
+    fresh = collector.load_state()
+    fresh_repo = fresh.get("repos", {}).get(name)
+    if fresh_repo is None:
+        return
+    for f in fields:
+        if f in repo:
+            fresh_repo[f] = repo[f]
+    collector.save_state(fresh)
+
+
 _DEFAULT_GH_USER  = "tyeth-ai-assisted"
 _DEFAULT_GH_TOKEN = "MISSING_TOKEN"
 
@@ -253,9 +270,8 @@ def repo_detail(name):
             repo["release_notes"] = llm_notes or generate_release_notes(repo)
         else:
             repo["release_notes"] = generate_release_notes(repo)
-        # Persist so next load is instant
-        state["repos"][name] = repo
-        collector.save_state(state)
+        # Persist — re-load state to avoid clobbering concurrent status updates
+        _merge_repo_fields(name, repo, "release_notes")
     blocked = _release_blocked(repo)
 
     # Fetch and cache existing release tags so we can avoid version conflicts.
@@ -272,8 +288,8 @@ def repo_detail(name):
         else:
             repo["existing_tags"] = []
         repo["existing_tags_at"] = time.time()
-        state["repos"][name] = repo
-        collector.save_state(state)
+        # Persist — re-load state to avoid clobbering concurrent status updates
+        _merge_repo_fields(name, repo, "existing_tags", "existing_tags_at")
 
     existing_tags = set(repo.get("existing_tags") or [])
 
@@ -297,6 +313,11 @@ def repo_detail(name):
                 proposed_sv = proposed_sv.bump_patch()
             proposed_version = str(proposed_sv)
 
+    # Override with bump PR version if one exists — avoids stale recalculation
+    bump = repo.get("bump_pr")
+    if bump and bump.get("new_version"):
+        proposed_version = bump["new_version"]
+
     # Keep the changelog link current (strip old one if present, then re-add)
     clean_tag = (release_tag or "").strip()
     notes = repo.get("release_notes") or ""
@@ -307,8 +328,7 @@ def repo_detail(name):
         notes += f"\n\n**Full Changelog**: {html_url}/compare/{clean_tag}...{proposed_version}"
     if notes != (repo.get("release_notes") or "").rstrip():
         repo["release_notes"] = notes
-        state["repos"][name] = repo
-        collector.save_state(state)
+        _merge_repo_fields(name, repo, "release_notes")
 
     return render_template("repo_detail.html", repo=repo,
                            release_blocked=blocked,

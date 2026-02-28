@@ -96,6 +96,11 @@
             <span id="ci-badge-{{ repo.name }}" style="display:none"></span>
             <span id="bci-badge-{{ repo.name }}" style="display:none"></span>
           {% endif %}
+          {% if repo.bump_pr and repo.bump_pr.new_version %}
+            <span class="tag" id="ver-badge-{{ repo.name }}" style="background:var(--surface2);color:var(--text);font-family:monospace">&rarr; {{ repo.bump_pr.new_version }}</span>
+          {% else %}
+            <span id="ver-badge-{{ repo.name }}" style="display:none"></span>
+          {% endif %}
           {% if repo.release_status == 'ready' %}<span class="tag tag-ready">&#10003; ready</span>{% endif %}
           {% if repo.release_status == 'released' %}<span class="tag tag-released">released</span>{% endif %}
           {% if repo.release_status == 'skip' %}<span style="color:var(--muted)">skip</span>{% endif %}
@@ -263,6 +268,7 @@ function updateSidebarBadge(name) {
   const bump = data.bump_pr;
   const ciBadge = document.getElementById('ci-badge-' + name);
   const bciBadge = document.getElementById('bci-badge-' + name);
+  const verBadge = document.getElementById('ver-badge-' + name);
   if (!ciBadge) return;
   if (bump && bump.state === 'merged') {
     ciBadge.textContent = 'merged \u2713';
@@ -280,6 +286,15 @@ function updateSidebarBadge(name) {
     ciBadge.className = 'tag tag-' + ci;
     ciBadge.style.display = '';
     if (bciBadge) bciBadge.style.display = 'none';
+  }
+  // Pending version badge
+  if (verBadge && bump && bump.new_version) {
+    verBadge.textContent = '\u2192 ' + bump.new_version;
+    verBadge.className = 'tag';
+    verBadge.style = 'background:var(--surface2);color:var(--text);font-family:monospace';
+    verBadge.style.display = '';
+  } else if (verBadge && !bump) {
+    verBadge.style.display = 'none';
   }
 }
 
