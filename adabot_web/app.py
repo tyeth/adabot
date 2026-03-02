@@ -854,11 +854,23 @@ def check_ci(name):
         repo["branch_ci_status"] = overall
         bump["ci_status"] = overall
         bump["checks"] = merge_result.get("runs", [])
+
+        # Also check release CI if the repo has been released
+        release_ci = {}
+        if (repo.get("release_status") or "").lower() == "released":
+            tag = repo.get("released_tag") or repo.get("release_tag") or ""
+            if tag:
+                release_ci = _check_release_ci(upstream, tag)
+                repo["release_ci_status"] = release_ci.get("status", "unknown")
+                repo["release_ci_checks"] = release_ci.get("runs", [])
+
         collector.save_state(state)
         return jsonify({
             "ci_status": overall,
             "source": "branch",
             "checks": merge_result.get("runs", []),
+            "release_ci_status": release_ci.get("status") if release_ci else None,
+            "release_ci_checks": release_ci.get("runs", []) if release_ci else [],
         })
 
     # PR still open — check PR checks
@@ -996,6 +1008,96 @@ def _check_branch_ci(upstream, branch, label="CI", since=None):
                 "url":       run.get("url", ""),
                 "run_id":    str(run_id),
                 "run_label": label,
+            })
+
+    return {"status": status, "runs": jobs}
+
+
+def _check_release_ci(upstream, tag):
+    """Fetch CI runs associated with a release tag.
+
+    Tries two strategies:
+    1. Runs triggered by the `release` event (repos with `on: release` workflows)
+    2. Runs on the tag branch via push event (repos with `on: push` that trigger
+       when a tag is created — this is the common Adafruit Arduino pattern)
+    """
+    all_runs = []
+
+    # Strategy 1: release-event runs
+    ok, out, _ = _gh("run", "list",
+                      "--repo", upstream,
+                      "--event", "release",
+                      "--limit", "10",
+                      "--json", "status,conclusion,name,createdAt,updatedAt,url,databaseId,headBranch")
+    if ok and out:
+        try:
+            all_runs = json.loads(out)
+        except json.JSONDecodeError:
+            pass
+
+    # Filter to runs matching the tag
+    runs = [r for r in all_runs if r.get("headBranch") == tag]
+
+    # Strategy 2: push-event runs on the tag branch (fallback)
+    if not runs:
+        ok2, out2, _ = _gh("run", "list",
+                            "--repo", upstream,
+                            "--branch", tag,
+                            "--limit", "5",
+                            "--json", "status,conclusion,name,createdAt,updatedAt,url,databaseId,headBranch,event")
+        if ok2 and out2:
+            try:
+                tag_runs = json.loads(out2)
+                # Only include push/release events on this tag, not PRs
+                runs = [r for r in tag_runs
+                        if r.get("event") in ("push", "release", "dynamic")]
+            except json.JSONDecodeError:
+                pass
+
+    if not runs:
+        return {"status": "unknown", "runs": []}
+
+    statuses    = [(r.get("status") or "").lower() for r in runs]
+    conclusions = [(r.get("conclusion") or "").lower() for r in runs]
+    if any(s in ("in_progress", "queued", "waiting") for s in statuses):
+        status = "pending"
+    elif any(c in ("failure", "cancelled") for c in conclusions):
+        status = "fail"
+    elif conclusions and all(c == "success" for c in conclusions):
+        status = "pass"
+    else:
+        status = "unknown"
+
+    # Expand into per-job rows
+    jobs = []
+    for run in runs:
+        run_id = run.get("databaseId", "")
+        run_jobs_expanded = []
+        if run_id:
+            jok, jout, _ = _gh("run", "view", str(run_id),
+                                "--repo", upstream, "--json", "jobs")
+            if jok and jout:
+                try:
+                    run_jobs_expanded = json.loads(jout).get("jobs", [])
+                except json.JSONDecodeError:
+                    pass
+        if run_jobs_expanded:
+            for job in run_jobs_expanded:
+                jobs.append({
+                    "name":      job.get("name", ""),
+                    "state":     (job.get("conclusion") or job.get("status") or "").upper(),
+                    "url":       job.get("url", ""),
+                    "run_id":    str(run_id),
+                    "run_label": "release CI",
+                })
+        else:
+            rc = (run.get("conclusion") or run.get("status") or "").upper()
+            jobs.append({
+                "name":      run.get("name", "Run"),
+                "state":     rc,
+                "url":       run.get("url", ""),
+                "run_id":    str(run_id),
+                "run_label": "release CI",
             })
 
     return {"status": status, "runs": jobs}

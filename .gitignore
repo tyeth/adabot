@@ -22,3 +22,5 @@ node_modules/*
 # *.png
 *.log
 20*.md
+!releases/
+!releases/*.md

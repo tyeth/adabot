@@ -102,9 +102,12 @@
           {% else %}
             <span id="ver-badge-{{ repo.name }}" style="display:none"></span>
           {% endif %}
-          {% if repo.release_status == 'ready' %}<span class="tag tag-ready">&#10003; ready</span>{% endif %}
-          {% if repo.release_status == 'released' %}<span class="tag tag-released">released</span>{% endif %}
-          {% if repo.release_status == 'skip' %}<span style="color:var(--muted)">skip</span>{% endif %}
+          <span id="rel-badge-{{ repo.name }}"{% if repo.release_status == 'ready' %} class="tag tag-ready">&#10003; ready{% elif repo.release_status == 'released' %} class="tag tag-released">released{% elif repo.release_status == 'skip' %} style="color:var(--muted)">skip{% else %} style="display:none">{% endif %}</span>
+          {% if repo.release_ci_status %}
+            <span class="tag tag-{{ repo.release_ci_status }}" id="rci-badge-{{ repo.name }}">rCI:{{ repo.release_ci_status }}</span>
+          {% else %}
+            <span id="rci-badge-{{ repo.name }}" style="display:none"></span>
+          {% endif %}
         </span>
       </div>
       {% else %}
@@ -297,6 +300,47 @@ function updateSidebarBadge(name) {
   } else if (verBadge && !bump) {
     verBadge.style.display = 'none';
   }
+  // Release status badge
+  const relBadge = document.getElementById('rel-badge-' + name);
+  if (relBadge) {
+    const rs = data.release_status;
+    if (rs === 'ready') {
+      relBadge.className = 'tag tag-ready';
+      relBadge.textContent = '\u2713 ready';
+      relBadge.style.display = '';
+    } else if (rs === 'released') {
+      relBadge.className = 'tag tag-released';
+      relBadge.textContent = 'released';
+      relBadge.style.display = '';
+    } else if (rs === 'skip') {
+      relBadge.className = '';
+      relBadge.style.cssText = 'color:var(--muted)';
+      relBadge.textContent = 'skip';
+    } else {
+      relBadge.style.display = 'none';
+    }
+  }
+  // Release CI badge
+  const rciBadge = document.getElementById('rci-badge-' + name);
+  if (rciBadge) {
+    const rci = data.release_ci_status;
+    if (rci && data.release_status === 'released') {
+      rciBadge.textContent = 'rCI:' + rci;
+      rciBadge.className = 'tag tag-' + rci;
+      rciBadge.style.display = '';
+    } else {
+      rciBadge.style.display = 'none';
+    }
+  }
+  // Sidebar item class for release state
+  const item = document.getElementById('item-' + name);
+  if (item) {
+    item.classList.remove('ready', 'released', 'skip');
+    const rs = data.release_status;
+    if (rs === 'ready') item.classList.add('ready');
+    else if (rs === 'released') item.classList.add('released');
+    else if (rs === 'skip') item.classList.add('skip');
+  }
 }
 
 function buildActions(name) {
@@ -458,13 +502,20 @@ async function doCheckCI(name) {
   const r = await fetch('/api/repo/' + name + '/check_ci', {method:'POST'});
   const d = await r.json();
   if (d.error) { toast('CI error (' + name + '): ' + d.error, 'err', null, {repo: name, tab: 'ci'}); return; }
-  toast('CI (' + name + '): ' + d.ci_status, 'ok', null, {repo: name, tab: 'ci'});
+  let ciMsg = 'CI (' + name + '): ' + d.ci_status;
+  if (d.release_ci_status) ciMsg += ' | release CI: ' + d.release_ci_status;
+  toast(ciMsg, 'ok', null, {repo: name, tab: 'ci'});
   // Update cached ci_status for the badge without requiring a full reload
   if (repoData[name] && repoData[name].bump_pr) {
     repoData[name].bump_pr.ci_status = d.ci_status;
     if (d.ci_status === 'pass' && repoData[name].bump_pr.state === 'merged') {
       repoData[name].branch_ci_status = d.ci_status;
     }
+  }
+  // Cache release CI status
+  if (repoData[name] && d.release_ci_status) {
+    repoData[name].release_ci_status = d.release_ci_status;
+    repoData[name].release_ci_checks = d.release_ci_checks || [];
   }
   updateSidebarBadge(name);
   // Only reload the detail panel if the user is still looking at this repo
@@ -487,6 +538,8 @@ async function doRelease(name) {
     }
     if (d.error) { toast('Error: ' + d.error, 'err', null, {repo: name, tab: 'bump'}); return; }
     toast('Released! ' + (d.url || ''), 'ok', null, {repo: name, tab: 'changes'});
+    if (repoData[name]) repoData[name].release_status = 'released';
+    updateSidebarBadge(name);
     loadDetail(name, null);  // preserve current tab
   });
 }
@@ -528,10 +581,15 @@ async function batchRelease() {
     toast('Starting batch release…', 'ok', 'batch-release');
     const r = await fetch('/api/batch_release', {method:'POST', headers:{'Content-Type':'application/json'}, body:'{}'});
     const d = await r.json();
-    const ok = d.results.filter(x=>x.ok).length;
+    const okResults = d.results.filter(x=>x.ok);
     const manuals = d.results.filter(x=>!x.ok && x.manual_release_url);
     const errors  = d.results.filter(x=>!x.ok && !x.manual_release_url);
-    let msg = `Released ${ok}`;
+    // Update sidebar immediately for each successful release
+    okResults.forEach(x => {
+      if (repoData[x.name]) repoData[x.name].release_status = 'released';
+      updateSidebarBadge(x.name);
+    });
+    let msg = `Released ${okResults.length}`;
     if (errors.length)  msg += `, ${errors.length} failed`;
     if (manuals.length) msg += `, ${manuals.length} need manual release`;
     toast(msg, (errors.length + manuals.length) ? 'err' : 'ok', 'batch-release');

@@ -44,11 +44,19 @@ STALE_DAYS = 3
 # ---------------------------------------------------------------------------
 
 def load_state():
-    """Load state from JSON file, returning default if missing/corrupt."""
+    """Load state from JSON file, returning default if missing/corrupt.
+
+    Also reconciles release_status for repos where evidence (released_tag or
+    matching bump_pr) indicates a release happened but status was lost.
+    """
     if os.path.exists(STATE_FILE):
         try:
             with open(STATE_FILE, "r") as f:
-                return json.load(f)
+                state = json.load(f)
+            # Self-heal any repos with inconsistent release status
+            for repo in state.get("repos", {}).values():
+                _reconcile_release_status(repo)
+            return state
         except (json.JSONDecodeError, OSError):
             pass
     return _default_state()
@@ -70,7 +78,7 @@ def save_state(state):
     with _lock:
         tmp = STATE_FILE + ".tmp"
         with open(tmp, "w") as f:
-            json.dump(state, f, indent=2)
+            json.dump(state, f, indent=2, sort_keys=True)
         os.replace(tmp, STATE_FILE)
 
 
@@ -95,8 +103,11 @@ def is_stale(state):
 def user_notes_current(repo_data):
     """Check whether user-edited release notes are still current.
 
-    The stamp is ``"<release_tag>@<commit_count>"``; notes are stale if
-    the release tag changed OR the number of commits changed.
+    The stamp is ``"<proposed_version>@<commit_count>"``; notes are stale if
+    the proposed version changed OR the number of commits changed.
+
+    The stamp_tag at creation time uses: bump_pr.new_version > release_tag.
+    We must reconstruct the same value here for comparison.
 
     Returns True if notes are current and should be kept, False if stale.
     Returns False if there is no user-edit stamp.
@@ -104,9 +115,14 @@ def user_notes_current(repo_data):
     stamp = repo_data.get("release_notes_user_edited")
     if not stamp:
         return False
-    cur_tag = repo_data.get("release_tag") or ""
+    # Reconstruct stamp_tag the same way it was created in app.py save_notes()
+    bump = repo_data.get("bump_pr")
+    if bump and bump.get("new_version"):
+        stamp_tag = bump["new_version"]
+    else:
+        stamp_tag = repo_data.get("release_tag") or ""
     n_commits = len(repo_data.get("recent_commits", []))
-    return stamp == f"{cur_tag}@{n_commits}"
+    return stamp == f"{stamp_tag}@{n_commits}"
 
 
 def is_running():
@@ -149,6 +165,7 @@ def _save_repo_merge(name, repo_data):
     for k in _USER_PRESERVED:
         if prev.get(k) is not None:
             repo_data[k] = prev[k]
+    _reconcile_release_status(repo_data)
     fresh_repos[name] = repo_data
     save_state(fresh)
 
@@ -204,6 +221,7 @@ _USER_PRESERVED = (
     "release_notes", "release_notes_user_edited",
     "release_status", "bump_pr", "released_tag",
     "branch_ci_status",
+    "release_ci_status", "release_ci_checks",
 )
 _ENRICHMENT_CACHE = (
     "recent_commits", "prs", "version_files",
@@ -211,6 +229,33 @@ _ENRICHMENT_CACHE = (
     "compare_files", "gh_auto_notes",
     "details_loaded",
 )
+
+def _reconcile_release_status(repo_data):
+    """Ensure release_status is consistent with other release evidence.
+
+    Handles two cases:
+    1. released_tag exists but release_status was cleared (state corruption)
+    2. Manual release on GitHub: release_tag matches bump_pr.new_version
+       but app never set release_status (release happened outside adabot)
+    """
+    rs = repo_data.get("release_status")
+    if rs == "released":
+        return  # already correct
+
+    # Case 1: released_tag exists → we released it via the app at some point
+    if repo_data.get("released_tag"):
+        repo_data["release_status"] = "released"
+        return
+
+    # Case 2: release_tag matches bump_pr.new_version → manual GitHub release
+    bump = repo_data.get("bump_pr")
+    if bump and bump.get("new_version") and bump.get("state") == "merged":
+        release_tag = repo_data.get("release_tag") or ""
+        new_ver = bump["new_version"]
+        if release_tag == new_ver or release_tag == f"v{new_ver}" or f"v{release_tag}" == new_ver:
+            repo_data["release_status"] = "released"
+            repo_data["released_tag"] = release_tag
+
 
 def _freshen_user_fields(state):
     """Re-read user-preserved fields from disk before saving.
@@ -226,6 +271,7 @@ def _freshen_user_fields(state):
         for k in _USER_PRESERVED:
             if fresh_repo.get(k) is not None:
                 repo[k] = fresh_repo[k]
+        _reconcile_release_status(repo)
 
 
 def _run_collection():
