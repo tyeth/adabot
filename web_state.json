@@ -14495,11 +14495,11 @@
           "name": "build",
           "run_id": "22582573316",
           "run_label": "release CI",
-          "state": "IN_PROGRESS",
+          "state": "SUCCESS",
           "url": "https://github.com/adafruit/Adafruit_RA8875/actions/runs/22582573316/job/65418486811"
         }
       ],
-      "release_ci_status": "pending",
+      "release_ci_status": "pass",
       "release_notes": "### Changed\n- Added .clang-format configuration\n- Updated GitHub Actions CI workflow for code formatting validation\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_RA8875/compare/1.4.4...1.4.5",
       "release_status": "released",
       "release_tag": "1.4.4",
