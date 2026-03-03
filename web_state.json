@@ -133,6 +133,7 @@
     "Adafruit MAX31855 library": "1.4.2",
     "Adafruit MAX31856 library": "1.2.8",
     "Adafruit MAX31865 library": "1.6.2",
+    "Adafruit MAX44009": "1.0.1",
     "Adafruit MCP23008 library": "2.1.0",
     "Adafruit MCP23017 Arduino Library": "2.3.2",
     "Adafruit MCP2515": "0.2.1",
@@ -183,13 +184,13 @@
     "Adafruit Pixie": "1.1.7",
     "Adafruit Protomatter": "1.7.1",
     "Adafruit PyCamera Library": "1.0.8",
-    "Adafruit QMC5883P Library": "1.0.1",
-    "Adafruit RA8875": "1.4.4",
+    "Adafruit QMC5883P Library": "1.0.2",
+    "Adafruit RA8875": "1.4.5",
     "Adafruit RGB LCD Shield Library": "1.2.2",
     "Adafruit S-35710 Library": "1.0.0",
     "Adafruit SCD30": "1.0.11",
     "Adafruit SGP30 Sensor": "2.0.3",
-    "Adafruit SGP40 Sensor": "1.1.3",
+    "Adafruit SGP40 Sensor": "1.1.4",
     "Adafruit SGP41": "1.0.1",
     "Adafruit SH110X": "2.1.14",
     "Adafruit SHARP Memory Display": "1.1.4",
@@ -228,7 +229,7 @@
     "Adafruit TLV320 I2S": "1.0.0",
     "Adafruit TMP006": "1.1.0",
     "Adafruit TMP007 Library": "1.1.2",
-    "Adafruit TMP117": "1.0.3",
+    "Adafruit TMP117": "1.0.4",
     "Adafruit TPA2016 Library": "1.2.2",
     "Adafruit TSC2007": "1.1.2",
     "Adafruit TSC2046": "1.0.1",
@@ -307,9 +308,9 @@
     "adafruit_ina219_mock": "1.0.0"
   },
   "error": null,
-  "last_run_end": "2026-02-28T05:20:15.133394+00:00",
-  "last_run_start": "2026-02-28T04:54:54.589932+00:00",
-  "progress": 106,
+  "last_run_end": "2026-03-03T12:23:11.248779+00:00",
+  "last_run_start": "2026-03-03T12:03:04.536078+00:00",
+  "progress": 15,
   "repos": {
     "ARDX-Fritzing-Diagrams": {
       "arduino_registered": false,
@@ -1180,59 +1181,6 @@
           "tag": "1.12.2"
         }
       ],
-      "existing_tags": [
-        "1.12.4",
-        "1.12.3",
-        "1.12.2",
-        "1.12.1",
-        "1.12.0",
-        "1.11.11",
-        "1.11.10",
-        "1.11.9",
-        "1.11.8",
-        "1.11.7",
-        "1.11.6",
-        "1.11.5",
-        "1.11.4",
-        "1.11.3",
-        "1.11.2",
-        "1.11.1",
-        "1.11.0",
-        "1.10.14",
-        "1.10.13",
-        "1.10.12",
-        "1.10.11",
-        "1.10.10",
-        "1.10.9",
-        "1.10.8",
-        "1.10.7",
-        "1.10.6",
-        "1.10.5",
-        "1.10.4",
-        "1.10.3",
-        "1.10.2",
-        "1.10.1",
-        "1.10.0",
-        "1.9.0",
-        "1.8.5",
-        "1.8.4",
-        "1.8.3",
-        "1.8.2",
-        "1.8.1",
-        "1.8.0",
-        "1.7.6",
-        "1.7.5",
-        "1.7.4",
-        "1.7.3",
-        "1.7.2",
-        "1.7.1",
-        "1.7.0",
-        "1.6.1",
-        "1.5.7",
-        "1.5.6",
-        "1.5.5"
-      ],
-      "existing_tags_at": 1772256215.9508748,
       "full_name": "adafruit/Adafruit-GFX-Library",
       "gh_auto_notes": "## What's Changed\n* Run clang-format by @ladyada-piclaw in https://github.com/adafruit/Adafruit-GFX-Library/pull/505\n* Update version to 1.12.5 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit-GFX-Library/pull/506\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit-GFX-Library/pull/505\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit-GFX-Library/pull/506\n\n**Full Changelog**: https://github.com/adafruit/Adafruit-GFX-Library/compare/1.12.4...1.12.5",
       "has_actions": true,
@@ -4356,8 +4304,6 @@
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
-      "existing_tags": [],
-      "existing_tags_at": 1772256215.729474,
       "full_name": "adafruit/Adafruit_APDS9500",
       "has_actions": null,
       "has_examples": true,
@@ -4673,8 +4619,6 @@
       "details_loaded": true,
       "error": null,
       "example_releases": [],
-      "existing_tags": [],
-      "existing_tags_at": 1772256215.2610247,
       "full_name": "adafruit/Adafruit_AS7331",
       "has_actions": null,
       "has_examples": true,
@@ -4820,10 +4764,6 @@
           "tag": "1.0.0"
         }
       ],
-      "existing_tags": [
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772256018.3642962,
       "full_name": "adafruit/Adafruit_AS7343",
       "gh_auto_notes": "## What's Changed\n* Update version to 1.1.0 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_AS7343/pull/4\n\n## New Contributors\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_AS7343/pull/4\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_AS7343/compare/1.0.0...1.2.0",
       "has_actions": true,
@@ -5584,8 +5524,6 @@
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
-      "existing_tags": [],
-      "existing_tags_at": 1772256215.288939,
       "full_name": "adafruit/Adafruit_BME690",
       "has_actions": null,
       "has_examples": true,
@@ -6096,6 +6034,20 @@
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
+      "example_releases": [
+        {
+          "body": "## What's Changed\r\n\r\n- Update for Pico W, Pico 2, and Pico 2 W #1041 by @makermelissa\r\n- Add support for Orange Pi 5 Ultra #1034 by @GuLinux\r\n- i2c scan logic change #1038 by @mikeysklar\r\n\r\nTo use in CPython, `pip3 install adafruit-blinka`.\r\n\r\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
+          "tag": "8.70.0"
+        },
+        {
+          "body": "## What's Changed\r\n\r\n- Add banana pi p2 pro #1033 by @dmlb2000\r\n\r\nTo use in CPython, `pip3 install adafruit-blinka`.\r\n\r\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
+          "tag": "8.69.0"
+        },
+        {
+          "body": "## What's Changed\r\n\r\n- Compiled libgpiod_pulsein with static linking to fix missing library #1032 by @makermelissa\r\n- docs: add `python3-dev` to `build.apt_packages` in RTD config #1028 by @2bndy5\r\n- docs: update build CI status badge in README #1029 by @2bndy5\r\n\r\nTo use in CPython, `pip3 install adafruit-blinka`.\r\n\r\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
+          "tag": "8.68.1"
+        }
+      ],
       "full_name": "adafruit/Adafruit_Blinka",
       "has_actions": null,
       "has_examples": true,
@@ -6105,12 +6057,12 @@
       "name": "Adafruit_Blinka",
       "prs": [
         {
-          "created_at": "2026-02-24T19:10:51Z",
+          "created_at": "2026-03-02T21:32:30Z",
           "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Blinka/pull/1041",
+          "html_url": "https://github.com/adafruit/Adafruit_Blinka/pull/1042",
           "labels": [],
-          "number": 1041,
-          "title": "Update for Pico W, Pico 2, and Pico 2 W",
+          "number": 1042,
+          "title": "Microcontroller restructure",
           "user": "makermelissa"
         },
         {
@@ -6159,7 +6111,7 @@
           "user": "elpekenin"
         }
       ],
-      "pushed_at": "2026-02-01T05:27:39Z",
+      "pushed_at": "2026-03-02T06:01:27Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -6182,6 +6134,20 @@
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
+      "example_releases": [
+        {
+          "body": "## What's Changed\r\n* Fix index error with 8bpp bitmap data by @relic-se in https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/167\r\n* Vectorio constructor parameters by @relic-se in https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/168\r\n* Add `displayio.TileGrid.contains` by @relic-se in https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/169\r\n* Add `__iter__` to `displayio.Palette` to allow enumeration by @relic-se in https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/170\r\n* _ondiskbitmap.py: Fix _set_color issue by @bbrad2365 in https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/172\r\n\r\n## New Contributors\r\n* @relic-se made their first contribution in https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/167\r\n* @bbrad2365 made their first contribution in https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/172\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_Blinka_Displayio/compare/2.3.1...2.3.2",
+          "tag": "2.3.2"
+        },
+        {
+          "body": "## What's Changed\r\n* relax displayio._background thread by @janvolck in https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/156\r\n* Use Optional type syntax for blit by @FoamyGuy in https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/166\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_Blinka_Displayio/compare/2.3.0...2.3.1",
+          "tag": "2.3.1"
+        },
+        {
+          "body": "## What's Changed\r\n* remove 8.x compatibility. use strings for types to avoid circular import by @FoamyGuy in https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/163\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_Blinka_Displayio/compare/2.2.0...2.3.0",
+          "tag": "2.3.0"
+        }
+      ],
       "full_name": "adafruit/Adafruit_Blinka_Displayio",
       "has_actions": null,
       "has_examples": false,
@@ -6190,15 +6156,6 @@
       "lib_version": null,
       "name": "Adafruit_Blinka_Displayio",
       "prs": [
-        {
-          "created_at": "2026-02-25T14:56:51Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Blinka_Displayio/pull/173",
-          "labels": [],
-          "number": 173,
-          "title": "newer reuse version",
-          "user": "FoamyGuy"
-        },
         {
           "created_at": "2024-08-17T12:54:38Z",
           "draft": false,
@@ -6209,7 +6166,7 @@
           "user": "douglaspkelly"
         }
       ],
-      "pushed_at": "2026-02-24T21:55:04Z",
+      "pushed_at": "2026-03-02T06:02:25Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -6834,6 +6791,7 @@
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
+      "example_releases": [],
       "full_name": "adafruit/Adafruit_CAD_Parts",
       "has_actions": null,
       "has_examples": false,
@@ -6879,7 +6837,7 @@
           "user": "okofish"
         }
       ],
-      "pushed_at": "2026-02-19T17:51:32Z",
+      "pushed_at": "2026-03-02T16:31:54Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -7333,14 +7291,6 @@
           "tag": "1.0.2"
         }
       ],
-      "existing_tags": [
-        "1.0.4",
-        "1.0.3",
-        "1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772256211.2123706,
       "full_name": "adafruit/Adafruit_CompositeVideo",
       "gh_auto_notes": "## What's Changed\n* Fix clang-format CI by @ladyada-piclaw in https://github.com/adafruit/Adafruit_CompositeVideo/pull/7\n* Update version to 1.0.5 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_CompositeVideo/pull/8\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_CompositeVideo/pull/7\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_CompositeVideo/pull/8\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_CompositeVideo/compare/1.0.4...1.0.5",
       "has_actions": true,
@@ -7681,8 +7631,6 @@
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
-      "existing_tags": [],
-      "existing_tags_at": 1772256214.5932837,
       "full_name": "adafruit/Adafruit_DRV8830",
       "has_actions": null,
       "has_examples": true,
@@ -7994,17 +7942,133 @@
       "arduino_registered": true,
       "arduino_version": "4.6.8",
       "branch_ci_status": null,
-      "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": null,
-      "bump_type": "patch",
-      "categories": [],
+      "bump_justification": "Adds SSD1677 driver and Xteink X4 4.26\" panel support, enabling compatibility with additional e-ink display hardware.",
+      "bump_pr": {
+        "ci_status": "pending",
+        "files_changed": [
+          "library.properties"
+        ],
+        "new_version": "4.6.9",
+        "number": "95",
+        "state": "open",
+        "url": "https://github.com/adafruit/Adafruit_EPD/pull/95"
+      },
+      "bump_type": "minor",
+      "categories": [
+        "needs_release"
+      ],
       "ci_only": false,
-      "commits_behind": null,
-      "compare_url": null,
+      "commits_behind": 7,
+      "compare_files": [
+        {
+          "filename": "examples/ThinkInk_gray4/ThinkInk_gray4.ino",
+          "patch": "@@ -26,6 +26,18 @@\n #define EPD_SPI &SPI // primary SPI\n #endif\n \n+/* 4.26\" Xteink X4 eReader (SSD1677)\n+   use these pins:\n+   #define EPD_DC 4\n+   #define EPD_CS 21\n+   #define EPD_BUSY 6\n+   #define SRAM_CS -1\n+   #define EPD_RESET 5\n+   #define EPD_SPI &SPI */\n+// ThinkInk_426_Grayscale4_GDEQ display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS\n+// EPD_BUSY, EPD_SPI);\n+\n+\n // ThinkInk_154_Grayscale4_T8 display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS,\n // EPD_BUSY, EPD_SPI); \n ",
+          "status": "modified"
+        },
+        {
+          "filename": "examples/ThinkInk_partial/ThinkInk_partial.ino",
+          "patch": "@@ -26,6 +26,17 @@\n #define EPD_SPI &SPI // primary SPI\n #endif\n \n+/* 4.26\" Xteink X4 eReader (SSD1677)\n+   use these pins:\n+   #define EPD_DC 4\n+   #define EPD_CS 21\n+   #define EPD_BUSY 6\n+   #define SRAM_CS -1\n+   #define EPD_RESET 5\n+   #define EPD_SPI &SPI */\n+// ThinkInk_426_Grayscale4_GDEQ display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS\n+// EPD_BUSY, EPD_SPI);\n+\n // ThinkInk_290_Grayscale4_T5 display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS,\n // EPD_BUSY, EPD_SPI);\n ThinkInk_154_Mono_D67 display(EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY,",
+          "status": "modified"
+        },
+        {
+          "filename": "src/Adafruit_EPD.h",
+          "patch": "@@ -217,6 +217,7 @@ class Adafruit_EPD : public Adafruit_GFX {\n #include \"drivers/Adafruit_SSD1619.h\"\n #include \"drivers/Adafruit_SSD1675.h\"\n #include \"drivers/Adafruit_SSD1675B.h\"\n+#include \"drivers/Adafruit_SSD1677.h\"\n #include \"drivers/Adafruit_SSD1680.h\"\n #include \"drivers/Adafruit_SSD1681.h\"\n #include \"drivers/Adafruit_SSD1683.h\"",
+          "status": "modified"
+        },
+        {
+          "filename": "src/Adafruit_ThinkInk.h",
+          "patch": "@@ -44,6 +44,7 @@\n #include \"panels/ThinkInk_420_Tricolor_MFGNR.h\"\n #include \"panels/ThinkInk_420_Tricolor_RW.h\"\n #include \"panels/ThinkInk_420_Tricolor_Z21.h\"\n+#include \"panels/ThinkInk_426_Grayscale4_GDEQ.h\"\n #include \"panels/ThinkInk_583_Mono_AAAMFGN.h\"\n #include \"panels/ThinkInk_583_Tricolor_AABMFGNR.h\"\n #include \"panels/ThinkInk_750_Mono_AAAMFGN.h\"",
+          "status": "modified"
+        },
+        {
+          "filename": "src/drivers/Adafruit_SSD1677.cpp",
+          "patch": "@@ -0,0 +1,425 @@\n+#include \"Adafruit_SSD1677.h\"\n+\n+#include \"Adafruit_EPD.h\"\n+\n+#define EPD_RAM_BW SSD1677_WRITE_RAM_BW\n+#define EPD_RAM_RED SSD1677_WRITE_RAM_RED\n+\n+#define BUSY_WAIT 3000\n+\n+// clang-format off\n+\n+const uint8_t ssd1677_default_init_code[] {\n+  SSD1677_SOFT_RESET, 0,\n+    0xFF, 200,                                        // busy wait + delay\n+    SSD1677_TEMP_SENSOR_CONTROL, 1, 0x80,             // internal temp sensor\n+    SSD1677_BOOSTER_SOFT_START, 5,\n+      0xAE, 0xC7, 0xC3, 0xC0, 0x40,                  // GDEQ0426T82 values\n+    SSD1677_DRIVER_OUTPUT_CONTROL, 3,\n+      0xDF, 0x01, 0x02,                               // 480 gates, SM=1 TB=0\n+    SSD1677_BORDER_WAVEFORM, 1, 0x01,\n+    SSD1677_DATA_ENTRY_MODE, 1, 0x03,                 // X inc, Y inc\n+    0xFE};\n+\n+// c",
+          "status": "added"
+        },
+        {
+          "filename": "src/drivers/Adafruit_SSD1677.h",
+          "patch": "@@ -0,0 +1,78 @@\n+#ifndef LIB_ADAFRUIT_SSD1677\n+#define LIB_ADAFRUIT_SSD1677\n+\n+#include <Arduino.h>\n+\n+#include \"Adafruit_EPD.h\"\n+\n+// Initialization and reset\n+#define SSD1677_SOFT_RESET 0x12\n+#define SSD1677_BOOSTER_SOFT_START 0x0C\n+#define SSD1677_DRIVER_OUTPUT_CONTROL 0x01\n+#define SSD1677_BORDER_WAVEFORM 0x3C\n+#define SSD1677_TEMP_SENSOR_CONTROL 0x18\n+\n+// RAM and buffer management\n+#define SSD1677_DATA_ENTRY_MODE 0x11\n+#define SSD1677_SET_RAM_X_RANGE 0x44\n+#define SSD1677_SET_RAM_Y_RANGE 0x45\n+#define SSD1677_SET_RAM_X_COUNTER 0x4E\n+#define SSD1677_SET_RAM_Y_COUNTER 0x4F\n+#define SSD1677_WRITE_RAM_BW 0x24\n+#define SSD1677_WRITE_RAM_RED 0x26\n+#define SSD1677_AUTO_WRITE_BW_RAM 0x46\n+#define SSD1677_AUTO_WRITE_RED_RAM 0x47\n+\n+// Display update and refresh\n+#define SSD1677_DISPLAY_UPDAT",
+          "status": "added"
+        },
+        {
+          "filename": "src/panels/ThinkInk_426_Grayscale4_GDEQ.h",
+          "patch": "@@ -0,0 +1,138 @@\n+#ifndef _THINKINK_426_GRAYSCALE4_GDEQ_H\n+#define _THINKINK_426_GRAYSCALE4_GDEQ_H\n+\n+// This file is #included by Adafruit_ThinkInk.h and does not need to\n+// #include anything else to pick up the EPD header or ink mode enum.\n+\n+// clang-format off\n+\n+static const uint8_t ti_426_gray4_init_code[] {\n+  SSD1677_SOFT_RESET, 0,\n+    0xFF, 200,\n+    SSD1677_TEMP_SENSOR_CONTROL, 1, 0x80,\n+    SSD1677_BOOSTER_SOFT_START, 5,\n+      0xAE, 0xC7, 0xC3, 0xC0, 0x40,\n+    SSD1677_DRIVER_OUTPUT_CONTROL, 3,\n+      0xDF, 0x01, 0x02,\n+    SSD1677_BORDER_WAVEFORM, 1, 0x01,\n+    SSD1677_DATA_ENTRY_MODE, 1, 0x03,\n+    0xFE};\n+\n+// Grayscale LUT code \u2014 includes the 105-byte LUT AND voltage commands.\n+// Both must be reloaded together after any OTP LUT load (0xF7) since\n+// that overwrites the ",
+          "status": "added"
+        }
+      ],
+      "compare_url": "https://github.com/adafruit/Adafruit_EPD/compare/4.6.8...HEAD",
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
+      "example_releases": [
+        {
+          "body": "## What's Changed\r\n* FeatherWing 2.9\" SSD1680 Grayscale constructor addition by @mikeysklar in https://github.com/adafruit/Adafruit_EPD/pull/92\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_EPD/compare/4.6.7...4.6.8",
+          "tag": "4.6.8"
+        },
+        {
+          "body": "## What's Changed\r\n* add GDEY0213B74 [(ADA4195)](https://www.adafruit.com/product/4195) to FeatherWingTest.ino by @mikeysklar in https://github.com/adafruit/Adafruit_EPD/pull/91\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_EPD/compare/4.6.6...4.6.7",
+          "tag": "4.6.7"
+        },
+        {
+          "body": "## What's Changed\r\n* revert change in 4.6.5 for JD79661 by @BlitzCityDIY in https://github.com/adafruit/Adafruit_EPD/pull/89\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_EPD/compare/4.6.5...4.6.6",
+          "tag": "4.6.6"
+        }
+      ],
+      "existing_tags": [
+        "4.6.8",
+        "4.6.7",
+        "4.6.6",
+        "4.6.5",
+        "4.6.4",
+        "4.6.3",
+        "4.6.2",
+        "4.6.1",
+        "4.6.0",
+        "4.5.6",
+        "4.5.5",
+        "4.5.4",
+        "4.5.3",
+        "4.5.2",
+        "4.5.1",
+        "4.5.0",
+        "4.4.5",
+        "4.4.4",
+        "4.4.3",
+        "4.4.2",
+        "4.4.1",
+        "4.4.0",
+        "4.3.3",
+        "4.3.2",
+        "4.3.1",
+        "4.3.0",
+        "4.2.0",
+        "4.1.0",
+        "4.0.5",
+        "4.0.4",
+        "4.0.3",
+        "4.0.2",
+        "4.0.1",
+        "4.0.0",
+        "3.0.0",
+        "2.5.3",
+        "2.5.2",
+        "2.5.1",
+        "2.5.0",
+        "2.4.3",
+        "2.4.2",
+        "2.4.1",
+        "2.3.0",
+        "2.2.0",
+        "2.1.1",
+        "2.0.2",
+        "2.0.1",
+        "2.0.0",
+        "1.0.3",
+        "1.0.2"
+      ],
+      "existing_tags_at": 1772541076.4574742,
       "full_name": "adafruit/Adafruit_EPD",
+      "gh_auto_notes": "## What's Changed\n* add SSD1677 driver and Xteink X4 panel by @BlitzCityDIY in https://github.com/adafruit/Adafruit_EPD/pull/94\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_EPD/compare/4.6.8...4.7.0",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
@@ -8050,9 +8114,59 @@
           "user": "lisbravo"
         }
       ],
-      "pushed_at": "2026-01-27T17:35:06Z",
-      "recent_commits": [],
-      "release_notes": null,
+      "pushed_at": "2026-03-02T15:03:45Z",
+      "recent_commits": [
+        {
+          "author": "Liz",
+          "date": "2026-02-26T21:34:52Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/b566b23270b4ecc206ff6777c46f2e9e9b51517c",
+          "message": "initial support for xteink",
+          "sha": "b566b23"
+        },
+        {
+          "author": "Liz",
+          "date": "2026-02-27T20:57:38Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/e3dcad133cc984eb937005f8f4d09cac735fe945",
+          "message": "add grayscale, partial and half refreshes",
+          "sha": "e3dcad1"
+        },
+        {
+          "author": "Liz",
+          "date": "2026-02-27T21:01:56Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/6ec8d1c87b3d68a7eae53f4f5304af773c56be75",
+          "message": "add demos, grayscale and partial",
+          "sha": "6ec8d1c"
+        },
+        {
+          "author": "Liz",
+          "date": "2026-02-27T21:11:12Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/1aa9adace56d1fc953d6f20471838ddd4481c894",
+          "message": "shorten panel name",
+          "sha": "1aa9ada"
+        },
+        {
+          "author": "Liz",
+          "date": "2026-02-27T21:18:53Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/f4653626a2a4a2df0c90f8e2684d881555f43187",
+          "message": "clang, update panel name",
+          "sha": "f465362"
+        },
+        {
+          "author": "Liz",
+          "date": "2026-02-27T21:21:05Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/a3dd9fd2a45f8bcfc07687cb9863b89f47e2a3f2",
+          "message": "clang clang",
+          "sha": "a3dd9fd"
+        },
+        {
+          "author": "Liz",
+          "date": "2026-03-02T15:03:45Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/bc2434698cf9c7b596254a8caaf946213a3c77db",
+          "message": "Merge pull request #94 from BlitzCityDIY/xteink",
+          "sha": "bc24346"
+        }
+      ],
+      "release_notes": "## What's Changed\n* add SSD1677 driver and Xteink X4 panel by @BlitzCityDIY in https://github.com/adafruit/Adafruit_EPD/pull/94\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_EPD/compare/4.6.8...4.6.9",
       "release_status": null,
       "release_tag": "4.6.8",
       "version_files": []
@@ -8813,11 +8927,6 @@
           "tag": "0.1.0"
         }
       ],
-      "existing_tags": [
-        "0.2.0",
-        "0.1.0"
-      ],
-      "existing_tags_at": 1772256210.3503575,
       "full_name": "adafruit/Adafruit_Faux86",
       "gh_auto_notes": "## What's Changed\n* Fix clang-format CI errors by @ladyada-piclaw in https://github.com/adafruit/Adafruit_Faux86/pull/2\n* Update version to 0.2.1 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_Faux86/pull/3\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_Faux86/pull/2\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_Faux86/pull/3\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Faux86/compare/0.2.0...0.2.1",
       "has_actions": true,
@@ -10233,8 +10342,6 @@
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
-      "existing_tags": [],
-      "existing_tags_at": 1772256214.4814923,
       "full_name": "adafruit/Adafruit_ImageCapture",
       "has_actions": null,
       "has_examples": true,
@@ -11113,15 +11220,15 @@
       "example_releases": [
         {
           "body": "Select the zip file corresponding to your board from the list below.",
-          "tag": "20260228"
+          "tag": "20260303"
         },
         {
           "body": "Select the zip file corresponding to your board from the list below.",
-          "tag": "20260227"
+          "tag": "20260302"
         },
         {
           "body": "Select the zip file corresponding to your board from the list below.",
-          "tag": "20260226"
+          "tag": "20260301"
         }
       ],
       "full_name": "adafruit/Adafruit_Learning_System_Guides",
@@ -11250,7 +11357,7 @@
           "user": "dcbriccetti"
         }
       ],
-      "pushed_at": "2026-02-27T20:45:11Z",
+      "pushed_at": "2026-03-03T10:12:46Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -11661,35 +11768,40 @@
       "version_files": []
     },
     "Adafruit_MAX44009": {
-      "arduino_registered": false,
-      "arduino_version": null,
+      "arduino_registered": true,
+      "arduino_version": "1.0.1",
       "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
       "bump_type": "patch",
-      "categories": [
-        "no_examples"
-      ],
+      "categories": [],
       "ci_only": false,
       "commits_behind": null,
+      "compare_files": [],
       "compare_url": null,
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
-      "example_releases": [],
+      "example_releases": [
+        {
+          "body": "Initial release of Adafruit MAX44009 ambient light sensor library.",
+          "tag": "1.0.1"
+        }
+      ],
       "full_name": "adafruit/Adafruit_MAX44009",
-      "has_actions": null,
-      "has_examples": false,
-      "has_lib_props": false,
+      "has_actions": true,
+      "has_examples": true,
+      "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_MAX44009",
-      "lib_version": null,
+      "lib_name": "Adafruit MAX44009",
+      "lib_version": "1.0.1",
       "name": "Adafruit_MAX44009",
       "prs": [],
-      "pushed_at": "2026-02-28T00:09:45Z",
+      "pushed_at": "2026-03-02T17:14:18Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
-      "release_tag": null,
+      "release_tag": "1.0.1",
       "version_files": []
     },
     "Adafruit_MCP2515": {
@@ -12226,8 +12338,6 @@
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
-      "existing_tags": [],
-      "existing_tags_at": 1772256214.390493,
       "full_name": "adafruit/Adafruit_MMC5883",
       "has_actions": null,
       "has_examples": true,
@@ -12969,23 +13079,6 @@
           "tag": "1.1.0"
         }
       ],
-      "existing_tags": [
-        "1.1.3",
-        "1.1.2",
-        "1.1.1",
-        "1.1.0",
-        "1.0.11",
-        "1.0.10",
-        "1.0.9",
-        "1.0.8",
-        "1.0.7",
-        "1.0.6",
-        "1.0.5",
-        "1.0.4",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772256211.938977,
       "full_name": "adafruit/Adafruit_Motor_Shield_V2_Library",
       "gh_auto_notes": "## What's Changed\n* Fix clang-format CI by @ladyada-piclaw in https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library/pull/55\n* Update version to 1.1.4 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library/pull/56\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library/pull/55\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library/pull/56\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library/compare/1.1.3...1.1.4",
       "has_actions": true,
@@ -13181,8 +13274,6 @@
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
-      "existing_tags": [],
-      "existing_tags_at": 1772256214.1819062,
       "full_name": "adafruit/Adafruit_NT35510",
       "has_actions": null,
       "has_examples": true,
@@ -14253,7 +14344,7 @@
     },
     "Adafruit_QMC5883P": {
       "arduino_registered": true,
-      "arduino_version": "1.0.0",
+      "arduino_version": "1.0.2",
       "branch_ci_status": "pass",
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": {
@@ -14302,12 +14393,6 @@
           "tag": "1.0.0"
         }
       ],
-      "existing_tags": [
-        "1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772463642.3609188,
       "full_name": "adafruit/Adafruit_QMC5883P",
       "has_actions": true,
       "has_examples": true,
@@ -14337,9 +14422,9 @@
     },
     "Adafruit_RA8875": {
       "arduino_registered": true,
-      "arduino_version": "1.0.0",
+      "arduino_version": "1.4.5",
       "branch_ci_status": "pass",
-      "bump_justification": "Code formatting fixes for CI (clang-format) with no functional library changes.",
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": {
         "actions_need_approval": false,
         "checks": [
@@ -14363,29 +14448,19 @@
         "url": "https://github.com/adafruit/Adafruit_RA8875/pull/50"
       },
       "bump_type": "patch",
-      "categories": [
-        "failed_lib_prop",
-        "needs_release"
-      ],
+      "categories": [],
       "ci_only": false,
-      "commits_behind": 3,
-      "compare_files": [
-        {
-          "filename": "Adafruit_RA8875.cpp",
-          "patch": "@@ -66,7 +66,9 @@ static inline void spi_begin(void) {\n   SPI.beginTransaction(SPISettings(spi_speed, MSBFIRST, SPI_MODE0));\n }\n static inline void spi_end(void) __attribute__((always_inline));\n-static inline void spi_end(void) { SPI.endTransaction(); }\n+static inline void spi_end(void) {\n+  SPI.endTransaction();\n+}\n #else\n #define spi_begin() ///< Create dummy Macro Function\n #define spi_end()   ///< Create dummy Macro Function\n@@ -270,9 +272,9 @@ void Adafruit_RA8875::initialize(void) {\n   writeReg(RA8875_HNDR, (hsync_nondisp - hsync_finetune - 2) /\n                             8); // H non-display: HNDR * 8 + HNDFTR + 2 = 10\n   writeReg(RA8875_HSTR, hsync_start / 8 - 1); // Hsync start: (HSTR + 1)*8\n-  writeReg(RA8875_HPWR,\n-           RA8875_HPWR_LOW +\n-               (hsync_pw / 8 - 1",
-          "status": "modified"
-        },
-        {
-          "filename": "Adafruit_RA8875.h",
-          "patch": "@@ -33,8 +33,8 @@\n #endif\n \n /// @cond DISABLE\n-#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega1280__) ||              \\\n-    defined(__AVR_ATmega2560__) || defined(ESP8266) || defined(ESP32) ||       \\\n+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega1280__) ||        \\\n+    defined(__AVR_ATmega2560__) || defined(ESP8266) || defined(ESP32) || \\\n     defined(DOXYGEN)\n /// @endcond\n #define EEPROM_SUPPORTED ///< Board supports EEPROM Storage\n@@ -137,7 +137,7 @@ typedef struct // Matrix\n  */\n /**************************************************************************/\n class Adafruit_RA8875 : public Adafruit_GFX {\n-public:\n+ public:\n   Adafruit_RA8875(uint8_t cs, uint8_t rst);\n \n   boolean begin(enum RA8875sizes s);\n@@ -151,7 +151,7 @@ class Adafruit_RA8875 : public Adafruit_G",
-          "status": "modified"
-        }
-      ],
-      "compare_url": "https://github.com/adafruit/Adafruit_RA8875/compare/1.4.4...HEAD",
+      "commits_behind": null,
+      "compare_files": [],
+      "compare_url": null,
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
       "example_releases": [
+        {
+          "body": "### Changed\n- Added .clang-format configuration\n- Updated GitHub Actions CI workflow for code formatting validation\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_RA8875/compare/1.4.4...1.4.5",
+          "tag": "1.4.5"
+        },
         {
           "body": "## What's Changed\r\n* Update version number to 1.4.4 by @tyeth in https://github.com/adafruit/Adafruit_RA8875/pull/46\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_RA8875/compare/1.4.3...1.4.4",
           "tag": "1.4.4"
@@ -14393,43 +14468,9 @@
         {
           "body": "No functional change for users; strictly for test automation",
           "tag": "1.4.2"
-        },
-        {
-          "body": "This release moves `Adafruit_RA8875` to use GitHub actions for Continuous Integration as well as adding automated checks for formatting using `clang-format` and automated documentation checks using Doxygen",
-          "tag": "1.3.7"
         }
       ],
-      "existing_tags": [
-        "1.4.5",
-        "1.4.4",
-        "1.4.3",
-        "1.4.2",
-        "1.4.1",
-        "1.4.0",
-        "1.3.8",
-        "1.3.7",
-        "1.3.6",
-        "1.3.5",
-        "1.3.4",
-        "1.3.3",
-        "1.3.2",
-        "1.3.1",
-        "1.2.0",
-        "1.1.1",
-        "1.1.0",
-        "1.0.8",
-        "1.0.7",
-        "1.0.6",
-        "1.0.5",
-        "1.0.4",
-        "1.0.3",
-        "v1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772464901.3588452,
       "full_name": "adafruit/Adafruit_RA8875",
-      "gh_auto_notes": "## What's Changed\n* Fix clang-format CI by @ladyada-piclaw in https://github.com/adafruit/Adafruit_RA8875/pull/48\n* Update version to 1.4.5 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_RA8875/pull/50\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_RA8875/pull/48\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_RA8875/pull/50\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_RA8875/compare/1.4.4...1.4.5",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
@@ -14466,30 +14507,8 @@
           "user": "ahoenerBE"
         }
       ],
-      "pushed_at": "2026-02-26T01:47:39Z",
-      "recent_commits": [
-        {
-          "author": "piclaw",
-          "date": "2026-02-05T14:53:44Z",
-          "html_url": "https://github.com/adafruit/Adafruit_RA8875/commit/3ab2dca99260f8c8ad7bf2b068d2baba2e30d49b",
-          "message": "Fix clang-format CI: add .clang-format, update workflow, format code",
-          "sha": "3ab2dca"
-        },
-        {
-          "author": "Limor \"Ladyada\" Fried",
-          "date": "2026-02-13T15:09:21Z",
-          "html_url": "https://github.com/adafruit/Adafruit_RA8875/commit/44af3e223d04e3fbb1487db0f4f19fc4cdf817d3",
-          "message": "Merge pull request #48 from ladyada-piclaw/fix-clang-format-ci",
-          "sha": "44af3e2"
-        },
-        {
-          "author": "tyeth-ai-assisted",
-          "date": "2026-02-26T01:47:39Z",
-          "html_url": "https://github.com/adafruit/Adafruit_RA8875/commit/eece6ef40be7c3e21c4ba7ad332c93078e42cb78",
-          "message": "Bump version to 1.4.5",
-          "sha": "eece6ef"
-        }
-      ],
+      "pushed_at": "2026-03-02T15:21:38Z",
+      "recent_commits": [],
       "release_ci_checks": [
         {
           "name": "build",
@@ -14502,7 +14521,7 @@
       "release_ci_status": "pass",
       "release_notes": "### Changed\n- Added .clang-format configuration\n- Updated GitHub Actions CI workflow for code formatting validation\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_RA8875/compare/1.4.4...1.4.5",
       "release_status": "released",
-      "release_tag": "1.4.4",
+      "release_tag": "1.4.5",
       "released_tag": "1.4.5",
       "version_files": []
     },
@@ -14712,7 +14731,7 @@
     },
     "Adafruit_SGP40": {
       "arduino_registered": true,
-      "arduino_version": "1.0.0",
+      "arduino_version": "1.1.4",
       "branch_ci_status": "pass",
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": {
@@ -14768,17 +14787,6 @@
           "tag": "1.0.0"
         }
       ],
-      "existing_tags": [
-        "1.1.4",
-        "1.1.3",
-        "1.1.2",
-        "1.1.1",
-        "1.1.0",
-        "1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772464779.084709,
       "full_name": "adafruit/Adafruit_SGP40",
       "has_actions": true,
       "has_examples": true,
@@ -15609,17 +15617,37 @@
       "arduino_registered": true,
       "arduino_version": "1.0.1",
       "branch_ci_status": null,
-      "bump_justification": "Fixes, cleanup, or CI-only changes",
+      "bump_justification": "Added new example sketches for ESP32-S2 TFT displays and factory board testing, providing expanded demonstrations and production validation tools for the STCC4 sensor.",
       "bump_pr": null,
-      "bump_type": "patch",
-      "categories": [],
+      "bump_type": "minor",
+      "categories": [
+        "needs_release"
+      ],
       "ci_only": false,
-      "commits_behind": null,
-      "compare_url": null,
+      "commits_behind": 3,
+      "compare_files": [
+        {
+          "filename": "examples/STCC4_TFT_demo/STCC4_TFT_demo.ino",
+          "patch": "@@ -0,0 +1,177 @@\n+/*!\n+ * @file STCC4_TFT_demo.ino\n+ *\n+ * TFT demo for STCC4 CO2 Sensor on Feather ESP32-S2 TFT\n+ * Displays CO2, temperature, and humidity as large text readouts\n+ *\n+ * Hardware:\n+ *  - Adafruit Feather ESP32-S2 TFT\n+ *  - STCC4 CO2 Sensor breakout (I2C)\n+ *\n+ * Written by Limor Fried/Ladyada for Adafruit Industries.\n+ * BSD license, all text above must be included in any redistribution\n+ */\n+\n+#include <Adafruit_GFX.h>\n+#include <Adafruit_ST7789.h>\n+#include <Adafruit_STCC4.h>\n+#include <Fonts/FreeSans12pt7b.h>\n+#include <Fonts/FreeSans9pt7b.h>\n+#include <Fonts/FreeSansBold18pt7b.h>\n+#include <Fonts/FreeSansBold9pt7b.h>\n+#include <Wire.h>\n+\n+Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);\n+Adafruit_STCC4 stcc4;\n+\n+#define SCREEN_WIDTH 240\n+#define SCREE",
+          "status": "added"
+        },
+        {
+          "filename": "examples/STCC4_boardtest/STCC4_boardtest.ino",
+          "patch": "@@ -0,0 +1,216 @@\n+/*!\n+ * @file STCC4_boardtest.ino\n+ *\n+ * Factory board tester for Adafruit STCC4 breakout\n+ *\n+ * Hardware setup:\n+ *  - Metro Mini (Uno)\n+ *  - STCC4 breakout on I2C\n+ *  - ADDR pin connected to D2\n+ *  - 3Vout connected to A0\n+ *  - LED on D7\n+ *  - Piezo on D12\n+ */\n+\n+#include <Adafruit_STCC4.h>\n+#include <Wire.h>\n+\n+#define ADDR_PIN 2\n+#define V3OUT_PIN A0\n+#define LED_PIN 7\n+#define PIEZO_PIN 12\n+\n+#define STCC4_ADDR_LOW 0x64\n+#define STCC4_ADDR_HIGH 0x65\n+\n+uint8_t passes = 0;\n+uint8_t fails = 0;\n+\n+void pass(const __FlashStringHelper* msg) {\n+  Serial.print(F(\"  PASS: \"));\n+  Serial.println(msg);\n+  passes++;\n+}\n+\n+void fail(const __FlashStringHelper* msg) {\n+  Serial.print(F(\"  FAIL: \"));\n+  Serial.println(msg);\n+  fails++;\n+}\n+\n+void beepOK() {\n+  tone(PIEZO_P",
+          "status": "added"
+        }
+      ],
+      "compare_url": "https://github.com/adafruit/Adafruit_STCC4/compare/1.0.1...HEAD",
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
+      "example_releases": [],
+      "existing_tags": [
+        "1.0.1"
+      ],
+      "existing_tags_at": 1772541167.6826773,
       "full_name": "adafruit/Adafruit_STCC4",
+      "gh_auto_notes": "**Full Changelog**: https://github.com/adafruit/Adafruit_STCC4/compare/1.0.1...1.1.0",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
@@ -15628,9 +15656,31 @@
       "lib_version": "1.0.1",
       "name": "Adafruit_STCC4",
       "prs": [],
-      "pushed_at": "2025-12-11T02:44:09Z",
-      "recent_commits": [],
-      "release_notes": null,
+      "pushed_at": "2026-03-03T01:29:34Z",
+      "recent_commits": [
+        {
+          "author": "clawpi",
+          "date": "2026-03-02T20:46:58Z",
+          "html_url": "https://github.com/adafruit/Adafruit_STCC4/commit/2e7367cf3e0399e1a96c8471d4172e2b5b89864b",
+          "message": "Add ESP32-S2 TFT demo with CO2 bar graph",
+          "sha": "2e7367c"
+        },
+        {
+          "author": "clawpi",
+          "date": "2026-03-02T21:08:03Z",
+          "html_url": "https://github.com/adafruit/Adafruit_STCC4/commit/d6e5546f6c4dcd2048c17ae46b53ec155cadaa00",
+          "message": "Add ESP32-S2 TFT demo with big text CO2 readout",
+          "sha": "d6e5546"
+        },
+        {
+          "author": "clawpi",
+          "date": "2026-03-03T01:29:33Z",
+          "html_url": "https://github.com/adafruit/Adafruit_STCC4/commit/de59defa433422df732a663576d76c2f2f000335",
+          "message": "Add factory boardtest: 3V reg, ADDR toggle, product ID, measurement",
+          "sha": "de59def"
+        }
+      ],
+      "release_notes": "### What's Changed\n- Added ESP32-S2 TFT demo examples with CO2, temperature, and humidity displays featuring both bar graph and large text readout styles ([`d6e5546`](https://github.com/adafruit/Adafruit_STCC4/commit/d6e5546f6c4dcd2048c17ae46b53ec155cadaa00), [`2e7367c`](https://github.com/adafruit/Adafruit_STCC4/commit/2e7367cf3e0399e1a96c8471d4172e2b5b89864b)) by @clawpi\n- Added factory board test example for production validation including 3.3V regulator checks, address toggling, product ID verification, and measurement testing ([`de59def`](https://github.com/adafruit/Adafruit_STCC4/commit/de59defa433422df732a663576d76c2f2f000335)) by @clawpi\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_STCC4/compare/1.0.1...1.1.0",
       "release_status": null,
       "release_tag": "1.0.1",
       "version_files": []
@@ -16123,19 +16173,6 @@
           "tag": "1.0.2"
         }
       ],
-      "existing_tags": [
-        "1.4.2",
-        "1.4.1",
-        "1.4.0",
-        "1.3.0",
-        "1.2.1",
-        "1.2.0",
-        "1.1.0",
-        "1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772463422.7629397,
       "full_name": "adafruit/Adafruit_Si5351_Library",
       "gh_auto_notes": "## What's Changed\n* Fix clang-format CI by @ladyada-piclaw in https://github.com/adafruit/Adafruit_Si5351_Library/pull/24\n* Update version to 1.4.3 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_Si5351_Library/pull/26\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_Si5351_Library/pull/24\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_Si5351_Library/pull/26\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Si5351_Library/compare/1.4.2...1.4.3",
       "has_actions": true,
@@ -16499,10 +16536,6 @@
           "tag": "1.0.0"
         }
       ],
-      "existing_tags": [
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772256188.690756,
       "full_name": "adafruit/Adafruit_TCS3430",
       "has_actions": true,
       "has_examples": true,
@@ -17014,8 +17047,6 @@
       "details_loaded": true,
       "error": null,
       "example_releases": [],
-      "existing_tags": [],
-      "existing_tags_at": 1772256212.475624,
       "full_name": "adafruit/Adafruit_TMF8806",
       "has_actions": null,
       "has_examples": true,
@@ -17144,7 +17175,7 @@
     },
     "Adafruit_TMP117": {
       "arduino_registered": true,
-      "arduino_version": "1.0.0",
+      "arduino_version": "1.0.4",
       "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
@@ -17171,14 +17202,6 @@
           "tag": "1.0.0"
         }
       ],
-      "existing_tags": [
-        "1.0.4",
-        "1.0.3",
-        "1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772256926.3559535,
       "full_name": "adafruit/Adafruit_TMP117",
       "has_actions": true,
       "has_examples": true,
@@ -17844,6 +17867,38 @@
       "release_notes": null,
       "release_status": null,
       "release_tag": "1.0.1",
+      "version_files": []
+    },
+    "Adafruit_VCNL4030": {
+      "arduino_registered": false,
+      "arduino_version": null,
+      "branch_ci_status": null,
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
+      "bump_pr": null,
+      "bump_type": "patch",
+      "categories": [
+        "no_examples"
+      ],
+      "ci_only": false,
+      "commits_behind": null,
+      "compare_url": null,
+      "default_branch": "main",
+      "details_loaded": true,
+      "error": null,
+      "example_releases": [],
+      "full_name": "adafruit/Adafruit_VCNL4030",
+      "has_actions": null,
+      "has_examples": false,
+      "has_lib_props": false,
+      "html_url": "https://github.com/adafruit/Adafruit_VCNL4030",
+      "lib_version": null,
+      "name": "Adafruit_VCNL4030",
+      "prs": [],
+      "pushed_at": "2026-03-02T17:22:34Z",
+      "recent_commits": [],
+      "release_notes": null,
+      "release_status": null,
+      "release_tag": null,
       "version_files": []
     },
     "Adafruit_VCNL4040": {
@@ -18600,6 +18655,20 @@
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
+      "example_releases": [
+        {
+          "body": "## What's Changed\r\n* fix : Passthrough logic inside hardReset() by @mikeysklar in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/304\r\n* fix : jsdelivr updated to current release by @mikeysklar in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/305\r\n* fix : version# --> @latest by @mikeysklar in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/306\r\n* Bump @types/node from 22.9.0 to 22.9.3 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/309\r\n* Bump rollup from 4.25.0 to 4.27.4 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/308\r\n* Bump typescript from 5.6.3 to 5.7.2 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/310\r\n* Update to use esptool-js by @makermelissa in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/311\r\n* Update GitHub Pages Actions by @makermelissa in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/318\r\n* Point to esptool-js 0.5.3 by @makermelissa in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/320\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_WebSerial_ESPTool/compare/1.3.0...1.3.1",
+          "tag": "1.3.1"
+        },
+        {
+          "body": "## What's Changed\r\n* Add release drafter back in that was accidentally removed by @makermelissa in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/273\r\n* Bump @types/node from 22.5.2 to 22.5.4 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/274\r\n* Fix link in readme by @makermelissa in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/276\r\n* Bump rollup from 4.21.2 to 4.22.5 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/286\r\n* Bump @types/node from 22.5.4 to 22.7.7 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/292\r\n* Bump @rollup/plugin-typescript from 11.1.6 to 12.1.1 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/291\r\n* Bump @types/w3c-web-serial from 1.0.6 to 1.0.7 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/287\r\n* Bump @rollup/plugin-node-resolve from 15.2.3 to 15.3.0 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/284\r\n* Bump typescript from 5.5.4 to 5.6.3 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/288\r\n* Bump rollup from 4.22.5 to 4.24.2 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/294\r\n* Bump tslib from 2.7.0 to 2.8.0 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/296\r\n* Bump serve from 14.2.3 to 14.2.4 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/293\r\n* Bump @types/node from 22.7.7 to 22.8.1 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/295\r\n* adding noReset() button by @mikeysklar in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/297\r\n* Bump tslib from 2.8.0 to 2.8.1 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/298\r\n* Bump rollup from 4.24.2 to 4.24.4 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/300\r\n* Bump @types/node from 22.8.1 to 22.8.7 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/299\r\n* Bump rollup from 4.24.4 to 4.25.0 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/301\r\n* Bump @types/node from 22.8.7 to 22.9.0 by @dependabot in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/302\r\n\r\n## New Contributors\r\n* @mikeysklar made their first contribution in https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/297\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_WebSerial_ESPTool/compare/1.2.0...1.3.0",
+          "tag": "1.3.0"
+        },
+        {
+          "body": "This includes an updated stub for the ESP32-S3 and other updates.",
+          "tag": "1.2.0"
+        }
+      ],
       "full_name": "adafruit/Adafruit_WebSerial_ESPTool",
       "has_actions": null,
       "has_examples": false,
@@ -18607,18 +18676,8 @@
       "html_url": "https://github.com/adafruit/Adafruit_WebSerial_ESPTool",
       "lib_version": null,
       "name": "Adafruit_WebSerial_ESPTool",
-      "prs": [
-        {
-          "created_at": "2026-02-25T03:57:41Z",
-          "draft": true,
-          "html_url": "https://github.com/adafruit/Adafruit_WebSerial_ESPTool/pull/332",
-          "labels": [],
-          "number": 332,
-          "title": "Added for ESP32-S2 wedged port - retry",
-          "user": "mikeysklar"
-        }
-      ],
-      "pushed_at": "2026-02-24T22:03:25Z",
+      "prs": [],
+      "pushed_at": "2026-03-03T00:00:24Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -18730,9 +18789,9 @@
     },
     "Adafruit_Wippersnapper_Arduino": {
       "arduino_registered": true,
-      "arduino_version": "0.1.0",
+      "arduino_version": "1.0.0",
       "branch_ci_status": "pass",
-      "bump_justification": "Added SGP41 (VOC/NOx index) component with full driver implementation and hardware integration for gas and VOC sensing.",
+      "bump_justification": "Adds SGP41 VOC/NOx sensor support to WipperSnapper, expanding gas sensing capabilities with a new component driver.",
       "bump_pr": {
         "actions_need_approval": false,
         "checks": [
@@ -19132,59 +19191,6 @@
           "tag": "1.0.0-beta.120"
         }
       ],
-      "existing_tags": [
-        "1.0.0-beta.122",
-        "1.0.0-beta.121",
-        "1.0.0-beta.120",
-        "1.0.0-beta.119",
-        "1.0.0-beta.118",
-        "1.0.0-beta.117",
-        "1.0.0-beta.116",
-        "1.0.0-offline-beta.5",
-        "1.0.0-beta.115",
-        "1.0.0-beta.114",
-        "1.0.0-beta.113",
-        "1.0.0-beta.112",
-        "1.0.0-beta.111",
-        "1.0.0-offline-beta.4",
-        "1.0.0-beta.110",
-        "1.0.0-beta.109",
-        "1.0.0-beta.108",
-        "1.0.0-beta.107",
-        "1.0.0-beta.106",
-        "1.0.0-beta.105",
-        "1.0.0-beta.104",
-        "1.0.0-beta.103",
-        "1.0.0-beta.102",
-        "1.0.0-beta.101",
-        "1.0.0-offline-beta.3",
-        "1.0.0-offline-beta.2",
-        "1.0.0-beta.100",
-        "1.0.0-beta.99",
-        "1.0.0-beta.98",
-        "1.0.0-offline-beta.1",
-        "1.0.0-beta.97",
-        "1.0.0-beta.96",
-        "1.0.0-beta.95",
-        "1.0.0-beta.94",
-        "1.0.0-beta.93",
-        "1.0.0-beta.92",
-        "1.0.0-beta.91",
-        "1.0.0-beta.90",
-        "1.0.0-beta.89",
-        "1.0.0-alpha.89",
-        "1.0.0-beta.88",
-        "1.0.0-beta.87",
-        "1.0.0-beta.86",
-        "1.0.0-beta.85",
-        "1.0.0-beta.84",
-        "1.0.0-beta.83",
-        "1.0.0-beta.82",
-        "1.0.0-alpha.82",
-        "1.0.0-alpha.81",
-        "1.0.0-alpha.80"
-      ],
-      "existing_tags_at": 1772465372.4621425,
       "full_name": "adafruit/Adafruit_Wippersnapper_Arduino",
       "gh_auto_notes": "## What's Changed\n* add(component): SGP41 (VOC/NOx index) by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/869\n* Update version to 1.0.0-beta.123 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/872\n\n## New Contributors\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/872\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.122...1.0.0-beta.123",
       "has_actions": false,
@@ -19376,7 +19382,7 @@
           "user": "tyeth"
         }
       ],
-      "pushed_at": "2026-02-27T16:37:43Z",
+      "pushed_at": "2026-03-02T20:55:47Z",
       "recent_commits": [
         {
           "author": "tyeth",
@@ -19654,18 +19660,6 @@
           "tag": "1.1.0"
         }
       ],
-      "existing_tags": [
-        "1.2.3",
-        "1.2.2",
-        "1.2.1",
-        "1.2.0",
-        "1.1.2",
-        "1.1.1",
-        "1.1.0",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772256243.074862,
       "full_name": "adafruit/Adafruit_ZeroPDM",
       "gh_auto_notes": "## What's Changed\n* Fix clang-format CI by @ladyada-piclaw in https://github.com/adafruit/Adafruit_ZeroPDM/pull/10\n* Update version to 1.2.4 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_ZeroPDM/pull/11\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_ZeroPDM/pull/10\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_ZeroPDM/pull/11\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_ZeroPDM/compare/1.2.3...1.2.4",
       "has_actions": true,
@@ -19776,20 +19770,6 @@
           "tag": "2.0.2"
         }
       ],
-      "existing_tags": [
-        "2.2.4",
-        "2.2.3",
-        "2.2.2",
-        "2.2.1",
-        "2.2.0",
-        "2.1.0",
-        "2.0.3",
-        "2.0.2",
-        "2.0.0",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1772256211.5130608,
       "full_name": "adafruit/Adafruit_ZeroTimer",
       "gh_auto_notes": "## What's Changed\n* Fix clang-format CI by @ladyada-piclaw in https://github.com/adafruit/Adafruit_ZeroTimer/pull/23\n* Update version to 2.2.5 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_ZeroTimer/pull/24\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_ZeroTimer/pull/23\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_ZeroTimer/pull/24\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_ZeroTimer/compare/2.2.4...2.2.5",
       "has_actions": true,
@@ -25744,29 +25724,6 @@
           "tag": "2.3.100"
         }
       ],
-      "existing_tags": [
-        "2.3.102",
-        "2.3.101",
-        "2.3.100",
-        "2.3.54",
-        "2.3.53",
-        "2.3.52",
-        "2.3.51",
-        "2.3.50",
-        "2.2.54",
-        "2.2.3",
-        "2.2.2",
-        "2.2.1",
-        "1.5.1",
-        "1.5.0",
-        "1.4.0",
-        "1.3.0",
-        "1.2.4",
-        "1.2.3",
-        "1.2.1",
-        "1.2.0"
-      ],
-      "existing_tags_at": 1772465381.5951347,
       "full_name": "adafruit/SdFat",
       "gh_auto_notes": "## What's Changed\n* Disable debug mode in PioSdioCard.cpp by @Copilot in https://github.com/adafruit/SdFat/pull/49\n* Update version to 2.3.103 by @tyeth-ai-assisted in https://github.com/adafruit/SdFat/pull/50\n\n## New Contributors\n* @Copilot made their first contribution in https://github.com/adafruit/SdFat/pull/49\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/SdFat/pull/50\n\n**Full Changelog**: https://github.com/adafruit/SdFat/compare/2.3.102...2.3.103",
       "has_actions": true,
@@ -27442,15 +27399,6 @@
       "name": "Wippersnapper_Protobuf",
       "prs": [
         {
-          "created_at": "2026-02-27T22:28:23Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Wippersnapper_Protobuf/pull/164",
-          "labels": [],
-          "number": 164,
-          "title": "V2 Tweaks",
-          "user": "lorennorman"
-        },
-        {
           "created_at": "2026-02-05T20:39:44Z",
           "draft": true,
           "html_url": "https://github.com/adafruit/Wippersnapper_Protobuf/pull/161",
@@ -27496,7 +27444,7 @@
           "user": "brentru"
         }
       ],
-      "pushed_at": "2026-02-27T22:37:34Z",
+      "pushed_at": "2026-03-02T16:47:22Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -27613,6 +27561,7 @@
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
+      "example_releases": [],
       "full_name": "adafruit/adafruit-circuitpython-weekly-meeting",
       "has_actions": null,
       "has_examples": false,
@@ -27621,7 +27570,7 @@
       "lib_version": null,
       "name": "adafruit-circuitpython-weekly-meeting",
       "prs": [],
-      "pushed_at": "2026-02-23T19:38:12Z",
+      "pushed_at": "2026-03-02T19:44:54Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -28665,6 +28614,20 @@
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
+      "example_releases": [
+        {
+          "body": "## What's Changed\r\n* Fix markdown in README by @tekktrik in https://github.com/adafruit/circuitpython-build-tools/pull/146\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/circuitpython-build-tools/compare/1.20.0...1.20.1",
+          "tag": "1.20.1"
+        },
+        {
+          "body": "## What's Changed\r\n* fix: update mpy-cross name for MacOS binaries (from AWS) by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/137\r\n* fix: use raw str for regex pattern by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/134\r\n* chore(dev): deploy binary distributions to PyPI by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/135\r\n* chore(dev): dry-run release CI on push by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/139\r\n* build: migrate to pyproject.toml by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/136\r\n* style: fix lint violations about unused API by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/140\r\n* chore(dev): add `__init__.py` files by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/141\r\n* style: format python sources with ruff by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/142\r\n* chore: comply with REUSE Specification by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/143\r\n* chore: satisfy linting concerns from ruff by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/145\r\n* chore(dev): adopt pre-commit hooks by @2bndy5 in https://github.com/adafruit/circuitpython-build-tools/pull/144\r\n* Allow for multiple package definitions in pyproject.toml by @tekktrik in https://github.com/adafruit/circuitpython-build-tools/pull/147\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/circuitpython-build-tools/compare/1.19.0...1.20.0",
+          "tag": "1.20.0"
+        },
+        {
+          "body": "## What's Changed\r\n* use python 3.12 inside actions containers by @FoamyGuy in https://github.com/adafruit/circuitpython-build-tools/pull/128\r\n* Adds the description from pyproject.toml to bundle by @ericzundel in https://github.com/adafruit/circuitpython-build-tools/pull/131\r\n* Update CircuitPython version tags in target_versions.py by @dhalbert in https://github.com/adafruit/circuitpython-build-tools/pull/132\r\n\r\n## New Contributors\r\n* @ericzundel made their first contribution in https://github.com/adafruit/circuitpython-build-tools/pull/131\r\n\r\n**Full Changelog**: https://github.com/adafruit/circuitpython-build-tools/compare/1.18.0...1.18.1",
+          "tag": "1.19.0"
+        }
+      ],
       "full_name": "adafruit/circuitpython-build-tools",
       "has_actions": null,
       "has_examples": false,
@@ -28672,27 +28635,8 @@
       "html_url": "https://github.com/adafruit/circuitpython-build-tools",
       "lib_version": null,
       "name": "circuitpython-build-tools",
-      "prs": [
-        {
-          "created_at": "2026-01-31T22:19:21Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/circuitpython-build-tools/pull/147",
-          "labels": [],
-          "number": 147,
-          "title": "Allow for multiple package definitions in pyproject.toml",
-          "user": "tekktrik"
-        },
-        {
-          "created_at": "2026-01-30T14:18:33Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/circuitpython-build-tools/pull/146",
-          "labels": [],
-          "number": 146,
-          "title": "Fix markdown in README",
-          "user": "tekktrik"
-        }
-      ],
-      "pushed_at": "2026-01-31T21:18:50Z",
+      "prs": [],
+      "pushed_at": "2026-03-02T15:38:31Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -28816,7 +28760,7 @@
           "user": "relic-se"
         }
       ],
-      "pushed_at": "2026-02-27T10:13:41Z",
+      "pushed_at": "2026-03-03T10:13:50Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -32846,5 +32790,5 @@
     }
   },
   "status": "done",
-  "total": 106
+  "total": 15
 }
