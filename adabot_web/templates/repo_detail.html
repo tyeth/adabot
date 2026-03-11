@@ -550,11 +550,45 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
   {% endif %}
 
   {% else %}
+  {% if (repo.release_status or '')|lower == 'released' %}
+  {# Released without bump_pr — show release CI #}
+  <div style="margin-bottom:10px;font-size:0.85rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <span>Tag: <strong>{{ repo.released_tag or repo.release_tag or '?' }}</strong></span>
+    {% set _rci = repo.release_ci_status or 'pending' %}
+    <span class="tag tag-{{ _rci }}">rCI: {{ _rci }}</span>
+    <button class="btn" onclick="doCheckCI('{{ repo.name }}')">&#9881; Refresh</button>
+  </div>
+  {% if repo.release_ci_checks %}
+  <table style="margin-bottom:12px">
+    <tr><th>Check</th><th>State</th><th style="color:var(--muted);white-space:nowrap">Run</th></tr>
+    {% for check in repo.release_ci_checks %}
+    {% set check_url = check.get('link') or check.get('url') or check.get('detailsUrl') %}
+    <tr{% if check_url %} style="cursor:pointer" onclick="window.open('{{ check_url }}','_blank')" title="Open in GitHub"{% endif %}>
+      <td>{{ check.name }}{% if check_url %} <span style="color:var(--muted);font-size:0.7rem">&#8599;</span>{% endif %}</td>
+      <td>
+        {% set s = (check.get('state', check.get('status', ''))|upper) %}
+        {% if s in ['PASS','SUCCESS'] %}<span style="color:var(--green)">&#10003; {{ s }}</span>
+        {% elif s in ['FAIL','FAILURE','ERROR','CANCELLED'] %}<span style="color:var(--red)">&#10007; {{ s }}</span>
+        {% else %}<span style="color:var(--yellow)">{{ s or 'pending' }}</span>
+        {% endif %}
+      </td>
+      <td style="color:var(--muted);font-size:0.72rem;white-space:nowrap">
+        {% if check.run_label %}<span title="{{ check.run_id or '' }}">{{ check.run_label }}</span>{% endif %}
+        {% if check.run_id %}<span style="opacity:0.5;margin-left:4px">…{{ check.run_id[-6:] }}</span>{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="empty">No release CI data yet — click Refresh to fetch.</p>
+  {% endif %}
+  {% else %}
   <p class="empty">No bump PR yet. Go to Version Bump tab to create one.</p>
   <p style="font-size:0.8rem;color:var(--muted);margin-top:8px">
     For repos needing a release, create the bump PR first, wait for CI to pass,
     merge it, then confirm branch CI passes before releasing.
   </p>
+  {% endif %}
   {% endif %}
 </div>
 

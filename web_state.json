@@ -15949,30 +15949,28 @@
     },
     "Adafruit_TCS3430": {
       "arduino_registered": true,
-      "arduino_version": "1.1.0",
-      "branch_ci_status": "pass",
-      "bump_justification": "Fixed tft_colordemo example by removing unsupported API calls and adding missing font include.",
+      "arduino_version": "1.0.0",
+      "branch_ci_status": null,
+      "bump_justification": "Bug fix in example code. tft_colordemo removed references to non-existent CIE/CCT/lux API calls that don't exist in the library.",
       "bump_pr": {
         "actions_need_approval": false,
         "checks": [
           {
+            "bucket": "pass",
+            "link": "https://github.com/adafruit/Adafruit_TCS3430/actions/runs/22960536099/job/66649573197",
             "name": "build",
-            "run_id": "22424281242",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TCS3430/actions/runs/22424281242/job/64928871351"
+            "state": "SUCCESS"
           }
         ],
         "ci_status": "pass",
         "files_changed": [
           "library.properties"
         ],
-        "merged_at": "2026-02-26T01:47:48Z",
-        "new_version": "1.1.0",
-        "number": "6",
+        "new_version": "1.1.1",
+        "number": "8",
         "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit_TCS3430/pull/6"
+        "state": "open",
+        "url": "https://github.com/adafruit/Adafruit_TCS3430/pull/8"
       },
       "bump_type": "patch",
       "categories": [
@@ -16005,9 +16003,9 @@
         "1.1.0",
         "1.0.0"
       ],
-      "existing_tags_at": 1773163992.5644424,
+      "existing_tags_at": 1773243045.1577783,
       "full_name": "adafruit/Adafruit_TCS3430",
-      "gh_auto_notes": "**Full Changelog**: https://github.com/adafruit/Adafruit_TCS3430/compare/1.1.0...1.1.0",
+      "gh_auto_notes": "## What's Changed\n* Fix tft_colordemo: remove non-existent API calls by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TCS3430/pull/7\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TCS3430/compare/1.1.0...1.2.0",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
@@ -16033,20 +16031,9 @@
           "sha": "ff1ed31"
         }
       ],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "22628366012",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TCS3430/actions/runs/22628366012/job/65571154121"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "### New Features\n- Hardware test suite (hw_tests): 18 self-calibrating tests with NeoPixel stimulus\n- Interrupt test example: threshold-based detection with INT pin polling\n- TFT color demo example: XYZ bars, color swatches, real-time CIE/CCT/lux display on ESP32-S2\n- Colormatrix example demonstrating color calculation workflows\n\n### Changed\n- **Channel API rewritten**: getChannels(), CIE, lux, CCT methods refactored\n- CIE, Lux, CCT functionality moved from library core to examples (colormatrix, tft_colordemo)\n- Examples consolidated: simpletest + colortemp merged into basictest\n- basictest: configurable default gain (64X) and integration settings\n- INT pin data-ready polling (AINT) instead of previous mechanism\n- Removed registers.json; documentation merged into DESIGN.md\n\n### Bug Fixes\n- interrupt_test: fixed INT pin polling, Z threshold selection, persistence handling\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TCS3430/compare/1.1.0...1.1.0",
-      "release_status": "released",
+      "release_notes": "### Fixed\n\n- **tft_colordemo**: Removed non-existent API calls to match current library capabilities ([#7](https://github.com/adafruit/Adafruit_TCS3430/pull/7)) by @ladyada-piclaw\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TCS3430/compare/1.1.0...1.1.1",
+      "release_status": null,
       "release_tag": "1.1.0",
-      "released_tag": "1.1.0",
       "version_files": []
     },
     "Adafruit_TCS34725": {
@@ -16482,7 +16469,26 @@
       "arduino_version": "1.0.4",
       "branch_ci_status": null,
       "bump_justification": "Add TMP119 TFT demo for Feather ESP32-S2 TFT with color-coded temperature display. Minor bump for new example demonstrating expanded library use cases.",
-      "bump_pr": null,
+      "bump_pr": {
+        "actions_need_approval": false,
+        "checks": [
+          {
+            "bucket": "pass",
+            "link": "https://github.com/adafruit/Adafruit_TMP117/actions/runs/22960419267/job/66649140806",
+            "name": "build",
+            "state": "SUCCESS"
+          }
+        ],
+        "ci_status": "pass",
+        "files_changed": [
+          "library.properties"
+        ],
+        "new_version": "1.0.5",
+        "number": "6",
+        "pending_approval_run_ids": [],
+        "state": "open",
+        "url": "https://github.com/adafruit/Adafruit_TMP117/pull/6"
+      },
       "bump_type": "minor",
       "categories": [
         "needs_release"
@@ -16521,7 +16527,7 @@
         "1.0.1",
         "1.0.0"
       ],
-      "existing_tags_at": 1773163987.909104,
+      "existing_tags_at": 1773249763.5281956,
       "full_name": "adafruit/Adafruit_TMP117",
       "gh_auto_notes": "## What's Changed\n* Add TMP119 TFT demo for Feather ESP32-S2 TFT by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/5\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...1.1.0",
       "has_actions": true,
@@ -16566,7 +16572,7 @@
         }
       ],
       "release_ci_status": "pass",
-      "release_notes": "## What's Changed\n* Add TMP119 subclass with 0x2117 device ID by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/3\n* Demo one-shot mode with dataReady() in measurement_settings example by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/4\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_TMP117/pull/3\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...1.1.0",
+      "release_notes": "## What's Changed\n* Add TMP119 subclass with 0x2117 device ID by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/3\n* Demo one-shot mode with dataReady() in measurement_settings example by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/4\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_TMP117/pull/3\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...1.0.5",
       "release_status": "released",
       "release_tag": "1.0.4",
       "released_tag": "1.0.4",
@@ -17813,9 +17819,28 @@
     "Adafruit_WF100DPZ": {
       "arduino_registered": true,
       "arduino_version": "1.0.0",
-      "branch_ci_status": null,
+      "branch_ci_status": "pending",
       "bump_justification": "Improved README with comprehensive feature documentation, usage examples, and official CI/documentation badges to better present the library's capabilities.",
-      "bump_pr": null,
+      "bump_pr": {
+        "actions_need_approval": false,
+        "checks": [
+          {
+            "bucket": "pass",
+            "link": "https://github.com/adafruit/Adafruit_WF100DPZ/actions/runs/22960402091/job/66649073803",
+            "name": "build",
+            "state": "SUCCESS"
+          }
+        ],
+        "ci_status": "pass",
+        "files_changed": [
+          "library.properties"
+        ],
+        "new_version": "1.0.1",
+        "number": "2",
+        "pending_approval_run_ids": [],
+        "state": "merged",
+        "url": "https://github.com/adafruit/Adafruit_WF100DPZ/pull/2"
+      },
       "bump_type": "minor",
       "categories": [
         "needs_release"
@@ -17842,7 +17867,7 @@
       "existing_tags": [
         "1.0.0"
       ],
-      "existing_tags_at": 1773163982.157104,
+      "existing_tags_at": 1773249733.8138435,
       "full_name": "adafruit/Adafruit_WF100DPZ",
       "gh_auto_notes": "**Full Changelog**: https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.0...1.1.0",
       "has_actions": true,
@@ -17884,7 +17909,7 @@
           "sha": "08acb09"
         }
       ],
-      "release_notes": "Documentation improvements for the Adafruit WF100DPZ library.\n\n## Updates\n- Improved README with comprehensive feature list and usage examples by @clawpi ([`2b40651`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/2b406511d3725242c8cdc261f3b0180076531131))\n- Added official Arduino Library CI and doxygen documentation badges ([`51e400e`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/51e400e5157ff898aef600b8a29f0fce22fead12))\n- Fixed documentation links to use HTTPS ([`08acb09`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/08acb09438f272824bb589ca85eee5b62164293b))\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.0...1.1.0",
+      "release_notes": "Documentation improvements for the Adafruit WF100DPZ library.\n\n## Updates\n- Improved README with comprehensive feature list and usage examples by @clawpi ([`2b40651`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/2b406511d3725242c8cdc261f3b0180076531131))\n- Added official Arduino Library CI and doxygen documentation badges ([`51e400e`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/51e400e5157ff898aef600b8a29f0fce22fead12))\n- Fixed documentation links to use HTTPS ([`08acb09`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/08acb09438f272824bb589ca85eee5b62164293b))\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.0...1.0.1",
       "release_status": null,
       "release_tag": "1.0.0",
       "version_files": []
@@ -18284,6 +18309,7 @@
         }
       ],
       "existing_tags": [
+        "1.0.0-beta.124",
         "1.0.0-beta.123",
         "1.0.0-beta.122",
         "1.0.0-beta.121",
@@ -18332,10 +18358,9 @@
         "1.0.0-beta.84",
         "1.0.0-beta.83",
         "1.0.0-beta.82",
-        "1.0.0-alpha.82",
-        "1.0.0-alpha.81"
+        "1.0.0-alpha.82"
       ],
-      "existing_tags_at": 1773242131.3878963,
+      "existing_tags_at": 1773248840.255165,
       "full_name": "adafruit/Adafruit_Wippersnapper_Arduino",
       "gh_auto_notes": "## What's Changed\n* Reduce firmware size on ESP8266 by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/874\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.123...1.0.0-beta.124",
       "has_actions": false,
@@ -18586,9 +18611,356 @@
           "sha": "1023cad"
         }
       ],
-      "release_notes": "## Installing WipperSnapper\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\n\n## Upgrade a device running WipperSnapper\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\n\n## What's Changed\n* fix(esp8266): Reduce firmware size by using F() string macros and PROGMEM annotations by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/874\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.123...1.0.0-beta.125",
-      "release_status": null,
+      "release_ci_checks": [
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx(DEV) (espressif_esp32c5_devkitc_1_n8r4_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925694"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx(DEV) (wippersnapper_feather_esp32c6_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925704"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fSAMD (pyportal_tinyusb)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925708"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s3)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925739"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fSAMD (metro_m4_airliftlite_tinyusb)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925777"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP8266 (feather_esp8266)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925808"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fRP2040 (picow_rp2350_tinyusb)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925811"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (metro_esp32s3)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925827"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fRP2040 (fruit_jam_tinyusb)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925832"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fSAMD (pyportal_titano_tinyusb)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925835"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (qtpy_esp32s3)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925841"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fRP2040 (picow_rp2040_tinyusb)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925927"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (feather_esp32s2_tft_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925962"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (feather_esp32s2_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648925970"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (wippersnapper_feather_esp32s3_reverse_tft_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926009"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (feather_esp32s3_tft_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926019"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (feather_esp32s3_4mbflash_2mbpsram_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926038"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (feather_esp32s3_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926039"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (metroesp32s2_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926040"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (esp32s3_devkitc_1_n8_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926070"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (metro_esp32s3_debug)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926103"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (metroesp32s2)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926165"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (funhouse_noota)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926171"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s2)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926173"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (qtpy_esp32s3_n4r2)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926175"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s3_tft)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926190"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s3_4mbflash_2mbpsram)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926195"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s2_reverse_tft)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926197"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (qtpy_esp32s2)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926217"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (esp32s3_devkitc_1_n8)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926221"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s3_reverse_tft)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926225"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (magtag)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926243"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (xiao_esp32s3)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926248"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s2_tft)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926262"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (wippersnapper_feather_esp32)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926271"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (sparklemotion_esp32)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926292"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (dfrobot_beetle_esp32c3)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926294"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (sparklemotionstick_esp32)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926314"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (qtpy_esp32)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926319"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (itsybitsy_esp32)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926331"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (wippersnapper_qtpy_esp32c3)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926343"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (sparklemotionmini_esp32)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926354"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (feather_esp32_v2)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926396"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (wippersnapper_feather_esp32c6)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926446"
+        },
+        {
+          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (espressif_esp32c5_devkitc_1_n8r4)",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66648926476"
+        },
+        {
+          "name": "call-workflow-build / Merge Artifacts for build-files-dev",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66652520826"
+        },
+        {
+          "name": "call-workflow-build / Merge Artifacts for build-files",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66652920619"
+        },
+        {
+          "name": "call-workflow-build / \ud83d\udd0eClang & Doxygen",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66652921073"
+        },
+        {
+          "name": "call-workflow-release / Release WipperSnapper",
+          "run_id": "22960362541",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/22960362541/job/66653016315"
+        }
+      ],
+      "release_ci_status": "pass",
+      "release_notes": "## Installing WipperSnapper\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\n\n## Upgrade a device running WipperSnapper\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\n\n## What's Changed\n* fix(esp8266): Reduce firmware size by using F() string macros and PROGMEM annotations by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/874\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.123...1.0.0-beta.124",
+      "release_status": "released",
       "release_tag": "1.0.0-beta.123",
+      "released_tag": "1.0.0-beta.124",
       "version_files": [
         {
           "matches": true,

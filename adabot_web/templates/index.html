@@ -504,7 +504,7 @@ async function doCheckCI(name) {
   const r = await fetch('/api/repo/' + name + '/check_ci', {method:'POST'});
   const d = await r.json();
   if (d.error) { toast('CI error (' + name + '): ' + d.error, 'err', ciKey, {repo: name, tab: 'ci'}); return; }
-  let ciMsg = 'CI (' + name + '): ' + d.ci_status;
+  let ciMsg = 'CI (' + name + '): ' + (d.ci_status || 'n/a');
   if (d.release_ci_status) ciMsg += ' | release CI: ' + d.release_ci_status;
   toast(ciMsg, 'ok', ciKey, {repo: name, tab: 'ci'});
   // Update cached ci_status for the badge without requiring a full reload
