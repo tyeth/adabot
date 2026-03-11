@@ -328,18 +328,27 @@ def repo_detail(name):
     lib_version = repo.get("lib_version")
     release_tag = repo.get("release_tag")
     has_prerelease = False
+    no_bump_needed = False
     if lib_version:
         lib_sv = _coerce_version(lib_version)
         if lib_sv:
             rel_sv = _coerce_version(release_tag) if release_tag else None
-            base_sv = max(lib_sv, rel_sv) if rel_sv else lib_sv
-            has_prerelease = bool(base_sv.prerelease or base_sv.build)
-            proposed_sv = _bump_version(base_sv, bump_type)
-            # Advance past any versions that are already tagged (patch-bump until clear)
-            while str(proposed_sv) in existing_tags:
-                logger.info("%s: proposed %s already tagged, bumping patch", name, proposed_sv)
-                proposed_sv = proposed_sv.bump_patch()
-            proposed_version = str(proposed_sv)
+            # If lib_version is already ahead of release_tag, no bump needed
+            if rel_sv and lib_sv > rel_sv:
+                proposed_version = lib_version
+                has_prerelease = bool(lib_sv.prerelease or lib_sv.build)
+                no_bump_needed = True
+                bump_type = "none"
+                bump_justification = "library.properties already ahead of release tag"
+            else:
+                base_sv = max(lib_sv, rel_sv) if rel_sv else lib_sv
+                has_prerelease = bool(base_sv.prerelease or base_sv.build)
+                proposed_sv = _bump_version(base_sv, bump_type)
+                # Advance past any versions that are already tagged (patch-bump until clear)
+                while str(proposed_sv) in existing_tags:
+                    logger.info("%s: proposed %s already tagged, bumping patch", name, proposed_sv)
+                    proposed_sv = proposed_sv.bump_patch()
+                proposed_version = str(proposed_sv)
 
     # Override with bump PR version if one exists — avoids stale recalculation
     bump = repo.get("bump_pr")

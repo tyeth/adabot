@@ -173,6 +173,7 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
     <input id="release-tag-input" type="text"
       value="{{ proposed_version or repo.lib_version or '' }}"
       placeholder="e.g. 1.2.4"
+      oninput="updateChangelogLink()"
       style="background:var(--surface);color:var(--text);border:1px solid var(--border);
              padding:4px 8px;border-radius:4px;font-family:monospace;width:120px">
     {% if repo.release_tag and repo.lib_version and repo.release_tag != repo.lib_version %}
@@ -317,6 +318,13 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
   {% endif %}
 
   {% if repo.lib_version %}
+  {% if bump_type == 'none' %}
+  <div style="padding:8px 10px;background:#1a3a1a;border-radius:4px;border:1px solid var(--green);margin-bottom:12px;font-size:0.85rem">
+    <strong style="color:var(--green)">&#10003; No bump needed</strong>
+    &mdash; library.properties ({{ repo.lib_version }}) is already ahead of release tag ({{ repo.release_tag }}).
+    Release as <strong>{{ proposed_version }}</strong>.
+  </div>
+  {% else %}
   <div style="margin-bottom:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
     <span style="font-size:0.8rem;color:var(--muted)">Bump type:</span>
     {% if has_prerelease %}
@@ -350,6 +358,7 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
       <span style="color:var(--muted);font-size:0.8rem">&larr; edit or pick type above</span>
     </div>
   </div>
+  {% endif %}
   {% endif %}
 
   {% if repo.version_files %}
@@ -610,8 +619,24 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
     if (bumpEl && bumpEl !== document.activeElement) bumpEl.value = val;
     const tagEl = document.getElementById('release-tag-input');
     if (tagEl) tagEl.value = val;
+    updateChangelogLink();
   };
 })();
+
+function updateChangelogLink() {
+  const ta = document.getElementById('notes-editor');
+  const tagEl = document.getElementById('release-tag-input');
+  if (!ta || !tagEl) return;
+  const newTag = tagEl.value.trim();
+  if (!newTag) return;
+  const relTag = {{ (repo.release_tag or '') | tojson }};
+  const htmlUrl = {{ (repo.html_url or '') | tojson }};
+  if (!relTag || !htmlUrl) return;
+  const linkRe = /\n*\*\*Full Changelog\*\*:\s*\S+/;
+  let notes = ta.value.replace(linkRe, '').trimEnd();
+  notes += '\n\n**Full Changelog**: ' + htmlUrl + '/compare/' + relTag + '...' + newTag;
+  ta.value = notes;
+}
 
 function toggleNotesPreview() {
   const panel = document.getElementById('notes-preview-panel');
