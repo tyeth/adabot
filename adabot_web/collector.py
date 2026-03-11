@@ -266,7 +266,12 @@ def _clear_completed_cycle(repo_data):
     if not commits_behind:
         return  # still just "released", no new work yet
 
-    # Released + new commits → full cycle reset
+    # Don't clear if there's an open bump PR — it belongs to the next cycle
+    bump = repo_data.get("bump_pr")
+    if bump and bump.get("state") not in (None, "merged"):
+        return
+
+    # Released + new commits + no open bump PR → full cycle reset
     repo_data["bump_pr"] = None
     repo_data["release_status"] = None
     repo_data["released_tag"] = None

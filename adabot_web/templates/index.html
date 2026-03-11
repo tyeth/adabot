@@ -90,7 +90,11 @@
               <span class="tag tag-pass" id="ci-badge-{{ repo.name }}">merged &#10003;</span>
               <span class="tag tag-{{ repo.branch_ci_status or 'pending' }}" id="bci-badge-{{ repo.name }}">CI:{{ repo.branch_ci_status or 'pending' }}</span>
             {% else %}
+              {% if repo.bump_pr.ci_status == 'pass' %}
+              <span class="tag tag-pass" id="ci-badge-{{ repo.name }}">to merge</span>
+              {% else %}
               <span class="tag tag-{{ repo.bump_pr.ci_status or 'pending' }}" id="ci-badge-{{ repo.name }}">bump {{ repo.bump_pr.ci_status or 'pending' }}</span>
+              {% endif %}
               <span id="bci-badge-{{ repo.name }}" style="display:none"></span>
             {% endif %}
           {% else %}
@@ -286,8 +290,13 @@ function updateSidebarBadge(name) {
     }
   } else if (bump) {
     const ci = bump.ci_status || 'pending';
-    ciBadge.textContent = 'bump ' + ci;
-    ciBadge.className = 'tag tag-' + ci;
+    if (ci === 'pass') {
+      ciBadge.textContent = 'to merge';
+      ciBadge.className = 'tag tag-pass';
+    } else {
+      ciBadge.textContent = 'bump ' + ci;
+      ciBadge.className = 'tag tag-' + ci;
+    }
     ciBadge.style.display = '';
     if (bciBadge) bciBadge.style.display = 'none';
   }

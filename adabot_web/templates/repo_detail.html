@@ -63,7 +63,7 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
     <span class="pipeline-arrow">&rarr;</span>
     <span class="pipeline-step step-{{ s2 }}">PR CI</span>
     <span class="pipeline-arrow">&rarr;</span>
-    <span class="pipeline-step step-{{ s3 }}">Merged</span>
+    <span class="pipeline-step step-{{ s3 }}">{% if s3 == 'done' %}Merged{% elif s3 == 'ready' %}To Merge{% else %}Merge{% endif %}</span>
     <span class="pipeline-arrow">&rarr;</span>
     <span class="pipeline-step step-{{ s4 }}">Branch CI</span>
     <span class="pipeline-arrow">&rarr;</span>

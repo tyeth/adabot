@@ -15950,26 +15950,28 @@
     "Adafruit_TCS3430": {
       "arduino_registered": true,
       "arduino_version": "1.0.0",
-      "branch_ci_status": null,
+      "branch_ci_status": "pending",
       "bump_justification": "Bug fix in example code. tft_colordemo removed references to non-existent CIE/CCT/lux API calls that don't exist in the library.",
       "bump_pr": {
         "actions_need_approval": false,
         "checks": [
           {
-            "bucket": "pass",
-            "link": "https://github.com/adafruit/Adafruit_TCS3430/actions/runs/22960536099/job/66649573197",
             "name": "build",
-            "state": "SUCCESS"
+            "run_id": "22965794656",
+            "run_label": "merge CI",
+            "state": "IN_PROGRESS",
+            "url": "https://github.com/adafruit/Adafruit_TCS3430/actions/runs/22965794656/job/66668844726"
           }
         ],
-        "ci_status": "pass",
+        "ci_status": "pending",
         "files_changed": [
           "library.properties"
         ],
+        "merged_at": "2026-03-11T17:30:10Z",
         "new_version": "1.1.1",
         "number": "8",
         "pending_approval_run_ids": [],
-        "state": "open",
+        "state": "merged",
         "url": "https://github.com/adafruit/Adafruit_TCS3430/pull/8"
       },
       "bump_type": "patch",
@@ -16003,7 +16005,7 @@
         "1.1.0",
         "1.0.0"
       ],
-      "existing_tags_at": 1773243045.1577783,
+      "existing_tags_at": 1773250202.371634,
       "full_name": "adafruit/Adafruit_TCS3430",
       "gh_auto_notes": "## What's Changed\n* Fix tft_colordemo: remove non-existent API calls by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TCS3430/pull/7\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TCS3430/compare/1.1.0...1.2.0",
       "has_actions": true,
@@ -16466,30 +16468,32 @@
     },
     "Adafruit_TMP117": {
       "arduino_registered": true,
-      "arduino_version": "1.0.4",
-      "branch_ci_status": null,
-      "bump_justification": "Add TMP119 TFT demo for Feather ESP32-S2 TFT with color-coded temperature display. Minor bump for new example demonstrating expanded library use cases.",
+      "arduino_version": "1.0.0",
+      "branch_ci_status": "pending",
+      "bump_justification": "Add TMP119 TFT demo for Feather ESP32-S2 TFT. Example additions are patch-level changes without API modifications.",
       "bump_pr": {
         "actions_need_approval": false,
         "checks": [
           {
-            "bucket": "pass",
-            "link": "https://github.com/adafruit/Adafruit_TMP117/actions/runs/22960419267/job/66649140806",
             "name": "build",
-            "state": "SUCCESS"
+            "run_id": "22965787016",
+            "run_label": "merge CI",
+            "state": "IN_PROGRESS",
+            "url": "https://github.com/adafruit/Adafruit_TMP117/actions/runs/22965787016/job/66668816434"
           }
         ],
-        "ci_status": "pass",
+        "ci_status": "pending",
         "files_changed": [
           "library.properties"
         ],
+        "merged_at": "2026-03-11T17:30:00Z",
         "new_version": "1.0.5",
         "number": "6",
         "pending_approval_run_ids": [],
-        "state": "open",
+        "state": "merged",
         "url": "https://github.com/adafruit/Adafruit_TMP117/pull/6"
       },
-      "bump_type": "minor",
+      "bump_type": "patch",
       "categories": [
         "needs_release"
       ],
@@ -16527,7 +16531,7 @@
         "1.0.1",
         "1.0.0"
       ],
-      "existing_tags_at": 1773249763.5281956,
+      "existing_tags_at": 1773250092.1882937,
       "full_name": "adafruit/Adafruit_TMP117",
       "gh_auto_notes": "## What's Changed\n* Add TMP119 TFT demo for Feather ESP32-S2 TFT by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/5\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...1.1.0",
       "has_actions": true,
@@ -16537,7 +16541,17 @@
       "lib_name": "Adafruit TMP117",
       "lib_version": "1.0.4",
       "name": "Adafruit_TMP117",
-      "prs": [],
+      "prs": [
+        {
+          "created_at": "2026-03-11T15:28:23Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_TMP117/pull/6",
+          "labels": [],
+          "number": 6,
+          "title": "Update version to 1.0.5",
+          "user": "tyeth"
+        }
+      ],
       "pushed_at": "2026-03-06T15:35:32Z",
       "recent_commits": [
         {
@@ -16562,20 +16576,13 @@
           "sha": "489ea73"
         }
       ],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "22514202936",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TMP117/actions/runs/22514202936/job/65229129502"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## What's Changed\n* Add TMP119 subclass with 0x2117 device ID by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/3\n* Demo one-shot mode with dataReady() in measurement_settings example by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/4\n\n## New Contributors\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_TMP117/pull/3\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...1.0.5",
-      "release_status": "released",
+      "release_ci_checks": null,
+      "release_ci_status": null,
+      "release_notes": "## What's Changed\n* Add TMP119 TFT demo for Feather ESP32-S2 TFT by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/5\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...1.0.5",
+      "release_notes_user_edited": null,
+      "release_status": null,
       "release_tag": "1.0.4",
-      "released_tag": "1.0.4",
+      "released_tag": null,
       "version_files": []
     },
     "Adafruit_TSC2007": {
@@ -17819,22 +17826,24 @@
     "Adafruit_WF100DPZ": {
       "arduino_registered": true,
       "arduino_version": "1.0.0",
-      "branch_ci_status": "pending",
+      "branch_ci_status": "pass",
       "bump_justification": "Improved README with comprehensive feature documentation, usage examples, and official CI/documentation badges to better present the library's capabilities.",
       "bump_pr": {
         "actions_need_approval": false,
         "checks": [
           {
-            "bucket": "pass",
-            "link": "https://github.com/adafruit/Adafruit_WF100DPZ/actions/runs/22960402091/job/66649073803",
             "name": "build",
-            "state": "SUCCESS"
+            "run_id": "22965472508",
+            "run_label": "merge CI",
+            "state": "SUCCESS",
+            "url": "https://github.com/adafruit/Adafruit_WF100DPZ/actions/runs/22965472508/job/66667682814"
           }
         ],
         "ci_status": "pass",
         "files_changed": [
           "library.properties"
         ],
+        "merged_at": "2026-03-11T17:22:37Z",
         "new_version": "1.0.1",
         "number": "2",
         "pending_approval_run_ids": [],
@@ -17910,7 +17919,7 @@
         }
       ],
       "release_notes": "Documentation improvements for the Adafruit WF100DPZ library.\n\n## Updates\n- Improved README with comprehensive feature list and usage examples by @clawpi ([`2b40651`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/2b406511d3725242c8cdc261f3b0180076531131))\n- Added official Arduino Library CI and doxygen documentation badges ([`51e400e`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/51e400e5157ff898aef600b8a29f0fce22fead12))\n- Fixed documentation links to use HTTPS ([`08acb09`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/08acb09438f272824bb589ca85eee5b62164293b))\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.0...1.0.1",
-      "release_status": null,
+      "release_status": "ready",
       "release_tag": "1.0.0",
       "version_files": []
     },
