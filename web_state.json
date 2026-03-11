@@ -15950,7 +15950,7 @@
     "Adafruit_TCS3430": {
       "arduino_registered": true,
       "arduino_version": "1.0.0",
-      "branch_ci_status": "pending",
+      "branch_ci_status": "pass",
       "bump_justification": "Bug fix in example code. tft_colordemo removed references to non-existent CIE/CCT/lux API calls that don't exist in the library.",
       "bump_pr": {
         "actions_need_approval": false,
@@ -15959,11 +15959,11 @@
             "name": "build",
             "run_id": "22965794656",
             "run_label": "merge CI",
-            "state": "IN_PROGRESS",
+            "state": "SUCCESS",
             "url": "https://github.com/adafruit/Adafruit_TCS3430/actions/runs/22965794656/job/66668844726"
           }
         ],
-        "ci_status": "pending",
+        "ci_status": "pass",
         "files_changed": [
           "library.properties"
         ],
@@ -16034,7 +16034,7 @@
         }
       ],
       "release_notes": "### Fixed\n\n- **tft_colordemo**: Removed non-existent API calls to match current library capabilities ([#7](https://github.com/adafruit/Adafruit_TCS3430/pull/7)) by @ladyada-piclaw\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TCS3430/compare/1.1.0...1.1.1",
-      "release_status": null,
+      "release_status": "ready",
       "release_tag": "1.1.0",
       "version_files": []
     },
@@ -16469,7 +16469,7 @@
     "Adafruit_TMP117": {
       "arduino_registered": true,
       "arduino_version": "1.0.0",
-      "branch_ci_status": "pending",
+      "branch_ci_status": "pass",
       "bump_justification": "Add TMP119 TFT demo for Feather ESP32-S2 TFT. Example additions are patch-level changes without API modifications.",
       "bump_pr": {
         "actions_need_approval": false,
@@ -16478,11 +16478,11 @@
             "name": "build",
             "run_id": "22965787016",
             "run_label": "merge CI",
-            "state": "IN_PROGRESS",
+            "state": "SUCCESS",
             "url": "https://github.com/adafruit/Adafruit_TMP117/actions/runs/22965787016/job/66668816434"
           }
         ],
-        "ci_status": "pending",
+        "ci_status": "pass",
         "files_changed": [
           "library.properties"
         ],
@@ -16580,7 +16580,7 @@
       "release_ci_status": null,
       "release_notes": "## What's Changed\n* Add TMP119 TFT demo for Feather ESP32-S2 TFT by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/5\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...1.0.5",
       "release_notes_user_edited": null,
-      "release_status": null,
+      "release_status": "ready",
       "release_tag": "1.0.4",
       "released_tag": null,
       "version_files": []
@@ -17874,9 +17874,10 @@
         }
       ],
       "existing_tags": [
+        "1.0.1",
         "1.0.0"
       ],
-      "existing_tags_at": 1773249733.8138435,
+      "existing_tags_at": 1773251884.7371128,
       "full_name": "adafruit/Adafruit_WF100DPZ",
       "gh_auto_notes": "**Full Changelog**: https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.0...1.1.0",
       "has_actions": true,
@@ -17919,8 +17920,9 @@
         }
       ],
       "release_notes": "Documentation improvements for the Adafruit WF100DPZ library.\n\n## Updates\n- Improved README with comprehensive feature list and usage examples by @clawpi ([`2b40651`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/2b406511d3725242c8cdc261f3b0180076531131))\n- Added official Arduino Library CI and doxygen documentation badges ([`51e400e`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/51e400e5157ff898aef600b8a29f0fce22fead12))\n- Fixed documentation links to use HTTPS ([`08acb09`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/08acb09438f272824bb589ca85eee5b62164293b))\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.0...1.0.1",
-      "release_status": "ready",
+      "release_status": "released",
       "release_tag": "1.0.0",
+      "released_tag": "1.0.1",
       "version_files": []
     },
     "Adafruit_WavePlayer": {
