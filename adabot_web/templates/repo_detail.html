@@ -358,7 +358,7 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
     <tr><th>File</th><th>Version found</th><th>Status</th></tr>
     {% for vf in repo.version_files %}
     <tr>
-      <td><a href="{{ vf.url }}" target="_blank">{{ vf.path }}</a></td>
+      <td><a href="{{ vf.url }}" target="_blank">{{ vf.path }}{% if vf.line %}:{{ vf.line }}{% elif '#L' in vf.url %}:{{ vf.url.split('#L')[-1] }}{% endif %}</a></td>
       <td><code>{{ vf.version_found }}</code></td>
       <td>
         {% if vf.matches %}

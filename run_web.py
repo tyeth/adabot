@@ -140,6 +140,45 @@ def _check_gh_version():
     logging.info("gh CLI version %d.%d.%d — OK.", major, minor, patch)
 
 
+def _log_gh_identity():
+    """Log the GitHub user and token being used so it's visible on every startup."""
+    user_env  = os.environ.get("ADABOT_GITHUB_USER")
+    token_env = os.environ.get("ADABOT_GITHUB_ACCESS_TOKEN")
+
+    user  = user_env  or "tyeth-ai-assisted (default)"
+    label = user_env  and "ADABOT_GITHUB_USER"  or "built-in default"
+    logging.info("GitHub user : %s  [%s]", user, label)
+
+    if token_env:
+        masked = token_env[:5] + "*" * (len(token_env) - 9) + token_env[-4:] if len(token_env) > 9 else "****"
+        logging.info("GitHub token: %s  [ADABOT_GITHUB_ACCESS_TOKEN]", masked)
+    else:
+        logging.warning("GitHub token: MISSING — set ADABOT_GITHUB_ACCESS_TOKEN or API calls will fail")
+
+    env = os.environ.copy()
+    if token_env:
+        env["GH_TOKEN"] = token_env
+    result = subprocess.run(
+        ["gh", "auth", "status"],
+        capture_output=True, text=True, env=env, timeout=10,
+    )
+    auth_out = (result.stdout + result.stderr).strip()
+    for line in auth_out.splitlines():
+        line = line.strip()
+        if line:
+            logging.info("gh auth: %s", line)
+
+    git_result = subprocess.run(
+        ["git", "config", "--get-regexp", "user"],
+        capture_output=True, text=True, timeout=5,
+    )
+    for line in git_result.stdout.splitlines():
+        line = line.strip()
+        if line:
+            logging.info("git config: %s", line)
+
+
 _check_gh_version()
+_log_gh_identity()
 logging.info("Starting web server on http://localhost:%d", args.port)
 app.run(host="0.0.0.0", port=args.port, debug=False, use_reloader=False)

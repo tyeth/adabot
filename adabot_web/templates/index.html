@@ -499,12 +499,14 @@ async function doBump(name) {
 }
 
 async function doCheckCI(name) {
+  const ciKey = 'ci-' + name;
+  toast('Checking CI for ' + name + '…', 'ok', ciKey, {repo: name, tab: 'ci'}, null);
   const r = await fetch('/api/repo/' + name + '/check_ci', {method:'POST'});
   const d = await r.json();
-  if (d.error) { toast('CI error (' + name + '): ' + d.error, 'err', null, {repo: name, tab: 'ci'}); return; }
+  if (d.error) { toast('CI error (' + name + '): ' + d.error, 'err', ciKey, {repo: name, tab: 'ci'}); return; }
   let ciMsg = 'CI (' + name + '): ' + d.ci_status;
   if (d.release_ci_status) ciMsg += ' | release CI: ' + d.release_ci_status;
-  toast(ciMsg, 'ok', null, {repo: name, tab: 'ci'});
+  toast(ciMsg, 'ok', ciKey, {repo: name, tab: 'ci'});
   // Update cached ci_status for the badge without requiring a full reload
   if (repoData[name] && repoData[name].bump_pr) {
     repoData[name].bump_pr.ci_status = d.ci_status;
@@ -517,6 +519,8 @@ async function doCheckCI(name) {
     repoData[name].release_ci_status = d.release_ci_status;
     repoData[name].release_ci_checks = d.release_ci_checks || [];
   }
+  if (repoData[name] && d.release_status) repoData[name].release_status = d.release_status;
+  if (repoData[name] && d.released_tag)   repoData[name].released_tag   = d.released_tag;
   updateSidebarBadge(name);
   // Only reload the detail panel if the user is still looking at this repo
   if (currentRepo === name) loadDetail(name, 'ci');
@@ -681,18 +685,27 @@ async function batchCheckCI() {
       else if (cd.ci_status === 'approval_required') approval++;
       // Update cached data + sidebar badge
       if (!repoData[name]) repoData[name] = {};
-      if (!repoData[name].bump_pr) repoData[name].bump_pr = {};
-      
-      if (cd.state) repoData[name].bump_pr.state = cd.state;
-      
-      if (cd.state === 'merged') {
-        repoData[name].branch_ci_status = cd.ci_status;
-        // Bump PR CI status is implicitly pass if merged, or we can keep old value
-        repoData[name].bump_pr.ci_status = 'pass'; 
-      } else {
-        repoData[name].bump_pr.ci_status = cd.ci_status;
+
+      if (cd.source !== 'release_only') {
+        if (!repoData[name].bump_pr) repoData[name].bump_pr = {};
+        if (cd.state) repoData[name].bump_pr.state = cd.state;
+
+        if (cd.state === 'merged') {
+          repoData[name].branch_ci_status = cd.ci_status;
+          // Bump PR CI status is implicitly pass if merged, or we can keep old value
+          repoData[name].bump_pr.ci_status = 'pass';
+        } else {
+          repoData[name].bump_pr.ci_status = cd.ci_status;
+        }
       }
-      
+      // Cache release CI status (mirrors doCheckCI)
+      if (cd.release_ci_status) {
+        repoData[name].release_ci_status = cd.release_ci_status;
+        repoData[name].release_ci_checks = cd.release_ci_checks || [];
+      }
+      if (cd.release_status) repoData[name].release_status = cd.release_status;
+      if (cd.released_tag)   repoData[name].released_tag   = cd.released_tag;
+
       updateSidebarBadge(name);
     }
     // Stagger requests to avoid rate-limiting GitHub API

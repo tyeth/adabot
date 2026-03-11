@@ -392,9 +392,12 @@ def api_refresh():
 
 @app.route("/api/repos_with_bump_pr")
 def repos_with_bump_pr():
-    """Return names of repos that currently have a bump PR recorded."""
+    """Return names of repos that have a bump PR or are released (need CI tracking)."""
     state = collector.load_state()
-    names = [name for name, r in state.get("repos", {}).items() if r.get("bump_pr")]
+    names = [
+        name for name, r in state.get("repos", {}).items()
+        if r.get("bump_pr") or (r.get("release_status") or "").lower() == "released"
+    ]
     return jsonify({"repos": sorted(names)})
 
 
@@ -819,6 +822,23 @@ def check_ci(name):
 
     bump = repo.get("bump_pr")
     if not bump or not bump.get("number"):
+        # No bump PR — if the repo is released, still check release CI only.
+        if (repo.get("release_status") or "").lower() == "released":
+            upstream = f"adafruit/{name}"
+            tag = repo.get("released_tag") or repo.get("release_tag") or ""
+            if tag:
+                release_ci = _check_release_ci(upstream, tag)
+                repo["release_ci_status"] = release_ci.get("status", "unknown")
+                repo["release_ci_checks"] = release_ci.get("runs", [])
+                collector.save_state(state)
+                return jsonify({
+                    "ci_status": None,
+                    "source": "release_only",
+                    "release_ci_status": release_ci.get("status"),
+                    "release_ci_checks": release_ci.get("runs", []),
+                    "release_status": repo.get("release_status"),
+                    "released_tag": repo.get("released_tag"),
+                })
         return jsonify({"error": "no bump PR recorded"}), 400
 
     upstream = f"adafruit/{name}"
@@ -871,6 +891,8 @@ def check_ci(name):
             "checks": merge_result.get("runs", []),
             "release_ci_status": release_ci.get("status") if release_ci else None,
             "release_ci_checks": release_ci.get("runs", []) if release_ci else [],
+            "release_status": repo.get("release_status"),
+            "released_tag": repo.get("released_tag"),
         })
 
     # PR still open — check PR checks
@@ -911,6 +933,8 @@ def check_ci(name):
         "source": "pr",
         "checks": checks,
         "actions_need_approval": needs_approval,
+        "release_status": repo.get("release_status"),
+        "released_tag": repo.get("released_tag"),
     })
 
 

@@ -191,3 +191,6 @@ Recommended sequence (least to most complex, with quick wins first):
 
 TODOs 2 and 1 are somewhat coupled — both involve post-release UI updates — so
 implementing 2 first gives a foundation that 1 builds on.
+
+
+Latest TODO: Its a new week, the old data is still present even after a refresh (bump PR info) and the arduino wippersnapper library has a version bump already merged as part of another PR, but the suggested prerelease version is wrong as as result. The Version Bump panel also doesnt show the file that includes a semver in the repo "No other version files detected. Search repo ↗"

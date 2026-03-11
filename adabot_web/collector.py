@@ -166,6 +166,7 @@ def _save_repo_merge(name, repo_data):
         if prev.get(k) is not None:
             repo_data[k] = prev[k]
     _reconcile_release_status(repo_data)
+    _clear_completed_cycle(repo_data)
     fresh_repos[name] = repo_data
     save_state(fresh)
 
@@ -257,6 +258,25 @@ def _reconcile_release_status(repo_data):
             repo_data["released_tag"] = release_tag
 
 
+def _clear_completed_cycle(repo_data):
+    """Clear stale release cycle fields when repo has been released AND has new commits."""
+    if repo_data.get("release_status") != "released":
+        return
+    commits_behind = repo_data.get("commits_behind") or 0
+    if not commits_behind:
+        return  # still just "released", no new work yet
+
+    # Released + new commits → full cycle reset
+    repo_data["bump_pr"] = None
+    repo_data["release_status"] = None
+    repo_data["released_tag"] = None
+    repo_data["release_ci_status"] = None
+    repo_data["release_ci_checks"] = None
+    repo_data["branch_ci_status"] = None
+    repo_data["release_notes"] = None
+    repo_data["release_notes_user_edited"] = None
+
+
 def _freshen_user_fields(state):
     """Re-read user-preserved fields from disk before saving.
 
@@ -272,6 +292,7 @@ def _freshen_user_fields(state):
             if fresh_repo.get(k) is not None:
                 repo[k] = fresh_repo[k]
         _reconcile_release_status(repo)
+        _clear_completed_cycle(repo)
 
 
 def _run_collection():
@@ -728,15 +749,20 @@ def _find_version_files(repo, lib_version):
             return results
 
         # Files worth checking for version strings
-        header_re = re.compile(r"\.(h|hpp|H)$")
+        source_re = re.compile(r"\.(h|hpp|H|cpp|c|ino)$")
         interesting = [
             item["path"] for item in tree_resp.json().get("tree", [])
             if item.get("type") == "blob"
-            and (header_re.search(item["path"])
-                 or item["path"].lower() in ("changelog.md", "changelog.rst",
-                                              "version.h", "version.hpp"))
+            and (source_re.search(item["path"])
+                 or item["path"].lower() in (
+                     "changelog.md", "changelog.rst",
+                     "version.h", "version.hpp",
+                     "library.json",
+                     "platformio.ini", "setup.py", "pyproject.toml",
+                     "cmakelists.txt",
+                 ))
             and not item["path"].startswith(".")
-        ][:12]  # cap to avoid too many API calls
+        ]
 
         for path in interesting:
             file_resp = requests.get(
@@ -750,20 +776,35 @@ def _find_version_files(repo, lib_version):
             found_ver = None
             found_line = None
             ver_re = re.compile(
-                r'(?:VERSION|version)\s*[="\s]\s*["\']?([\d]+\.[\d]+\.[\d]+)["\']?'
+                r'(?:VERSION|version|ver)\s*[="\s:]\s*["\']?([\d]+\.[\d]+\.[\d]+(?:-[\w.]+)?)["\']?',
+                re.IGNORECASE,
             )
-            for lineno, line in enumerate(content.splitlines(), 1):
+            # Standalone quoted semver (for #define continuation lines)
+            bare_ver_re = re.compile(
+                r'^\s*["\'](\d+\.\d+\.\d+(?:-[\w.]+)?)["\']'
+            )
+            lines = content.splitlines()
+            for lineno, line in enumerate(lines, 1):
                 m = ver_re.search(line)
                 if m:
                     found_ver = m.group(1)
                     found_line = lineno
                     break
+                # #define SOMETHING_VERSION  \ (continuation on next line)
+                if re.search(r'(?:VERSION|version|ver)\s*\\?\s*$', line, re.IGNORECASE):
+                    if lineno < len(lines):
+                        m2 = bare_ver_re.search(lines[lineno])  # next line (0-indexed = lineno)
+                        if m2:
+                            found_ver = m2.group(1)
+                            found_line = lineno + 1
+                            break
 
             if found_ver:
                 note = "matches" if found_ver == lib_version else f"has {found_ver}"
                 line_anchor = f"#L{found_line}" if found_line else ""
                 results.append({
                     "path": path,
+                    "line": found_line,
                     "url": f"https://github.com/adafruit/{name}/blob/{branch}/{path}{line_anchor}",
                     "version_found": found_ver,
                     "matches": found_ver == lib_version,

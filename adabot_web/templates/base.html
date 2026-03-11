@@ -211,7 +211,9 @@
 </div>
 
 <script>
-function toast(msg, type='ok', key=null, link=null) {
+// timeout: ms before auto-dismiss. Pass null for persistent (stays until replaced by key).
+function toast(msg, type='ok', key=null, link=null, timeout=undefined) {
+  const autoClose = timeout === undefined ? (type === 'err' ? 8000 : 4000) : timeout;
   const box = document.getElementById('toast-container');
   if (key) {
     const prev = box.querySelector('[data-key="' + key + '"]');
@@ -219,7 +221,7 @@ function toast(msg, type='ok', key=null, link=null) {
       prev.textContent = msg;
       prev.className = 'toast-item show ' + type + (link ? ' clickable' : '');
       clearTimeout(prev._tid);
-      prev._tid = setTimeout(() => _removeToast(prev), type === 'err' ? 8000 : 4000);
+      prev._tid = autoClose !== null ? setTimeout(() => _removeToast(prev), autoClose) : null;
       _setToastLink(prev, link);
       if (type === 'err') console.error('[adabot]', msg);
       else console.log('[adabot]', msg);
@@ -232,7 +234,7 @@ function toast(msg, type='ok', key=null, link=null) {
   if (key) el.dataset.key = key;
   _setToastLink(el, link);
   box.appendChild(el);
-  el._tid = setTimeout(() => _removeToast(el), type === 'err' ? 8000 : 4000);
+  el._tid = autoClose !== null ? setTimeout(() => _removeToast(el), autoClose) : null;
   if (type === 'err') console.error('[adabot]', msg);
   else console.log('[adabot]', msg);
 }
