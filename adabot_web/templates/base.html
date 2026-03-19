@@ -183,6 +183,7 @@
       <button class="btn" id="modal-cancel">Cancel <kbd>6</kbd></button>
       <button class="btn btn-accent" id="modal-ok">Confirm <kbd>9</kbd></button>
     </div>
+    <div id="modal-extra"></div>
   </div>
 </div>
 <!-- Manual release modal (sequential workflow for permission failures) -->
@@ -307,10 +308,12 @@ document.addEventListener('keydown', e => {
   if (e.key === 'l' || e.key === 'L') toggleLogs();
 });
 
-function confirm_action(title, body, cb) {
+function confirm_action(title, body, cb, extraHtml) {
   const modal = document.getElementById('confirm-modal');
   document.getElementById('modal-title').textContent = title;
   document.getElementById('modal-body').textContent = body;
+  const extraEl = document.getElementById('modal-extra');
+  extraEl.innerHTML = extraHtml || '';
   modal.classList.add('show');
   const ok = document.getElementById('modal-ok');
   const cancel = document.getElementById('modal-cancel');
@@ -318,8 +321,13 @@ function confirm_action(title, body, cb) {
     modal.classList.remove('show');
     ok.onclick = null;
     cancel.onclick = null;
+    extraEl.innerHTML = '';
     document.removeEventListener('keydown', keyHandler);
   };
+  // Allow links inside modal-extra to dismiss the dialog
+  extraEl.querySelectorAll('a[data-dismiss]').forEach(a => {
+    a.addEventListener('click', close);
+  });
   const keyHandler = (e) => {
     if (e.key === '6' || e.key === 'Escape') { close(); }
     else if (e.key === '9' || e.key === 'Enter') { close(); cb(); }

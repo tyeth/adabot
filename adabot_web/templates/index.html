@@ -589,8 +589,46 @@ async function doRefreshRepo(name) {
   setTimeout(() => clearInterval(poll), 120000);
 }
 
+function _proposedTag(r) {
+  if (r.bump_pr && r.bump_pr.new_version) return r.bump_pr.new_version;
+  // Simple semver patch bump — mirrors server _compute_proposed_version
+  const base = r.lib_version || r.release_tag;
+  if (!base) return '?';
+  const m = base.match(/^(\d+)\.(\d+)\.(\d+)/);
+  if (!m) return base;
+  const rt = r.release_tag || '';
+  // If lib_version already ahead of release_tag, use as-is
+  if (r.lib_version && rt && r.lib_version !== rt) {
+    const lv = r.lib_version.split('.').map(Number);
+    const rv = rt.split('.').map(Number);
+    if (lv[0] > rv[0] || (lv[0] === rv[0] && lv[1] > rv[1]) || (lv[0] === rv[0] && lv[1] === rv[1] && lv[2] > rv[2]))
+      return r.lib_version;
+  }
+  return `${m[1]}.${m[2]}.${+m[3]+1}`;
+}
+
 async function batchRelease() {
-  confirm_action('Batch Release', 'Release ALL repos marked as ready? This cannot be undone.', async () => {
+  const readyRepos = Object.entries(repoData)
+    .filter(([,r]) => r.release_status === 'ready')
+    .sort(([a],[b]) => a.localeCompare(b));
+  const readyCount = readyRepos.length;
+  const rows = readyRepos.map(([name, r]) => {
+    const from = r.release_tag || r.lib_version || '?';
+    const to = _proposedTag(r);
+    return `<a href="#${name}" data-dismiss onclick="loadDetail('${name}','bump')"
+      style="display:flex;justify-content:space-between;padding:3px 6px;color:var(--text);
+      text-decoration:none;border-radius:3px;font-size:0.82rem"
+      onmouseover="this.style.background='var(--surface)'"
+      onmouseout="this.style.background=''"
+      ><span style="font-weight:500">${name}</span>
+      <span style="font-family:monospace;color:var(--muted)">${from} &rarr; ${to}</span></a>`;
+  }).join('');
+  const extra = readyCount ? `<details style="margin-top:10px;font-size:0.85rem">
+    <summary style="cursor:pointer;color:var(--muted);user-select:none">
+      Show ${readyCount} repo${readyCount !== 1 ? 's' : ''}</summary>
+    <div style="max-height:260px;overflow-y:auto;margin-top:6px;display:flex;flex-direction:column;gap:1px">${rows}</div>
+  </details>` : '';
+  confirm_action('Batch Release', `Release ${readyCount} repo${readyCount !== 1 ? 's' : ''} marked as ready? This cannot be undone.`, async () => {
     toast('Starting batch release…', 'ok', 'batch-release');
     const r = await fetch('/api/batch_release', {method:'POST', headers:{'Content-Type':'application/json'}, body:'{}'});
     const d = await r.json();
@@ -611,7 +649,7 @@ async function batchRelease() {
     } else {
       setTimeout(() => location.reload(), 2000);
     }
-  });
+  }, extra);
 }
 
 // ---------------------------------------------------------------------------

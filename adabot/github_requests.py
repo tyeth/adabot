@@ -16,12 +16,17 @@ import requests
 import requests_cache
 
 TIMEOUT = 60
+MAX_ERROR_RETRIES = 100  # cap retries on transient errors (was infinite)
+DEFAULT_RETRY_DELAY = 0.5  # seconds; overridden by Retry-After header if present
 
 logger = logging.getLogger(__name__)
 
 # Last-seen rate limit info (updated on each non-cached response)
 rate_limit_remaining = None
 rate_limit_reset_at = None
+
+# Reusable session for connection pooling (keeps TCP connections alive)
+_session = requests.Session()
 
 def setup_cache(expire_after=7200):
     """Sets up a cache for requests."""
@@ -62,11 +67,32 @@ def _fix_kwargs(kwargs):
     return kwargs
 
 
-def request(method, url, **kwargs):
+def _adaptive_throttle():
+    """Sleep proportionally when rate limit budget is running low.
+
+    >100 remaining  → no delay (full speed)
+    20–100 remaining → 1 s between requests
+    <20 remaining    → 3 s between requests
+    """
+    if rate_limit_remaining is None or rate_limit_remaining > 100:
+        return  # plenty of budget — go fast
+    if rate_limit_remaining > 20:
+        delay = 1.0
+    else:
+        delay = 3.0
+    logger.debug("Rate-limit throttle: %d remaining, sleeping %.1fs", rate_limit_remaining, delay)
+    time.sleep(delay)
+
+
+def request(method, url, _retries_left=MAX_ERROR_RETRIES, **kwargs):
     """Processes request for `url`."""
     global rate_limit_remaining, rate_limit_reset_at
+
+    # Adaptive throttle: only slows down when rate limit budget is low
+    _adaptive_throttle()
+
     try:
-        response = getattr(requests, method)(
+        response = getattr(_session, method)(
             _fix_url(url), timeout=TIMEOUT, **_fix_kwargs(kwargs)
         )
         from_cache = getattr(response, "from_cache", False)
@@ -77,20 +103,41 @@ def request(method, url, **kwargs):
             f"{'(cache)' if from_cache else '(%d remaining)' % remaining}",
             response.status_code,
         )
-    except requests.RequestException:
+    except requests.RequestException as exc:
         exception_text = traceback.format_exc()
         if "ADABOT_GITHUB_ACCESS_TOKEN" in os.environ:
             exception_text = exception_text.replace(
                 os.environ["ADABOT_GITHUB_ACCESS_TOKEN"], "[secure]"
             )
         logger.critical("%s", exception_text)
-        if(method=="get"): # getting temporary errors with large number of API fetches
-            logger.info("** Sleeping 3 seconds after HTTP Get Error before retrying")
-            time.sleep(3)
-            return request(method, url, **kwargs)
+        if method == "get" and _retries_left > 0:
+            # Try to extract a retry delay from the exception's response
+            delay = DEFAULT_RETRY_DELAY
+            resp = getattr(exc, "response", None)
+            if resp is not None:
+                retry_after = resp.headers.get("Retry-After")
+                if retry_after:
+                    try:
+                        delay = max(float(retry_after), 0.1)
+                    except (ValueError, TypeError):
+                        pass
+            logger.info("** Sleeping %.1fs after HTTP error, retrying (%d left)", delay, _retries_left)
+            time.sleep(delay)
+            return request(method, url, _retries_left=_retries_left - 1, **kwargs)
         raise RuntimeError(
             "See log for error text that has been sanitized for secrets"
         ) from None
+
+    # Handle GitHub secondary rate limit (429 or 403 with Retry-After)
+    if response.status_code in (429, 403) and response.headers.get("Retry-After") and _retries_left > 0:
+        try:
+            delay = max(float(response.headers["Retry-After"]), 0.1)
+        except (ValueError, TypeError):
+            delay = DEFAULT_RETRY_DELAY
+        logger.warning("GitHub secondary rate limit (%d), sleeping %.1fs (%d retries left)",
+                       response.status_code, delay, _retries_left)
+        time.sleep(delay)
+        return request(method, url, _retries_left=_retries_left - 1, **kwargs)
 
     if not from_cache and remaining >= 0:
         rate_limit_remaining = remaining

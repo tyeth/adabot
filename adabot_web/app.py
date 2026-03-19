@@ -177,6 +177,45 @@ def _category_counts(state):
     return counts
 
 
+def _compute_proposed_version(repo, existing_tags=None):
+    """Compute the proposed new release tag for a repo.
+
+    Returns (proposed_version, bump_type, bump_justification, has_prerelease).
+    Used by both single-release detail view and batch release.
+    """
+    existing_tags = set(existing_tags or repo.get("existing_tags") or [])
+    bump_type = repo.get("bump_type") or "patch"
+    bump_justification = repo.get("bump_justification")
+    lib_version = repo.get("lib_version")
+    release_tag = repo.get("release_tag")
+    has_prerelease = False
+    proposed_version = None
+
+    if lib_version:
+        lib_sv = _coerce_version(lib_version)
+        if lib_sv:
+            rel_sv = _coerce_version(release_tag) if release_tag else None
+            if rel_sv and lib_sv > rel_sv:
+                proposed_version = lib_version
+                has_prerelease = bool(lib_sv.prerelease or lib_sv.build)
+                bump_type = "none"
+                bump_justification = "library.properties already ahead of release tag"
+            else:
+                base_sv = max(lib_sv, rel_sv) if rel_sv else lib_sv
+                has_prerelease = bool(base_sv.prerelease or base_sv.build)
+                proposed_sv = _bump_version(base_sv, bump_type)
+                while str(proposed_sv) in existing_tags:
+                    proposed_sv = proposed_sv.bump_patch()
+                proposed_version = str(proposed_sv)
+
+    # Override with bump PR version if one exists
+    bump = repo.get("bump_pr")
+    if bump and bump.get("new_version"):
+        proposed_version = bump["new_version"]
+
+    return proposed_version, bump_type, bump_justification, has_prerelease
+
+
 def _release_blocked(repo):
     """
     Return a string reason if releasing this repo should be blocked, else None.
@@ -321,39 +360,8 @@ def repo_detail(name):
 
     existing_tags = set(repo.get("existing_tags") or [])
 
-    # Compute proposed new version based on bump_type suggestion
-    proposed_version = None
-    bump_type = repo.get("bump_type") or "patch"
-    bump_justification = repo.get("bump_justification")
-    lib_version = repo.get("lib_version")
-    release_tag = repo.get("release_tag")
-    has_prerelease = False
-    no_bump_needed = False
-    if lib_version:
-        lib_sv = _coerce_version(lib_version)
-        if lib_sv:
-            rel_sv = _coerce_version(release_tag) if release_tag else None
-            # If lib_version is already ahead of release_tag, no bump needed
-            if rel_sv and lib_sv > rel_sv:
-                proposed_version = lib_version
-                has_prerelease = bool(lib_sv.prerelease or lib_sv.build)
-                no_bump_needed = True
-                bump_type = "none"
-                bump_justification = "library.properties already ahead of release tag"
-            else:
-                base_sv = max(lib_sv, rel_sv) if rel_sv else lib_sv
-                has_prerelease = bool(base_sv.prerelease or base_sv.build)
-                proposed_sv = _bump_version(base_sv, bump_type)
-                # Advance past any versions that are already tagged (patch-bump until clear)
-                while str(proposed_sv) in existing_tags:
-                    logger.info("%s: proposed %s already tagged, bumping patch", name, proposed_sv)
-                    proposed_sv = proposed_sv.bump_patch()
-                proposed_version = str(proposed_sv)
-
-    # Override with bump PR version if one exists — avoids stale recalculation
-    bump = repo.get("bump_pr")
-    if bump and bump.get("new_version"):
-        proposed_version = bump["new_version"]
+    proposed_version, bump_type, bump_justification, has_prerelease = \
+        _compute_proposed_version(repo, existing_tags)
 
     # Keep the changelog link current (strip old one if present, then re-add)
     notes = _ensure_changelog_link(repo.get("release_notes") or "", repo, proposed_version)
@@ -1301,9 +1309,9 @@ def batch_release():
             results.append({"name": name, "ok": False, "error": blocked, "blocked": True})
             continue
 
-        tag = repo.get("lib_version") or repo.get("release_tag")
+        tag, _, _, _ = _compute_proposed_version(repo)
         if not tag:
-            results.append({"name": name, "ok": False, "error": "no tag"})
+            results.append({"name": name, "ok": False, "error": "no proposed version"})
             continue
 
         notes = repo.get("release_notes", "")

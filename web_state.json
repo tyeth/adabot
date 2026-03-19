@@ -221,7 +221,7 @@
     "Adafruit SoftServo": "1.0.4",
     "Adafruit Soundboard library": "1.1.2",
     "Adafruit TCA8418": "1.0.2",
-    "Adafruit TCS3430 Library": "1.1.0",
+    "Adafruit TCS3430 Library": "1.1.1",
     "Adafruit TCS34725": "1.4.4",
     "Adafruit TFTLCD Library": "1.0.3",
     "Adafruit TLA202x": "1.0.2",
@@ -231,7 +231,7 @@
     "Adafruit TMAG5273": "1.0.0",
     "Adafruit TMP006": "1.1.0",
     "Adafruit TMP007 Library": "1.1.3",
-    "Adafruit TMP117": "1.0.4",
+    "Adafruit TMP117": "1.0.5",
     "Adafruit TPA2016 Library": "1.2.2",
     "Adafruit TSC2007": "1.1.2",
     "Adafruit TSC2046": "1.0.1",
@@ -259,7 +259,7 @@
     "Adafruit VEML7700 Library": "2.1.6",
     "Adafruit VL53L1X": "3.1.2",
     "Adafruit VS1053 Library": "1.4.4",
-    "Adafruit WF100DPZ": "1.0.0",
+    "Adafruit WF100DPZ": "1.0.1",
     "Adafruit WS2801 Library": "1.1.3",
     "Adafruit WavePlayer Library": "1.0.7",
     "Adafruit WipperSnapper": "1.0.0",
@@ -312,9 +312,9 @@
     "adafruit_ina219_mock": "1.0.0"
   },
   "error": null,
-  "last_run_end": "2026-03-10T17:30:35.380010+00:00",
-  "last_run_start": "2026-03-10T17:13:35.354758+00:00",
-  "progress": 51,
+  "last_run_end": "2026-03-19T02:19:21.896307+00:00",
+  "last_run_start": "2026-03-19T02:06:07.916020+00:00",
+  "progress": 20,
   "repos": {
     "ARDX-Fritzing-Diagrams": {
       "arduino_registered": false,
@@ -3259,7 +3259,9 @@
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
       "bump_type": "patch",
-      "categories": [],
+      "categories": [
+        "missing_actions"
+      ],
       "ci_only": false,
       "commits_behind": null,
       "compare_url": null,
@@ -3267,7 +3269,7 @@
       "details_loaded": true,
       "error": null,
       "full_name": "adafruit/Adafruit-VC0706-Serial-Camera-Library",
-      "has_actions": true,
+      "has_actions": false,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit-VC0706-Serial-Camera-Library",
@@ -3671,8 +3673,18 @@
       "html_url": "https://github.com/adafruit/Adafruit_ADS7128",
       "lib_version": null,
       "name": "Adafruit_ADS7128",
-      "prs": [],
-      "pushed_at": "2026-03-10T16:52:15Z",
+      "prs": [
+        {
+          "created_at": "2026-03-11T18:38:32Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_ADS7128/pull/1",
+          "labels": [],
+          "number": 1,
+          "title": "ADS7128: Full library implementation with ADC, GPIO, CRC, ZCD, RMS, statistics",
+          "user": "ladyada-piclaw"
+        }
+      ],
+      "pushed_at": "2026-03-11T18:02:44Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -5020,6 +5032,15 @@
       "name": "Adafruit_Arduino_Tester_Code",
       "prs": [
         {
+          "created_at": "2026-03-16T22:43:34Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_Arduino_Tester_Code/pull/12",
+          "labels": [],
+          "number": 12,
+          "title": "Add VCNL4030 factory tester",
+          "user": "ladyada-piclaw"
+        },
+        {
           "created_at": "2021-04-16T13:03:30Z",
           "draft": true,
           "html_url": "https://github.com/adafruit/Adafruit_Arduino_Tester_Code/pull/4",
@@ -5047,7 +5068,7 @@
           "user": "hathach"
         }
       ],
-      "pushed_at": "2026-03-06T15:53:57Z",
+      "pushed_at": "2026-03-16T22:43:23Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -5786,16 +5807,16 @@
       "error": null,
       "example_releases": [
         {
-          "body": "## What's Changed\n\n- Microcontroller restructure #1042 by @makermelissa\n\nTo use in CPython, `pip3 install adafruit-blinka`.\n\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
+          "body": "## What's Changed\n\n- Add pre-commit hook for checking JSON #1048 by @tekktrik\n\nTo use in CPython, `pip3 install adafruit-blinka`.\n\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
           "tag": ""
         },
         {
-          "body": "## What's Changed\r\n\r\n- Update for Pico W, Pico 2, and Pico 2 W #1041 by @makermelissa\r\n- Add support for Orange Pi 5 Ultra #1034 by @GuLinux\r\n- i2c scan logic change #1038 by @mikeysklar\r\n\r\nTo use in CPython, `pip3 install adafruit-blinka`.\r\n\r\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
-          "tag": "8.70.0"
+          "body": "## What's Changed\r\n\r\n- Add json files to GitHub Actions build section #1045 by @makermelissa\r\n\r\nTo use in CPython, `pip3 install adafruit-blinka`.\r\n\r\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
+          "tag": "9.0.2"
         },
         {
-          "body": "## What's Changed\r\n\r\n- Add banana pi p2 pro #1033 by @dmlb2000\r\n\r\nTo use in CPython, `pip3 install adafruit-blinka`.\r\n\r\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
-          "tag": "8.69.0"
+          "body": "## What's Changed\r\n\r\n- Add json files to package_data in setup.py #1044 by @makermelissa\r\n\r\nTo use in CPython, `pip3 install adafruit-blinka`.\r\n\r\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
+          "tag": "9.0.1"
         }
       ],
       "full_name": "adafruit/Adafruit_Blinka",
@@ -5806,15 +5827,6 @@
       "lib_version": null,
       "name": "Adafruit_Blinka",
       "prs": [
-        {
-          "created_at": "2026-02-19T19:40:17Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Blinka/pull/1040",
-          "labels": [],
-          "number": 1040,
-          "title": "Jsonify Boards and Chips for easier importing",
-          "user": "makermelissa"
-        },
         {
           "created_at": "2025-07-05T16:14:52Z",
           "draft": false,
@@ -5852,7 +5864,7 @@
           "user": "elpekenin"
         }
       ],
-      "pushed_at": "2026-03-03T17:45:44Z",
+      "pushed_at": "2026-03-19T01:10:10Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -6801,7 +6813,9 @@
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
       "bump_type": "patch",
-      "categories": [],
+      "categories": [
+        "missing_actions"
+      ],
       "ci_only": false,
       "commits_behind": null,
       "compare_url": null,
@@ -6809,7 +6823,7 @@
       "details_loaded": true,
       "error": null,
       "full_name": "adafruit/Adafruit_CircuitPlayground",
-      "has_actions": true,
+      "has_actions": false,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_CircuitPlayground",
@@ -10885,15 +10899,15 @@
       "example_releases": [
         {
           "body": "Select the zip file corresponding to your board from the list below.",
-          "tag": "20260310"
+          "tag": "20260317"
         },
         {
           "body": "Select the zip file corresponding to your board from the list below.",
-          "tag": "20260309"
+          "tag": "20260316"
         },
         {
           "body": "Select the zip file corresponding to your board from the list below.",
-          "tag": "20260308"
+          "tag": "20260315"
         }
       ],
       "full_name": "adafruit/Adafruit_Learning_System_Guides",
@@ -10904,6 +10918,15 @@
       "lib_version": null,
       "name": "Adafruit_Learning_System_Guides",
       "prs": [
+        {
+          "created_at": "2026-03-19T01:32:06Z",
+          "draft": true,
+          "html_url": "https://github.com/adafruit/Adafruit_Learning_System_Guides/pull/3216",
+          "labels": [],
+          "number": 3216,
+          "title": "Updating workflows to use actions using Node 24",
+          "user": "tekktrik"
+        },
         {
           "created_at": "2026-01-21T06:20:39Z",
           "draft": false,
@@ -11022,7 +11045,7 @@
           "user": "dcbriccetti"
         }
       ],
-      "pushed_at": "2026-03-10T10:13:14Z",
+      "pushed_at": "2026-03-18T12:59:51Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -13185,7 +13208,9 @@
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
       "bump_type": "patch",
-      "categories": [],
+      "categories": [
+        "missing_actions"
+      ],
       "ci_only": false,
       "commits_behind": null,
       "compare_url": null,
@@ -13193,7 +13218,7 @@
       "details_loaded": true,
       "error": null,
       "full_name": "adafruit/Adafruit_NeoPixel_ZeroDMA",
-      "has_actions": true,
+      "has_actions": false,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_NeoPixel_ZeroDMA",
@@ -15711,7 +15736,9 @@
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
       "bump_type": "patch",
-      "categories": [],
+      "categories": [
+        "missing_actions"
+      ],
       "ci_only": false,
       "commits_behind": null,
       "compare_url": null,
@@ -15719,7 +15746,7 @@
       "details_loaded": true,
       "error": null,
       "full_name": "adafruit/Adafruit_Si7021",
-      "has_actions": true,
+      "has_actions": false,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_Si7021",
@@ -15741,7 +15768,9 @@
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
       "bump_type": "patch",
-      "categories": [],
+      "categories": [
+        "missing_actions"
+      ],
       "ci_only": false,
       "commits_behind": null,
       "compare_url": null,
@@ -15749,7 +15778,7 @@
       "details_loaded": true,
       "error": null,
       "full_name": "adafruit/Adafruit_SleepyDog",
-      "has_actions": true,
+      "has_actions": false,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_SleepyDog",
@@ -15949,9 +15978,9 @@
     },
     "Adafruit_TCS3430": {
       "arduino_registered": true,
-      "arduino_version": "1.0.0",
+      "arduino_version": "1.1.1",
       "branch_ci_status": "pass",
-      "bump_justification": "Bug fix in example code. tft_colordemo removed references to non-existent CIE/CCT/lux API calls that don't exist in the library.",
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": {
         "actions_need_approval": false,
         "checks": [
@@ -15975,23 +16004,19 @@
         "url": "https://github.com/adafruit/Adafruit_TCS3430/pull/8"
       },
       "bump_type": "patch",
-      "categories": [
-        "needs_release"
-      ],
+      "categories": [],
       "ci_only": false,
-      "commits_behind": 2,
-      "compare_files": [
-        {
-          "filename": "examples/tft_colordemo/tft_colordemo.ino",
-          "patch": "@@ -1,8 +1,8 @@\n /*\n  * TCS3430 Color Display Demo for ESP32-S2 TFT Feather\n  *\n- * Displays live XYZ+IR channel values, a color swatch, CIE chromaticity,\n- * CCT, and lux on the built-in 1.14\" TFT (240x135).\n+ * Displays live XYZ + IR1 channel values and an approximate color swatch\n+ * on the built-in 1.14\" TFT (240x135).\n  *\n  * Written by Limor 'ladyada' Fried with assistance from Claude Code for\n  * Adafruit Industries. MIT license, check license.txt for more information\n@@ -12,22 +12,18 @@\n #include <Adafruit_TCS3430.h>\n #include <Fonts/FreeSans9pt7b.h>\n #include <Fonts/FreeSansBold12pt7b.h>\n+#include <Fonts/FreeSansBold18pt7b.h>\n \n Adafruit_TCS3430 tcs;\n Adafruit_ST7789 display = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);\n GFXcanvas16 canvas(240, 135);\n \n const uint16_t SCREEN_W = 240",
-          "status": "modified"
-        }
-      ],
-      "compare_url": "https://github.com/adafruit/Adafruit_TCS3430/compare/1.1.0...HEAD",
+      "commits_behind": null,
+      "compare_files": [],
+      "compare_url": null,
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
       "example_releases": [
+        {
+          "body": "### Fixed\r\n\r\n- **tft_colordemo**: Removed non-existent API calls to match current library capabilities ([#7](https://github.com/adafruit/Adafruit_TCS3430/pull/7)) by @ladyada-piclaw\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_TCS3430/compare/1.1.0...1.1.1",
+          "tag": "1.1.1"
+        },
         {
           "body": "### New Features\n- Hardware test suite (hw_tests): 18 self-calibrating tests with NeoPixel stimulus\n- Interrupt test example: threshold-based detection with INT pin polling\n- TFT color demo example: XYZ bars, color swatches, real-time CIE/CCT/lux display on ESP32-S2\n- Colormatrix example demonstrating color calculation workflows\n\n### Changed\n- **Channel API rewritten**: getChannels(), CIE, lux, CCT methods refactored\n- CIE, Lux, CCT functionality moved from library core to examples (colormatrix, tft_colordemo)\n- Examples consolidated: simpletest + colortemp merged into basictest\n- basictest: configurable default gain (64X) and integration settings\n- INT pin data-ready polling (AINT) instead of previous mechanism\n- Removed registers.json; documentation merged into DESIGN.md\n\n### Bug Fixes\n- interrupt_test: fixed INT pin polling, Z threshold selection, persistence handling\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TCS3430/compare/1.0.0...1.1.0",
           "tag": "1.1.0"
@@ -16001,41 +16026,31 @@
           "tag": "1.0.0"
         }
       ],
-      "existing_tags": [
-        "1.1.0",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1773250202.371634,
       "full_name": "adafruit/Adafruit_TCS3430",
-      "gh_auto_notes": "## What's Changed\n* Fix tft_colordemo: remove non-existent API calls by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TCS3430/pull/7\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TCS3430/compare/1.1.0...1.2.0",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_TCS3430",
       "lib_name": "Adafruit TCS3430 Library",
-      "lib_version": "1.1.0",
+      "lib_version": "1.1.1",
       "name": "Adafruit_TCS3430",
       "prs": [],
-      "pushed_at": "2026-03-06T16:11:29Z",
-      "recent_commits": [
+      "pushed_at": "2026-03-11T17:56:03Z",
+      "recent_commits": [],
+      "release_ci_checks": [
         {
-          "author": "clawpi",
-          "date": "2026-03-06T16:04:59Z",
-          "html_url": "https://github.com/adafruit/Adafruit_TCS3430/commit/d8b9f6703b504228bf890b53f8a7ef90c6b1d17d",
-          "message": "Fix tft_colordemo: remove hallucinated API calls, add .none.test.only",
-          "sha": "d8b9f67"
-        },
-        {
-          "author": "Limor \"Ladyada\" Fried",
-          "date": "2026-03-06T16:11:28Z",
-          "html_url": "https://github.com/adafruit/Adafruit_TCS3430/commit/ff1ed31117f91c307ac4fa3e1fe8906064d883fb",
-          "message": "Merge pull request #7 from ladyada-piclaw/tft-colordemo-fix",
-          "sha": "ff1ed31"
+          "name": "build",
+          "run_id": "22966890392",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_TCS3430/actions/runs/22966890392/job/66672764098"
         }
       ],
+      "release_ci_status": "pass",
       "release_notes": "### Fixed\n\n- **tft_colordemo**: Removed non-existent API calls to match current library capabilities ([#7](https://github.com/adafruit/Adafruit_TCS3430/pull/7)) by @ladyada-piclaw\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TCS3430/compare/1.1.0...1.1.1",
-      "release_status": "ready",
-      "release_tag": "1.1.0",
+      "release_status": "released",
+      "release_tag": "1.1.1",
+      "released_tag": "1.1.1",
       "version_files": []
     },
     "Adafruit_TCS34725": {
@@ -16306,38 +16321,68 @@
     "Adafruit_TMAG5273": {
       "arduino_registered": true,
       "arduino_version": "1.0.0",
-      "branch_ci_status": null,
-      "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": null,
-      "bump_type": "patch",
+      "branch_ci_status": "pass",
+      "bump_justification": null,
+      "bump_pr": {
+        "actions_need_approval": false,
+        "checks": [
+          {
+            "name": "build",
+            "run_id": "23276953523",
+            "run_label": "merge CI",
+            "state": "SUCCESS",
+            "url": "https://github.com/adafruit/Adafruit_TMAG5273/actions/runs/23276953523/job/67681893303"
+          }
+        ],
+        "ci_status": "pass",
+        "files_changed": [
+          "library.properties"
+        ],
+        "merged_at": "2026-03-19T02:30:09Z",
+        "new_version": "1.0.1",
+        "number": "3",
+        "pending_approval_run_ids": [],
+        "state": "merged",
+        "url": "https://github.com/adafruit/Adafruit_TMAG5273/pull/3"
+      },
+      "bump_type": null,
       "categories": [],
       "ci_only": false,
       "commits_behind": null,
-      "compare_files": [],
       "compare_url": null,
       "default_branch": "main",
-      "details_loaded": true,
+      "details_loaded": false,
       "error": null,
-      "example_releases": [
-        {
-          "body": "Initial release of Adafruit TMAG5273 library.\n\n- Full register API for TI TMAG5273 3-axis Hall-effect sensor\n- All variants supported (A1/B1/C1/D1/A2/B2/C2/D2)\n- Adafruit_Sensor interface (magnetic field in \u00b5T)\n- Temperature, angle, and magnitude readings\n- Threshold interrupts (pulsed and latched modes)\n- CRC support\n- 5 examples: simpletest, fulltest, unified_sensor, magnetic_threshold, triggered\n- 12 hardware tests",
-          "tag": "1.0.0"
-        }
+      "existing_tags": [
+        "1.0.1",
+        "1.0.0"
       ],
+      "existing_tags_at": 1773891386.9615178,
       "full_name": "adafruit/Adafruit_TMAG5273",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_TMAG5273",
       "lib_name": "Adafruit TMAG5273",
-      "lib_version": "1.0.0",
+      "lib_version": "1.0.1",
       "name": "Adafruit_TMAG5273",
       "prs": [],
-      "pushed_at": "2026-03-05T18:58:28Z",
+      "pushed_at": "2026-03-19T03:21:51Z",
       "recent_commits": [],
-      "release_notes": null,
-      "release_status": null,
-      "release_tag": "1.0.0",
+      "release_ci_checks": [
+        {
+          "name": "build",
+          "run_id": "23278281561",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_TMAG5273/actions/runs/23278281561/job/67685899286"
+        }
+      ],
+      "release_ci_status": "pass",
+      "release_notes": "New TFT demo example for Feather ESP32-S2 TFT\n\n- TFT demo for TMAG5273 3-axis Hall-effect sensor on Feather ESP32-S2 TFT ([#2](https://github.com/adafruit/Adafruit_TMAG5273/pull/2)) by @ladyada-piclaw\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMAG5273/compare/1.0.1...1.0.1",
+      "release_status": "released",
+      "release_tag": "1.0.1",
+      "released_tag": "1.0.1",
       "version_files": []
     },
     "Adafruit_TMF8806": {
@@ -16468,9 +16513,9 @@
     },
     "Adafruit_TMP117": {
       "arduino_registered": true,
-      "arduino_version": "1.0.0",
+      "arduino_version": "1.0.5",
       "branch_ci_status": "pass",
-      "bump_justification": "Add TMP119 TFT demo for Feather ESP32-S2 TFT. Example additions are patch-level changes without API modifications.",
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": {
         "actions_need_approval": false,
         "checks": [
@@ -16494,23 +16539,19 @@
         "url": "https://github.com/adafruit/Adafruit_TMP117/pull/6"
       },
       "bump_type": "patch",
-      "categories": [
-        "needs_release"
-      ],
+      "categories": [],
       "ci_only": false,
-      "commits_behind": 3,
-      "compare_files": [
-        {
-          "filename": "examples/TMP119_TFT_demo/TMP119_TFT_demo.ino",
-          "patch": "@@ -0,0 +1,161 @@\n+/*!\n+ * @file TMP119_TFT_demo.ino\n+ *\n+ * TFT demo for TMP119 High-Accuracy Temperature Sensor on Feather ESP32-S2 TFT\n+ * Displays temperature as a large color-coded readout.\n+ * Uses GFXcanvas16 to eliminate flicker.\n+ *\n+ * Hardware:\n+ *  - Adafruit Feather ESP32-S2 TFT\n+ *  - TMP119 Temperature Sensor breakout (I2C)\n+ *\n+ * Written by Limor Fried/Ladyada for Adafruit Industries.\n+ * BSD license, all text above must be included in any redistribution\n+ */\n+\n+#include <Adafruit_GFX.h>\n+#include <Adafruit_ST7789.h>\n+#include <Adafruit_TMP119.h>\n+#include <Fonts/FreeSans9pt7b.h>\n+#include <Fonts/FreeSansBold12pt7b.h>\n+#include <Fonts/FreeSansBold18pt7b.h>\n+#include <Fonts/FreeSansBold24pt7b.h>\n+#include <Fonts/FreeSansBold9pt7b.h>\n+#include <Wire.h>\n+\n+Adafruit_ST7789 tft",
-          "status": "added"
-        }
-      ],
-      "compare_url": "https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...HEAD",
+      "commits_behind": null,
+      "compare_files": [],
+      "compare_url": null,
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
       "example_releases": [
+        {
+          "body": "## What's Changed\r\n* Add TMP119 TFT demo for Feather ESP32-S2 TFT by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/5\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...1.0.5",
+          "tag": "1.0.5"
+        },
         {
           "body": "## What's Changed\r\n* Add TMP119 subclass with 0x2117 device ID by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/3\r\n* Demo one-shot mode with dataReady() in measurement_settings example by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/4\r\n\r\n## New Contributors\r\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_TMP117/pull/3\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.3...1.0.4",
           "tag": "1.0.4"
@@ -16518,71 +16559,33 @@
         {
           "body": "## What's Changed\r\n* Update version number to 1.0.3 by @tyeth in https://github.com/adafruit/Adafruit_TMP117/pull/1\r\n\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.2...1.0.3",
           "tag": "1.0.3"
-        },
-        {
-          "body": "This initial release includes support for:\r\n- Temperature measurement\r\n- Tuning parameters:\r\n - Number of averaged samples\r\n    - Measurement delay/interval\r\n    - Temperature offset\r\n- High and low temperature alerts with two different alert behaviors, window or hysteresis.",
-          "tag": "1.0.0"
         }
       ],
-      "existing_tags": [
-        "1.0.4",
-        "1.0.3",
-        "1.0.2",
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1773250092.1882937,
       "full_name": "adafruit/Adafruit_TMP117",
-      "gh_auto_notes": "## What's Changed\n* Add TMP119 TFT demo for Feather ESP32-S2 TFT by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/5\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...1.1.0",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_TMP117",
       "lib_name": "Adafruit TMP117",
-      "lib_version": "1.0.4",
+      "lib_version": "1.0.5",
       "name": "Adafruit_TMP117",
-      "prs": [
+      "prs": [],
+      "pushed_at": "2026-03-11T17:57:10Z",
+      "recent_commits": [],
+      "release_ci_checks": [
         {
-          "created_at": "2026-03-11T15:28:23Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_TMP117/pull/6",
-          "labels": [],
-          "number": 6,
-          "title": "Update version to 1.0.5",
-          "user": "tyeth"
+          "name": "build",
+          "run_id": "22966937896",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_TMP117/actions/runs/22966937896/job/66672931969"
         }
       ],
-      "pushed_at": "2026-03-06T15:35:32Z",
-      "recent_commits": [
-        {
-          "author": "clawpi",
-          "date": "2026-03-06T15:22:54Z",
-          "html_url": "https://github.com/adafruit/Adafruit_TMP117/commit/026b5d90f7a0f8abaebe3700106de3e039225645",
-          "message": "Add TMP119 TFT demo for Feather ESP32-S2 TFT",
-          "sha": "026b5d9"
-        },
-        {
-          "author": "clawpi",
-          "date": "2026-03-06T15:24:19Z",
-          "html_url": "https://github.com/adafruit/Adafruit_TMP117/commit/9043195ea4d89d27cf4ee0bc99ef53e0ccc14c29",
-          "message": "Add .none.test.only to skip CI for TFT demo",
-          "sha": "9043195"
-        },
-        {
-          "author": "Limor \"Ladyada\" Fried",
-          "date": "2026-03-06T15:35:31Z",
-          "html_url": "https://github.com/adafruit/Adafruit_TMP117/commit/489ea737497b2939e8b27b0313f5cd9d665f7394",
-          "message": "Merge pull request #5 from ladyada-piclaw/tmp119-tft-demo",
-          "sha": "489ea73"
-        }
-      ],
-      "release_ci_checks": null,
-      "release_ci_status": null,
+      "release_ci_status": "pass",
       "release_notes": "## What's Changed\n* Add TMP119 TFT demo for Feather ESP32-S2 TFT by @ladyada-piclaw in https://github.com/adafruit/Adafruit_TMP117/pull/5\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TMP117/compare/1.0.4...1.0.5",
-      "release_notes_user_edited": null,
-      "release_status": "ready",
-      "release_tag": "1.0.4",
-      "released_tag": null,
+      "release_status": "released",
+      "release_tag": "1.0.5",
+      "released_tag": "1.0.5",
       "version_files": []
     },
     "Adafruit_TSC2007": {
@@ -17238,15 +17241,44 @@
     "Adafruit_VCNL4030": {
       "arduino_registered": true,
       "arduino_version": "1.0.0",
-      "branch_ci_status": null,
-      "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": null,
-      "bump_type": "patch",
-      "categories": [],
+      "branch_ci_status": "pass",
+      "bump_justification": "Added TFT display example for ESP32-S2 TFT Feather. New example demonstrates proximity and ambient light sensing with graphics visualization on a large TFT display.",
+      "bump_pr": {
+        "actions_need_approval": false,
+        "checks": [
+          {
+            "name": "build",
+            "run_id": "23276955274",
+            "run_label": "merge CI",
+            "state": "SUCCESS",
+            "url": "https://github.com/adafruit/Adafruit_VCNL4030/actions/runs/23276955274/job/67681899469"
+          }
+        ],
+        "ci_status": "pass",
+        "files_changed": [
+          "library.properties"
+        ],
+        "merged_at": "2026-03-19T02:30:13Z",
+        "new_version": "1.0.1",
+        "number": "7",
+        "pending_approval_run_ids": [],
+        "state": "merged",
+        "url": "https://github.com/adafruit/Adafruit_VCNL4030/pull/7"
+      },
+      "bump_type": "minor",
+      "categories": [
+        "needs_release"
+      ],
       "ci_only": false,
-      "commits_behind": null,
-      "compare_files": [],
-      "compare_url": null,
+      "commits_behind": 2,
+      "compare_files": [
+        {
+          "filename": "examples/tft_demo/tft_demo.ino",
+          "patch": "@@ -0,0 +1,150 @@\n+/*\n+ * VCNL4030 Proximity + Ambient Light TFT Demo for ESP32-S2 TFT Feather\n+ *\n+ * Big, bold display for product photos/video.\n+ * Proximity bar gauge + large lux readout.\n+ *\n+ * Written by Limor 'ladyada' Fried with assistance from Claude Code for\n+ * Adafruit Industries. MIT license, check license.txt for more information\n+ */\n+\n+#include <Adafruit_GFX.h>\n+#include <Adafruit_ST7789.h>\n+#include <Adafruit_VCNL4030.h>\n+#include <Fonts/FreeSansBold12pt7b.h>\n+#include <Fonts/FreeSansBold18pt7b.h>\n+#include <Fonts/FreeSansBold24pt7b.h>\n+#include <Fonts/FreeSansBold9pt7b.h>\n+\n+Adafruit_VCNL4030 vcnl;\n+Adafruit_ST7789 display = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);\n+\n+#define SCREEN_W 240\n+#define SCREEN_H 135\n+\n+GFXcanvas16 canvas(SCREEN_W, SCREEN_H);\n+\n+// Layout\n+#de",
+          "status": "added"
+        }
+      ],
+      "compare_url": "https://github.com/adafruit/Adafruit_VCNL4030/compare/1.0.0...HEAD",
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
@@ -17256,7 +17288,13 @@
           "tag": "1.0.0"
         }
       ],
+      "existing_tags": [
+        "1.0.1",
+        "1.0.0"
+      ],
+      "existing_tags_at": 1773890259.8730106,
       "full_name": "adafruit/Adafruit_VCNL4030",
+      "gh_auto_notes": "## What's Changed\n* Add TFT demo for ESP32-S2 TFT Feather by @ladyada-piclaw in https://github.com/adafruit/Adafruit_VCNL4030/pull/5\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_VCNL4030/compare/1.0.0...1.1.0",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
@@ -17265,11 +17303,37 @@
       "lib_version": "1.0.0",
       "name": "Adafruit_VCNL4030",
       "prs": [],
-      "pushed_at": "2026-03-03T23:26:24Z",
-      "recent_commits": [],
-      "release_notes": null,
-      "release_status": null,
+      "pushed_at": "2026-03-16T20:50:55Z",
+      "recent_commits": [
+        {
+          "author": "clawpi",
+          "date": "2026-03-16T20:39:59Z",
+          "html_url": "https://github.com/adafruit/Adafruit_VCNL4030/commit/ff9d5b8babaea538f6f41fdac2cf1bd751563dbc",
+          "message": "Add TFT demo for ESP32-S2 TFT Feather",
+          "sha": "ff9d5b8"
+        },
+        {
+          "author": "Limor \"Ladyada\" Fried",
+          "date": "2026-03-16T20:50:55Z",
+          "html_url": "https://github.com/adafruit/Adafruit_VCNL4030/commit/0e5522901d10560fb61db69a16ecfc47b524bf75",
+          "message": "Merge pull request #5 from ladyada-piclaw/main",
+          "sha": "0e55229"
+        }
+      ],
+      "release_ci_checks": [
+        {
+          "name": "build",
+          "run_id": "23278183353",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_VCNL4030/actions/runs/23278183353/job/67685540273"
+        }
+      ],
+      "release_ci_status": "pass",
+      "release_notes": "TFT demo example for ESP32-S2 TFT Feather.\n\n- Proximity bar gauge and ambient light display ([#5](https://github.com/adafruit/Adafruit_VCNL4030/pull/5)) by @ladyada-piclaw\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_VCNL4030/compare/1.0.0...1.0.1",
+      "release_status": "released",
       "release_tag": "1.0.0",
+      "released_tag": "1.0.1",
       "version_files": []
     },
     "Adafruit_VCNL4040": {
@@ -17621,6 +17685,73 @@
       "release_tag": "3.1.2",
       "version_files": []
     },
+    "Adafruit_VL53L5": {
+      "arduino_registered": false,
+      "arduino_version": null,
+      "branch_ci_status": null,
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
+      "bump_pr": null,
+      "bump_type": "patch",
+      "categories": [
+        "no_examples"
+      ],
+      "ci_only": false,
+      "commits_behind": null,
+      "compare_url": null,
+      "default_branch": "main",
+      "details_loaded": true,
+      "error": null,
+      "example_releases": [],
+      "full_name": "adafruit/Adafruit_VL53L5",
+      "has_actions": null,
+      "has_examples": false,
+      "has_lib_props": false,
+      "html_url": "https://github.com/adafruit/Adafruit_VL53L5",
+      "lib_version": null,
+      "name": "Adafruit_VL53L5",
+      "prs": [],
+      "pushed_at": "2026-03-14T00:40:01Z",
+      "recent_commits": [],
+      "release_notes": null,
+      "release_status": null,
+      "release_tag": null,
+      "version_files": []
+    },
+    "Adafruit_VL53L5CX_NoST": {
+      "arduino_registered": false,
+      "arduino_version": null,
+      "branch_ci_status": null,
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
+      "bump_pr": null,
+      "bump_type": "patch",
+      "categories": [
+        "no_release_tag",
+        "needs_release"
+      ],
+      "ci_only": false,
+      "commits_behind": null,
+      "compare_files": [],
+      "compare_url": "https://github.com/adafruit/Adafruit_VL53L5CX_NoST/compare/main...HEAD",
+      "default_branch": "main",
+      "details_loaded": true,
+      "error": null,
+      "example_releases": [],
+      "full_name": "adafruit/Adafruit_VL53L5CX_NoST",
+      "has_actions": null,
+      "has_examples": true,
+      "has_lib_props": true,
+      "html_url": "https://github.com/adafruit/Adafruit_VL53L5CX_NoST",
+      "lib_name": "Adafruit VL53L5CX NoST",
+      "lib_version": "1.0.0",
+      "name": "Adafruit_VL53L5CX_NoST",
+      "prs": [],
+      "pushed_at": "2026-03-17T20:48:43Z",
+      "recent_commits": [],
+      "release_notes": null,
+      "release_status": null,
+      "release_tag": null,
+      "version_files": []
+    },
     "Adafruit_VL53LX": {
       "arduino_registered": false,
       "arduino_version": null,
@@ -17825,9 +17956,9 @@
     },
     "Adafruit_WF100DPZ": {
       "arduino_registered": true,
-      "arduino_version": "1.0.0",
+      "arduino_version": "1.0.1",
       "branch_ci_status": "pass",
-      "bump_justification": "Improved README with comprehensive feature documentation, usage examples, and official CI/documentation badges to better present the library's capabilities.",
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": {
         "actions_need_approval": false,
         "checks": [
@@ -17850,78 +17981,49 @@
         "state": "merged",
         "url": "https://github.com/adafruit/Adafruit_WF100DPZ/pull/2"
       },
-      "bump_type": "minor",
-      "categories": [
-        "needs_release"
-      ],
-      "ci_only": true,
-      "commits_behind": 4,
-      "compare_files": [
-        {
-          "filename": "README.md",
-          "patch": "@@ -1,2 +1,73 @@\n-# Adafruit_WF100DPZ\n-Arduino library for the WF100DPZ low cost I2C ported pressure sensor\n+# Adafruit WF100DPZ [![Arduino Library CI](https://github.com/adafruit/Adafruit_WF100DPZ/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_WF100DPZ/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](https://adafruit.github.io/Adafruit_WF100DPZ/html/index.html)\n+\n+Arduino library for the WF100DPZ low-cost MEMS gauge pressure sensor with integrated temperature output.\n+\n+## Features\n+\n+- I2C interface (address 0x6D)\n+- 24-bit pressure reading in kPa (gauge mode)\n+- 16-bit temperature reading in \u00b0C\n+- Single-shot and periodic conversion modes\n+- 16 configurable sleep/periodic intervals\n+- Status regist",
-          "status": "modified"
-        }
-      ],
-      "compare_url": "https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.0...HEAD",
+      "bump_type": "patch",
+      "categories": [],
+      "ci_only": false,
+      "commits_behind": null,
+      "compare_files": [],
+      "compare_url": null,
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
       "example_releases": [
         {
+          "body": "Documentation improvements for the Adafruit WF100DPZ library.\n\n## Updates\n- Improved README with comprehensive feature list and usage examples by @clawpi ([`2b40651`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/2b406511d3725242c8cdc261f3b0180076531131))\n- Added official Arduino Library CI and doxygen documentation badges ([`51e400e`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/51e400e5157ff898aef600b8a29f0fce22fead12))\n- Fixed documentation links to use HTTPS ([`08acb09`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/08acb09438f272824bb589ca85eee5b62164293b))\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.0...1.0.1",
+          "tag": "1.0.1"
+        },
+        {
           "body": "Initial release of the Adafruit WF100DPZ pressure sensor library.\n\n## Features\n- I2C interface via BusIO (address 0x6D)\n- Pressure reading in kPa (24-bit, gauge mode)\n- Temperature reading in \u00b0C (16-bit)\n- Combined readTempPressure()\n- Periodic sleep mode with 16 configurable intervals\n- Measurement mode getter/setter\n- Status register with error flag decoding\n- Soft reset\n\n## Hardware Tested\n- WF100DPZ 2BG S6 DT (200 kPa gauge, SOP-6)\n- 13 hardware tests passing\n- Conversion formulas from CodeyNacke/WF100DPZ (MIT)",
           "tag": "1.0.0"
         }
       ],
-      "existing_tags": [
-        "1.0.1",
-        "1.0.0"
-      ],
-      "existing_tags_at": 1773251884.7371128,
       "full_name": "adafruit/Adafruit_WF100DPZ",
-      "gh_auto_notes": "**Full Changelog**: https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.0...1.1.0",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_WF100DPZ",
       "lib_name": "Adafruit WF100DPZ",
-      "lib_version": "1.0.0",
+      "lib_version": "1.0.1",
       "name": "Adafruit_WF100DPZ",
       "prs": [],
-      "pushed_at": "2026-03-06T23:56:50Z",
-      "recent_commits": [
+      "pushed_at": "2026-03-11T17:58:02Z",
+      "recent_commits": [],
+      "release_ci_checks": [
         {
-          "author": "clawpi",
-          "date": "2026-03-06T23:47:08Z",
-          "html_url": "https://github.com/adafruit/Adafruit_WF100DPZ/commit/2b406511d3725242c8cdc261f3b0180076531131",
-          "message": "Improve README with usage examples and feature list",
-          "sha": "2b40651"
-        },
-        {
-          "author": "clawpi",
-          "date": "2026-03-06T23:53:13Z",
-          "html_url": "https://github.com/adafruit/Adafruit_WF100DPZ/commit/b25fbdbaab6ce4e7f8c63424c6379fbbeb3d139f",
-          "message": "README: remove broken documentation badge",
-          "sha": "b25fbdb"
-        },
-        {
-          "author": "clawpi",
-          "date": "2026-03-06T23:54:34Z",
-          "html_url": "https://github.com/adafruit/Adafruit_WF100DPZ/commit/51e400e5157ff898aef600b8a29f0fce22fead12",
-          "message": "README: add doxygen documentation badge",
-          "sha": "51e400e"
-        },
-        {
-          "author": "clawpi",
-          "date": "2026-03-06T23:56:50Z",
-          "html_url": "https://github.com/adafruit/Adafruit_WF100DPZ/commit/08acb09438f272824bb589ca85eee5b62164293b",
-          "message": "README: fix docs link to https",
-          "sha": "08acb09"
+          "name": "build",
+          "run_id": "22966972413",
+          "run_label": "release CI",
+          "state": "SUCCESS",
+          "url": "https://github.com/adafruit/Adafruit_WF100DPZ/actions/runs/22966972413/job/66673049919"
         }
       ],
+      "release_ci_status": "pass",
       "release_notes": "Documentation improvements for the Adafruit WF100DPZ library.\n\n## Updates\n- Improved README with comprehensive feature list and usage examples by @clawpi ([`2b40651`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/2b406511d3725242c8cdc261f3b0180076531131))\n- Added official Arduino Library CI and doxygen documentation badges ([`51e400e`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/51e400e5157ff898aef600b8a29f0fce22fead12))\n- Fixed documentation links to use HTTPS ([`08acb09`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/08acb09438f272824bb589ca85eee5b62164293b))\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.0...1.0.1",
       "release_status": "released",
-      "release_tag": "1.0.0",
+      "release_tag": "1.0.1",
       "released_tag": "1.0.1",
       "version_files": []
     },
@@ -18055,7 +18157,7 @@
       "lib_version": null,
       "name": "Adafruit_WebSerial_ESPTool",
       "prs": [],
-      "pushed_at": "2026-03-03T00:00:24Z",
+      "pushed_at": "2026-03-18T17:10:03Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -18167,213 +18269,36 @@
     },
     "Adafruit_Wippersnapper_Arduino": {
       "arduino_registered": true,
-      "arduino_version": "0.1.0",
+      "arduino_version": "1.0.0",
       "branch_ci_status": null,
-      "bump_justification": "Memory optimization for ESP8266 \u2014 reduces firmware size through PROGMEM macros and F() string support to conserve RAM on memory-constrained devices.",
+      "bump_justification": "Continuing prerelease cycle",
       "bump_pr": null,
       "bump_type": "prerelease",
       "categories": [
-        "failed_lib_prop",
-        "needs_release",
         "missing_actions"
       ],
       "ci_only": false,
-      "commits_behind": 8,
-      "compare_files": [
-        {
-          "filename": "Doxyfile",
-          "patch": "@@ -2034,7 +2034,7 @@ ENABLE_PREPROCESSING   = YES\n # The default value is: NO.\n # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.\n \n-MACRO_EXPANSION        = NO\n+MACRO_EXPANSION        = YES\n \n # If the EXPAND_ONLY_PREDEF and MACRO_EXPANSION tags are both set to YES then\n # the macro expansion is limited to the macros specified with the PREDEFINED and\n@@ -2074,7 +2074,7 @@ INCLUDE_FILE_PATTERNS  =\n # recursively expanded use the := operator instead of the = operator.\n # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.\n \n-PREDEFINED             = __cdecl=, ARDUINO_ARCH_ESP32=1, ARDUINO_FUNHOUSE_ESP32S2=1\n+PREDEFINED             = __cdecl=, ARDUINO_ARCH_ESP32=1, ARDUINO_FUNHOUSE_ESP32S2=1, PROGMEM=\n \n # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags ",
-          "status": "modified"
-        },
-        {
-          "filename": "platformio.ini",
-          "patch": "@@ -508,12 +508,11 @@ build_flags =\n     -DSSL_ALL\n     -DMMU_3232\n     -DNON32XFER_FAST\n-    -DDEBUG_DISABLED\n-    -DDEBUG_LEVEL_NONE\n+    -DDEBUG_ENABLED\n+    -DDEBUG_LEVEL_CORE\n     -DPIO_FRAMEWORK_ARDUINO_MMU_CACHE16_IRAM48 ; avoid section `.text1' will not fit in region `iram1_0_seg'\n board_build.eesz=4M2M\n board_build.filesystem = littlefs\n-upload_port = COM19\n \n ; SAMD51 Boards ;\n ",
-          "status": "modified"
-        },
-        {
-          "filename": "src/Wippersnapper.cpp",
-          "patch": "@@ -116,8 +116,10 @@ void Wippersnapper::provision() {\n #else\n   set_user_key(); // non-fs-backed, sets global credentials within network iface\n #endif\n+\n   // Set the status pixel's brightness\n   setStatusLEDBrightness(WS._config.status_pixel_brightness);\n+\n   // Set device's wireless credentials\n   set_ssid_pass();\n }\n@@ -405,7 +407,7 @@ bool cbSignalMsg(pb_istream_t *stream, const pb_field_t *field, void **arg) {\n \n   pb_size_t arr_sz = field->array_size;\n   WS_DEBUG_PRINT(\"Sub-messages found: \");\n-  WS_DEBUG_PRINTLN(arr_sz);\n+  WS_DEBUG_PRINTLNVAR(arr_sz);\n \n   if (field->tag ==\n       wippersnapper_signal_v1_CreateSignalRequest_pin_configs_tag) {\n@@ -492,7 +494,7 @@ bool Wippersnapper::decodeSignalMsg(\n /**************************************************************************/\n void",
-          "status": "modified"
-        },
-        {
-          "filename": "src/Wippersnapper.h",
-          "patch": "@@ -48,17 +48,45 @@\n \r\n // Define actual debug output functions when necessary.\r\n #ifdef WS_DEBUG\r\n+\r\n+#ifdef ARDUINO_ARCH_ESP8266\r\n+// ESP8266: Use F() macro to store string literals in Flash (PROGMEM) instead\r\n+// of RAM. This saves precious RAM on memory-constrained ESP8266 devices.\r\n+// NOTE: WS_DEBUG_PRINT/PRINTLN only accept string literals on ESP8266.\r\n+// Use WS_DEBUG_PRINTVAR/PRINTLNVAR for variables.\r\n+#define WS_DEBUG_PRINT(x)                                                      \\\r\n+  { WS_PRINTER.print(F(x)); } ///< Prints string literal from Flash\r\n+#define WS_DEBUG_PRINTLN(x)                                                    \\\r\n+  { WS_PRINTER.println(F(x)); } ///< Prints string literal line from Flash\r\n+#else\r\n+// Other platforms: Standard variadic macros\r\n #define WS_DEBUG",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/analogIO/Wippersnapper_AnalogIO.cpp",
-          "patch": "@@ -162,7 +162,7 @@ void Wippersnapper_AnalogIO::initAnalogInputPin(\n     }\n   }\n   WS_DEBUG_PRINT(\"Configured Analog Input pin with polling time (ms):\");\n-  WS_DEBUG_PRINTLN(periodMs);\n+  WS_DEBUG_PRINTLNVAR(periodMs);\n }\n \n /***********************************************************************************/\n@@ -194,7 +194,7 @@ void Wippersnapper_AnalogIO::disableAnalogInPin(int pin) {\n void Wippersnapper_AnalogIO::deinitAnalogPin(\n     wippersnapper_pin_v1_ConfigurePinRequest_Direction direction, int pin) {\n   WS_DEBUG_PRINT(\"Deinitializing analog pin A\");\n-  WS_DEBUG_PRINTLN(pin);\n+  WS_DEBUG_PRINTLNVAR(pin);\n   if (direction ==\n       wippersnapper_pin_v1_ConfigurePinRequest_Direction_DIRECTION_INPUT) {\n     WS_DEBUG_PRINTLN(\"Deinitialized analog input pin obj.\");\n@@ -391,7 +391,7 @@ ",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/digitalIO/Wippersnapper_DigitalGPIO.cpp",
-          "patch": "@@ -73,7 +73,7 @@ void Wippersnapper_DigitalGPIO::initDigitalPin(\n     pinMode(pinName, OUTPUT);\n \n     WS_DEBUG_PRINT(\"Configured digital output pin on D\");\n-    WS_DEBUG_PRINTLN(pinName);\n+    WS_DEBUG_PRINTLNVAR(pinName);\n \n // Initialize LOW\n #if defined(ARDUINO_ESP8266_ADAFRUIT_HUZZAH)\n@@ -88,7 +88,7 @@ void Wippersnapper_DigitalGPIO::initDigitalPin(\n       direction ==\n       wippersnapper_pin_v1_ConfigurePinRequest_Direction_DIRECTION_INPUT) {\n     WS_DEBUG_PRINT(\"Configuring digital input pin on D\");\n-    WS_DEBUG_PRINT(pinName);\n+    WS_DEBUG_PRINTVAR(pinName);\n \n     if (pull == wippersnapper_pin_v1_ConfigurePinRequest_Pull_PULL_UP) {\n       WS_DEBUG_PRINTLN(\"with internal pull-up enabled\");\n@@ -101,7 +101,7 @@ void Wippersnapper_DigitalGPIO::initDigitalPin(\n     // Period is in ",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/display/assets/icons.h",
-          "patch": "@@ -19,7 +19,7 @@\n /**\n  * @brief cloud-thin-full icon from FontAwesome (16x16px)\n  */\n-const unsigned char epd_bmp_cloud_online[] = {\n+const unsigned char epd_bmp_cloud_online[] PROGMEM = {\n     0x00, 0x00, 0x00, 0x00, 0x07, 0x80, 0x0d, 0xc0, 0x18, 0x78, 0x10,\n     0x0c, 0x30, 0x04, 0x70, 0x0c, 0xc0, 0x06, 0xc0, 0x03, 0xc0, 0x03,\n     0x40, 0x03, 0x70, 0x06, 0x3f, 0xfc, 0x00, 0x00, 0x00, 0x00};\n@@ -35,39 +35,39 @@ const unsigned char epd_bmp_cloud_offline[] PROGMEM = {\n /**\n  * @brief wifi-thin-full icon from FontAwesome (16x16px)\n  */\n-const unsigned char epd_bmp_wifi_full[] = {\n+const unsigned char epd_bmp_wifi_full[] PROGMEM = {\n     0x00, 0x00, 0x00, 0x00, 0x07, 0xe0, 0x3c, 0x3c, 0x70, 0x0e, 0xc0,\n     0x03, 0x03, 0xc0, 0x0f, 0xf0, 0x1c, 0x38, 0x18, 0x18, 0x00, 0x00,\n     0x03, 0xc0, ",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/display/assets/splash.h",
-          "patch": "@@ -19,7 +19,7 @@\n /**\n  * @brief Wippersnapper logo, 296x128px\n  */\n-const unsigned char tft_bmp_logo_240135[] = {\n+const unsigned char tft_bmp_logo_240135[] PROGMEM = {\n     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,\n     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,\n     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,\n@@ -965,7 +965,7 @@ const unsigned char tft_bmp_logo_240240[] PROGMEM = {\n     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};\n \n // 'adafruit_wippersnapper_logo', ePD Magtag, 296x128px\n-static const unsigned char epd_bitmap_ws_logo_296128[] = {\n+static const unsigned char epd_bitmap_ws_logo_296128[] PROGMEM = {\n     // 'adafruit_wippersnapper_logo, 296x128px\n     0x00, ",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/display/controller.cpp",
-          "patch": "@@ -41,7 +41,7 @@ bool DisplayController::Handle_Display_AddOrReplace(\n     wippersnapper_display_v1_DisplayAddOrReplace *msgAdd) {\n   DisplayHardware *display = new DisplayHardware(msgAdd->name);\n   WS_DEBUG_PRINT(\"[display] Adding or replacing display: \");\n-  WS_DEBUG_PRINTLN(msgAdd->name);\n+  WS_DEBUG_PRINTLNVAR(msgAdd->name);\n \n   // Does this display hw instance already exist?\n   DisplayHardware *existingDisplay = findDisplay(msgAdd->name);\n@@ -144,7 +144,7 @@ bool DisplayController::Handle_Display_Write(\n \n   // Write the message to the display\n   WS_DEBUG_PRINT(\"[display] Writing message to display: \");\n-  WS_DEBUG_PRINTLN(msgWrite->message);\n+  WS_DEBUG_PRINTLNVAR(msgWrite->message);\n   WS.runNetFSM();\n   display->writeMessage(msgWrite->message);\n   WS.runNetFSM();",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/ds18x20/ws_ds18x20.cpp",
-          "patch": "@@ -94,7 +94,7 @@ bool ws_ds18x20::addDS18x20(\n          msgDs18x20InitReq->onewire_pin);\n \n   WS_DEBUG_PRINT(\"Created OneWireBus on GPIO \");\n-  WS_DEBUG_PRINT(msgDs18x20InitReq->onewire_pin);\n+  WS_DEBUG_PRINTVAR(msgDs18x20InitReq->onewire_pin);\n   WS_DEBUG_PRINTLN(\" with DS18x20 attached!\");\n \n   // Encode and publish response back to broker\n@@ -132,7 +132,7 @@ void ws_ds18x20::deleteDS18x20(\n     if (strcmp(_ds18xDrivers[idx]->onewire_pin,\n                msgDS18x20DeinitReq->onewire_pin) == 0) {\n       WS_DEBUG_PRINT(\"Deleting OneWire instance on pin \");\n-      WS_DEBUG_PRINTLN(msgDS18x20DeinitReq->onewire_pin);\n+      WS_DEBUG_PRINTLNVAR(msgDS18x20DeinitReq->onewire_pin);\n       delete _ds18xDrivers[idx]\n           ->dallasTempObj; // delete dallas temp instance on pin\n       delete _",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/i2c/WipperSnapper_I2C.cpp",
-          "patch": "@@ -32,13 +32,13 @@ WipperSnapper_Component_I2C::WipperSnapper_Component_I2C(\n     wippersnapper_i2c_v1_I2CBusInitRequest *msgInitRequest) {\n   WS_DEBUG_PRINTLN(\"EXEC: New I2C Port \");\n   WS_DEBUG_PRINT(\"\\tPort #: \");\n-  WS_DEBUG_PRINTLN(msgInitRequest->i2c_port_number);\n+  WS_DEBUG_PRINTLNVAR(msgInitRequest->i2c_port_number);\n   WS_DEBUG_PRINT(\"\\tSDA Pin: \");\n-  WS_DEBUG_PRINTLN(msgInitRequest->i2c_pin_sda);\n+  WS_DEBUG_PRINTLNVAR(msgInitRequest->i2c_pin_sda);\n   WS_DEBUG_PRINT(\"\\tSCL Pin: \");\n-  WS_DEBUG_PRINTLN(msgInitRequest->i2c_pin_scl);\n+  WS_DEBUG_PRINTLNVAR(msgInitRequest->i2c_pin_scl);\n   WS_DEBUG_PRINT(\"\\tFrequency (Hz): \");\n-  WS_DEBUG_PRINTLN(msgInitRequest->i2c_frequency);\n+  WS_DEBUG_PRINTLNVAR(msgInitRequest->i2c_frequency);\n \n #if defined(PIN_I2C_POWER)\n   // turn on the I",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/i2c/drivers/WipperSnapper_I2C_Driver_AS5600.h",
-          "patch": "@@ -113,9 +113,9 @@ class WipperSnapper_I2C_Driver_AS5600 : public WipperSnapper_I2C_Driver {\n     uint16_t angle = _as5600->getAngle();\n \n     WS_DEBUG_PRINT(\"AS5600 Raw: \");\n-    WS_DEBUG_PRINT(rawAngle);\n+    WS_DEBUG_PRINTVAR(rawAngle);\n     WS_DEBUG_PRINT(\" | Scaled: \");\n-    WS_DEBUG_PRINT(angle);\n+    WS_DEBUG_PRINTVAR(angle);\n \n     // Check status conditions\n     if (_as5600->isAGCminGainOverflow()) {",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/i2c/drivers/WipperSnapper_I2C_Driver_HDC302X.h",
-          "patch": "@@ -71,19 +71,19 @@ class WipperSnapper_I2C_Driver_HDC302X : public WipperSnapper_I2C_Driver {\n   bool ReadSensorData() {\n     uint16_t status = _hdc302x->readStatus();\n     if (status & 0x0010) {\n-      WS_DEBUG_PRINTLN(F(\"Device Reset Detected\"));\n+      WS_DEBUG_PRINTLNVAR(F(\"Device Reset Detected\"));\n       return false;\n     }\n \n     if (status & 0x0001) {\n-      WS_DEBUG_PRINTLN(\n+      WS_DEBUG_PRINTLNVAR(\n           F(\"Checksum Verification Fail (incorrect checksum received)\"));\n       return false;\n     }\n \n     if (!_hdc302x->readTemperatureHumidityOnDemand(_temp, _humidity,\n                                                    TRIGGERMODE_LP0)) {\n-      WS_DEBUG_PRINTLN(F(\"Failed to read temperature and humidity.\"));\n+      WS_DEBUG_PRINTLNVAR(F(\"Failed to read temperature and hum",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/i2c/drivers/WipperSnapper_I2C_Driver_MLX90632D.h",
-          "patch": "@@ -89,7 +89,7 @@ class WipperSnapper_I2C_Driver_MLX90632D : public WipperSnapper_I2C_Driver {\n   bool ConfigureAndPrintSensorInfo(bool extendedInsteadOfMedicalRange = false) {\n     // Reset the device\n     if (!_mlx90632->reset()) {\n-      WS_DEBUG_PRINTLN(F(\"Device reset failed\"));\n+      WS_DEBUG_PRINTLNVAR(F(\"Device reset failed\"));\n       return false;\n     }\n \n@@ -100,7 +100,7 @@ class WipperSnapper_I2C_Driver_MLX90632D : public WipperSnapper_I2C_Driver {\n     uint8_t accuracy = productCode & 0x1F;\n \n     if (!_mlx90632->setMode(MLX90632_MODE_CONTINUOUS)) {\n-      WS_DEBUG_PRINTLN(F(\"Failed to set mode\"));\n+      WS_DEBUG_PRINTLNVAR(F(\"Failed to set mode\"));\n       return false;\n     }\n \n@@ -109,25 +109,25 @@ class WipperSnapper_I2C_Driver_MLX90632D : public WipperSnapper_I2C_Driver ",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/i2c/drivers/WipperSnapper_I2C_Driver_QMC5883P.cpp",
-          "patch": "@@ -78,19 +78,19 @@ bool WipperSnapper_I2C_Driver_QMC5883P::getEventRaw(sensors_event_t *magEvent) {\n   if (!_qmc->getGaussField(&gx, &gy, &gz)) {\n     WS_DEBUG_PRINTLN(\"Failed to read Gauss field data\");\n     WS_DEBUG_PRINT(\"Raw X: \");\n-    WS_DEBUG_PRINTLN(x);\n+    WS_DEBUG_PRINTLNVAR(x);\n     WS_DEBUG_PRINT(\"Raw Y: \");\n-    WS_DEBUG_PRINTLN(y);\n+    WS_DEBUG_PRINTLNVAR(y);\n     WS_DEBUG_PRINT(\"Raw Z: \");\n-    WS_DEBUG_PRINTLN(z);\n+    WS_DEBUG_PRINTLNVAR(z);\n     return false;\n   } else {\n     WS_DEBUG_PRINT(\"Gauss X: \");\n-    WS_DEBUG_PRINTLN(gx);\n+    WS_DEBUG_PRINTLNVAR(gx);\n     WS_DEBUG_PRINT(\"Gauss Y: \");\n-    WS_DEBUG_PRINTLN(gy);\n+    WS_DEBUG_PRINTLNVAR(gy);\n     WS_DEBUG_PRINT(\"Gauss Z: \");\n-    WS_DEBUG_PRINTLN(gz);\n+    WS_DEBUG_PRINTLNVAR(gz);\n   }\n \n   // Check for overflo",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/i2c/drivers/WipperSnapper_I2C_Driver_VL53L1X.h",
-          "patch": "@@ -83,9 +83,9 @@ class WipperSnapper_I2C_Driver_VL53L1X : public WipperSnapper_I2C_Driver {\n     int16_t proximityMM = _VL53L1X->distance();\n     if (proximityMM == -1) {\n       WS_DEBUG_PRINT(\"VL53L1X: Invalid proximity value:\");\n-      WS_DEBUG_PRINTLN(proximityMM);\n+      WS_DEBUG_PRINTLNVAR(proximityMM);\n       WS_DEBUG_PRINT(\"VL53L1X status: \");\n-      WS_DEBUG_PRINTLN(_VL53L1X->vl_status);\n+      WS_DEBUG_PRINTLNVAR(_VL53L1X->vl_status);\n       proximityEvent->data[0] = NAN;\n     } else {\n       proximityEvent->data[0] = proximityMM;",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/i2c/drivers/WipperSnapper_I2C_Driver_VL53L4CD.h",
-          "patch": "@@ -73,7 +73,7 @@ class WipperSnapper_I2C_Driver_VL53L4CD : public WipperSnapper_I2C_Driver {\n         _VL53L4CD->VL53L4CD_GetSignalThreshold(&signalThreshold) ==\n         VL53L4CD_ERROR_NONE) {\n       WS_DEBUG_PRINT(\"VL53L4CD old signal threshold: \");\n-      WS_DEBUG_PRINTLN(signalThreshold);\n+      WS_DEBUG_PRINTLNVAR(signalThreshold);\n       WS_DEBUG_PRINTLN(\"Setting VL53L4CD signal threshold to 50\");\n       if (_VL53L4CD->VL53L4CD_SetSignalThreshold(50) != VL53L4CD_ERROR_NONE) {\n         WS_DEBUG_PRINTLN(\"Failed to set new VL53L4CD signal threshold!\");\n@@ -85,7 +85,7 @@ class WipperSnapper_I2C_Driver_VL53L4CD : public WipperSnapper_I2C_Driver {\n     if (uint16_t sigmaThreshold; _VL53L4CD->VL53L4CD_GetSigmaThreshold(\n                                      &sigmaThreshold) == VL53L4CD_ERR",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/i2c/drivers/WipperSnapper_I2C_Driver_VL53L4CX.h",
-          "patch": "@@ -139,7 +139,7 @@ class WipperSnapper_I2C_Driver_VL53L4CX : public WipperSnapper_I2C_Driver {\n     if (status != VL53L4CX_ERROR_NONE) {\n       WS_DEBUG_PRINT(\n           \"VL53L4CX Error clearing interrupt and starting measurement: \");\n-      WS_DEBUG_PRINTLN(status);\n+      WS_DEBUG_PRINTLNVAR(status);\n       return false;\n     }\n \n@@ -151,22 +151,22 @@ class WipperSnapper_I2C_Driver_VL53L4CX : public WipperSnapper_I2C_Driver {\n     if ((status != VL53L4CX_ERROR_NONE) || (NewDataReady == 0)) {\n       // error or no data ready\n       WS_DEBUG_PRINT(\"VL53L4CX Error checking for data ready: \");\n-      WS_DEBUG_PRINTLN(status);\n+      WS_DEBUG_PRINTLNVAR(status);\n       return false;\n     }\n \n     // get data - still to verify which of one or two objects found\n     status = _VL53L4CX->VL53L4",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/pixels/ws_pixels.cpp",
-          "patch": "@@ -269,9 +269,9 @@ bool ws_pixels::addStrand(\n     }\n \n     WS_DEBUG_PRINT(\"Created NeoPixel strand of length \");\n-    WS_DEBUG_PRINT(pixelsCreateReqMsg->pixels_num);\n+    WS_DEBUG_PRINTVAR(pixelsCreateReqMsg->pixels_num);\n     WS_DEBUG_PRINT(\" on GPIO #\");\n-    WS_DEBUG_PRINTLN(pixelsCreateReqMsg->pixels_pin_neopixel);\n+    WS_DEBUG_PRINTLNVAR(pixelsCreateReqMsg->pixels_pin_neopixel);\n     publishAddStrandResponse(true, pixelsCreateReqMsg->pixels_pin_neopixel);\n   } else if (pixelsCreateReqMsg->pixels_type ==\n              wippersnapper_pixels_v1_PixelsType_PIXELS_TYPE_DOTSTAR) {\n@@ -303,9 +303,9 @@ bool ws_pixels::addStrand(\n     }\n \n     WS_DEBUG_PRINT(\"Created DotStar strand of length \");\n-    WS_DEBUG_PRINT(strands[strandIdx].numPixels);\n+    WS_DEBUG_PRINTVAR(strands[strandIdx].numP",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/register/Wippersnapper_Register.cpp",
-          "patch": "@@ -79,7 +79,7 @@ void Wippersnapper::pollRegistrationResp() {\n   // Blocking loop, WDT reset upon failure.\n   while (WS._boardStatus != WS_BOARD_DEF_OK) {\n     WS_DEBUG_PRINT(\"Polling for registration message response...\");\n-    WS_DEBUG_PRINTLN(WS._boardStatus);\n+    WS_DEBUG_PRINTLNVAR(WS._boardStatus);\n     statusLEDBlink(WS_LED_STATUS_WAITING_FOR_REG_MSG);\n     WS._mqtt->processPackets(20); // long-poll\n   }\n@@ -118,11 +118,11 @@ void Wippersnapper::decodeRegistrationResp(char *data, uint16_t len) {\n       wippersnapper_description_v1_CreateDescriptionResponse_Response_RESPONSE_OK) {\n     WS_DEBUG_PRINTLN(\"Hardware Response Msg:\")\n     WS_DEBUG_PRINT(\"\\tGPIO Pins: \");\n-    WS_DEBUG_PRINTLN(message.total_gpio_pins);\n+    WS_DEBUG_PRINTLNVAR(message.total_gpio_pins);\n     WS_DEBUG_PRINT",
-          "status": "modified"
-        },
-        {
-          "filename": "src/components/servo/ws_servo.cpp",
-          "patch": "@@ -37,12 +37,12 @@ ws_servo::~ws_servo() {\n /**************************************************************************/\n servoComponent *ws_servo::getServoComponent(uint8_t pin) {\n   for (size_t i = 0; i < sizeof(_servos) / sizeof(_servos[0]); i++) {\n-    WS_DEBUG_PRINTLN(_servos[i].pin);\n+    WS_DEBUG_PRINTLNVAR(_servos[i].pin);\n     if (_servos[i].pin == pin)\n       return &_servos[i];\n   }\n   WS_DEBUG_PRINT(\"ERROR: Can not find servo on pin #\");\n-  WS_DEBUG_PRINTLN(pin);\n+  WS_DEBUG_PRINTLNVAR(pin);\n   return nullptr;\n }\n ",
-          "status": "modified"
-        },
-        {
-          "filename": "src/nanopb/ws_pb_helpers.cpp",
-          "patch": "@@ -33,7 +33,7 @@ bool ws_pb_decode(pb_istream_t *stream, const pb_msgdesc_t *fields,\n   bool status = pb_decode(stream, fields, dest_struct);\n   if (!status) {\n     WS_DEBUG_PRINT(\"Protobuf decode error: \");\n-    WS_DEBUG_PRINTLN(PB_GET_ERROR(stream));\n+    WS_DEBUG_PRINTLNVAR(PB_GET_ERROR(stream));\n   }\n   return status;\n }\n@@ -55,7 +55,7 @@ bool ws_pb_encode(pb_ostream_t *stream, const pb_msgdesc_t *fields,\n   bool status = pb_encode(stream, fields, src_struct);\n   if (!status) {\n     WS_DEBUG_PRINT(\"Protobuf encode error: \");\n-    WS_DEBUG_PRINTLN(PB_GET_ERROR(stream));\n+    WS_DEBUG_PRINTLNVAR(PB_GET_ERROR(stream));\n   }\n   return status;\n }\n\\ No newline at end of file",
-          "status": "modified"
-        },
-        {
-          "filename": "src/network_interfaces/Wippersnapper_ESP8266.h",
-          "patch": "@@ -149,7 +149,7 @@ class Wippersnapper_ESP8266 : public Wippersnapper {\n           }\n         }\n       }\n-      WS_DEBUG_PRINT(WiFi.SSID(i));\n+      WS_DEBUG_PRINTVAR(WiFi.SSID(i));\n       WS_DEBUG_PRINT(\" (\");\n       uint8_t BSSID[WL_MAC_ADDR_LENGTH];\n       memcpy(BSSID, WiFi.BSSID(i), WL_MAC_ADDR_LENGTH);\n@@ -159,9 +159,9 @@ class Wippersnapper_ESP8266 : public Wippersnapper {\n         WS_DEBUG_PRINTHEX(BSSID[m]);\n       }\n       WS_DEBUG_PRINT(\") \");\n-      WS_DEBUG_PRINT(WiFi.RSSI(i));\n+      WS_DEBUG_PRINTVAR(WiFi.RSSI(i));\n       WS_DEBUG_PRINT(\"dB (ch\");\n-      WS_DEBUG_PRINT(WiFi.channel(i))\n+      WS_DEBUG_PRINTVAR(WiFi.channel(i))\n       WS_DEBUG_PRINTLN(\")\");\n     }\n ",
-          "status": "modified"
-        },
-        {
-          "filename": "src/provisioning/littlefs/WipperSnapper_LittleFS.cpp",
-          "patch": "@@ -94,7 +94,7 @@ void WipperSnapper_LittleFS::parseSecrets() {\n       JsonArray altnetworks = doc[\"network_type_wifi\"][\"alternative_networks\"];\n       int8_t altNetworkCount = (int8_t)altnetworks.size();\n       WS_DEBUG_PRINT(\"Network count: \");\n-      WS_DEBUG_PRINTLN(altNetworkCount);\n+      WS_DEBUG_PRINTLNVAR(altNetworkCount);\n       if (altNetworkCount == 0) {\n         fsHalt(\"ERROR: No alternative network entries found under \"\n                \"network_type_wifi.alternative_networks in secrets.json!\");\n@@ -104,14 +104,15 @@ void WipperSnapper_LittleFS::parseSecrets() {\n         if (i >= 3) {\n           WS_DEBUG_PRINT(\"WARNING: More than 3 networks in secrets.json, \"\n                          \"only the first 3 will be used. Not using \");\n-          WS_DEBUG_PRINTLN(altnetworks[i][\"net",
-          "status": "modified"
-        }
-      ],
-      "compare_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.123...HEAD",
+      "commits_behind": null,
+      "compare_files": [],
+      "compare_url": null,
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
       "example_releases": [
         {
-          "body": "## Installing WipperSnapper\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\n\n## Upgrade a device running WipperSnapper\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\n\n## What's Changed\n* add(component): [Sensirion SGP41 \ud83d\uded2](https://www.adafruit.com/product/6455) (VOC/NOx index) by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/869\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.122...1.0.0-beta.123",
+          "body": "## Installing WipperSnapper\r\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\r\n\r\n## Upgrade a device running WipperSnapper\r\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\r\n\r\n## What's Changed\r\n* fix(esp8266): Reduce firmware size by using F() string macros and PROGMEM annotations by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/874\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.123...1.0.0-beta.124",
+          "tag": "1.0.0-beta.124"
+        },
+        {
+          "body": "## Installing WipperSnapper\r\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\r\n\r\n## Upgrade a device running WipperSnapper\r\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\r\n\r\n## What's Changed\r\n* add(component): [Sensirion SGP41 \ud83d\uded2](https://www.adafruit.com/product/6455) (VOC/NOx index) by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/869\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.122...1.0.0-beta.123",
           "tag": "1.0.0-beta.123"
         },
         {
           "body": "## Installing WipperSnapper\r\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\r\n\r\n## Upgrade a device running WipperSnapper\r\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\r\n\r\n## What's Changed\r\n* fix(ci): Replace curl with gh command to fetch release info by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/863\r\n* add(component): [ENS161 MOX Gas Sensor \ud83d\uded2](https://www.adafruit.com/product/6431) support, mention low power option by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/865\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.121...1.0.0-beta.122",
           "tag": "1.0.0-beta.122"
-        },
-        {
-          "body": "## Installing WipperSnapper\r\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\r\n\r\n## Upgrade a device running WipperSnapper\r\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\r\n\r\n## What's Changed\r\n* [Fix] DotStar color format for FunHouse status pixels by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/843\r\n* [Fix] Implement version check for FruitJam C6 by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/844\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.120...1.0.0-beta.121",
-          "tag": "1.0.0-beta.121"
         }
       ],
-      "existing_tags": [
-        "1.0.0-beta.124",
-        "1.0.0-beta.123",
-        "1.0.0-beta.122",
-        "1.0.0-beta.121",
-        "1.0.0-beta.120",
-        "1.0.0-beta.119",
-        "1.0.0-beta.118",
-        "1.0.0-beta.117",
-        "1.0.0-beta.116",
-        "1.0.0-offline-beta.5",
-        "1.0.0-beta.115",
-        "1.0.0-beta.114",
-        "1.0.0-beta.113",
-        "1.0.0-beta.112",
-        "1.0.0-beta.111",
-        "1.0.0-offline-beta.4",
-        "1.0.0-beta.110",
-        "1.0.0-beta.109",
-        "1.0.0-beta.108",
-        "1.0.0-beta.107",
-        "1.0.0-beta.106",
-        "1.0.0-beta.105",
-        "1.0.0-beta.104",
-        "1.0.0-beta.103",
-        "1.0.0-beta.102",
-        "1.0.0-beta.101",
-        "1.0.0-offline-beta.3",
-        "1.0.0-offline-beta.2",
-        "1.0.0-beta.100",
-        "1.0.0-beta.99",
-        "1.0.0-beta.98",
-        "1.0.0-offline-beta.1",
-        "1.0.0-beta.97",
-        "1.0.0-beta.96",
-        "1.0.0-beta.95",
-        "1.0.0-beta.94",
-        "1.0.0-beta.93",
-        "1.0.0-beta.92",
-        "1.0.0-beta.91",
-        "1.0.0-beta.90",
-        "1.0.0-beta.89",
-        "1.0.0-alpha.89",
-        "1.0.0-beta.88",
-        "1.0.0-beta.87",
-        "1.0.0-beta.86",
-        "1.0.0-beta.85",
-        "1.0.0-beta.84",
-        "1.0.0-beta.83",
-        "1.0.0-beta.82",
-        "1.0.0-alpha.82"
-      ],
-      "existing_tags_at": 1773248840.255165,
       "full_name": "adafruit/Adafruit_Wippersnapper_Arduino",
-      "gh_auto_notes": "## What's Changed\n* Reduce firmware size on ESP8266 by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/874\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.123...1.0.0-beta.124",
       "has_actions": false,
       "has_examples": true,
       "has_lib_props": true,
@@ -18382,6 +18307,60 @@
       "lib_version": "1.0.0-beta.124",
       "name": "Adafruit_Wippersnapper_Arduino",
       "prs": [
+        {
+          "created_at": "2026-03-18T23:40:57Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/886",
+          "labels": [],
+          "number": 886,
+          "title": "Add TMP119 I2C driver",
+          "user": "tyeth"
+        },
+        {
+          "created_at": "2026-03-18T21:17:58Z",
+          "draft": true,
+          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/885",
+          "labels": [],
+          "number": 885,
+          "title": "Add WipperSnapper I2C driver for TMP119 high-precision temperature sensor",
+          "user": "Copilot"
+        },
+        {
+          "created_at": "2026-03-18T19:57:06Z",
+          "draft": true,
+          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/884",
+          "labels": [],
+          "number": 884,
+          "title": "Add Adafruit STCC4 (CO2/temp/humidity w/ SHT41, PID 6478) I2C driver",
+          "user": "Copilot"
+        },
+        {
+          "created_at": "2026-03-18T17:07:18Z",
+          "draft": true,
+          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/882",
+          "labels": [],
+          "number": 882,
+          "title": "Add TMP119 temperature sensor support",
+          "user": "Copilot"
+        },
+        {
+          "created_at": "2026-03-18T16:54:12Z",
+          "draft": true,
+          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/881",
+          "labels": [],
+          "number": 881,
+          "title": "[WIP] Add new TMP119 sensor from Adafruit",
+          "user": "Copilot"
+        },
+        {
+          "created_at": "2026-03-18T16:48:39Z",
+          "draft": true,
+          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/880",
+          "labels": [],
+          "number": 880,
+          "title": "add(skill): Add Sensor Component V1 skill",
+          "user": "tyeth"
+        },
         {
           "created_at": "2026-03-10T16:21:22Z",
           "draft": true,
@@ -18507,121 +18486,10 @@
           "number": 838,
           "title": "Api v2 bold experiments",
           "user": "brentru"
-        },
-        {
-          "created_at": "2025-10-15T02:10:27Z",
-          "draft": true,
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/829",
-          "labels": [],
-          "number": 829,
-          "title": "Featherv2 eink linking",
-          "user": "tyeth"
-        },
-        {
-          "created_at": "2025-09-26T16:07:46Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/821",
-          "labels": [],
-          "number": 821,
-          "title": "[Offline-Mode] Update units to disambiguate in SD log",
-          "user": "tyeth"
-        },
-        {
-          "created_at": "2025-07-24T17:53:15Z",
-          "draft": true,
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/784",
-          "labels": [],
-          "number": 784,
-          "title": "Board-local-txt",
-          "user": "tyeth"
-        },
-        {
-          "created_at": "2025-04-30T23:09:25Z",
-          "draft": true,
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/740",
-          "labels": [],
-          "number": 740,
-          "title": "Always publish initial pin value if on_change (so we have a previous value on boot)",
-          "user": "tyeth"
-        },
-        {
-          "created_at": "2025-02-21T15:33:06Z",
-          "draft": true,
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/697",
-          "labels": [],
-          "number": 697,
-          "title": "Publish-retry-with-override",
-          "user": "tyeth"
-        },
-        {
-          "created_at": "2025-02-21T15:00:48Z",
-          "draft": true,
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/696",
-          "labels": [],
-          "number": 696,
-          "title": "Publish retry",
-          "user": "tyeth"
         }
       ],
-      "pushed_at": "2026-03-10T17:43:02Z",
-      "recent_commits": [
-        {
-          "author": "brentru",
-          "date": "2026-02-26T21:48:25Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/0511abddea94a68281888f307ad8ff7defb4ea02",
-          "message": "Reduce binary size, use F string macros for esp8266 build",
-          "sha": "0511abd"
-        },
-        {
-          "author": "brentru",
-          "date": "2026-02-27T16:18:53Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/36ced04f7f7325e83708cd639132d60d258928ff",
-          "message": "Try tyeth pio ini",
-          "sha": "36ced04"
-        },
-        {
-          "author": "brentru",
-          "date": "2026-03-06T15:06:17Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/0496c06a5be1bcf4b26bde11e14c3c787019b4fb",
-          "message": "[Fix] Add back display icons with PROGMEM macro",
-          "sha": "0496c06"
-        },
-        {
-          "author": "brentru",
-          "date": "2026-03-06T15:38:50Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/bab6e25b5e92c14bfc477f1bdca670b5c444dcd9",
-          "message": "Clean up",
-          "sha": "bab6e25"
-        },
-        {
-          "author": "brentru",
-          "date": "2026-03-06T16:50:43Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/4b20f9b3e5dfb089630b96f92acef79de8ba43ce",
-          "message": "Clang",
-          "sha": "4b20f9b"
-        },
-        {
-          "author": "brentru",
-          "date": "2026-03-06T18:06:36Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/ed5a570b5c1d95b737295fd2fc82102bcc1532a5",
-          "message": "Update Doxyfile for PROGMEM inclusion",
-          "sha": "ed5a570"
-        },
-        {
-          "author": "brentru",
-          "date": "2026-03-06T20:33:04Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/9d6e9b89cc2de90b3af54d45227bb6e9052930c0",
-          "message": "Bump version",
-          "sha": "9d6e9b8"
-        },
-        {
-          "author": "Tyeth Gundry",
-          "date": "2026-03-10T15:02:45Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/1023cad0ecc7dcce74760e16616fd9633dd4b5c2",
-          "message": "Merge pull request #874 from adafruit/v1-esp8266-build-sz",
-          "sha": "1023cad"
-        }
-      ],
+      "pushed_at": "2026-03-19T01:18:33Z",
+      "recent_commits": [],
       "release_ci_checks": [
         {
           "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx(DEV) (espressif_esp32c5_devkitc_1_n8r4_debug)",
@@ -18970,10 +18838,11 @@
       "release_ci_status": "pass",
       "release_notes": "## Installing WipperSnapper\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\n\n## Upgrade a device running WipperSnapper\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\n\n## What's Changed\n* fix(esp8266): Reduce firmware size by using F() string macros and PROGMEM annotations by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/874\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.123...1.0.0-beta.124",
       "release_status": "released",
-      "release_tag": "1.0.0-beta.123",
+      "release_tag": "1.0.0-beta.124",
       "released_tag": "1.0.0-beta.124",
       "version_files": [
         {
+          "line": 170,
           "matches": true,
           "note": "matches",
           "path": "src/Wippersnapper.h",
@@ -18981,6 +18850,7 @@
           "version_found": "1.0.0-beta.124"
         },
         {
+          "line": 32,
           "matches": false,
           "note": "has 3.3.0",
           "path": "src/network_interfaces/Wippersnapper_AIRLIFT.h",
@@ -19472,6 +19342,20 @@
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
+      "example_releases": [
+        {
+          "body": "## What's Changed\r\n* Add support for nrf52833 by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/739\r\n* Fix memory leak on failure to open by @attermann in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/827\r\n* Making new/delete operators overridable by @attermann in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/828\r\n* Null termination of file name when max length by @attermann in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/829\r\n* Add support for VDDHDIV5 by @mattallen37 in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/826\r\n* Avoid InternalFileSystem corruption caused by simultaneous BLE operation by @todd-herbert in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/838\r\n* fix(advertising): dynamic data not update by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/842\r\n* Fix a copy-paste error in the bug report template. by @obra in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/847\r\n* Add print flush by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/850\r\n\r\n## New Contributors\r\n* @attermann made their first contribution in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/827\r\n* @mattallen37 made their first contribution in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/826\r\n* @todd-herbert made their first contribution in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/838\r\n* @obra made their first contribution in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/847\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_nRF52_Arduino/compare/1.6.1...1.7.0",
+          "tag": "1.7.0"
+        },
+        {
+          "body": "## What's Changed\r\n* Add feather sense tft by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/806\r\n* update bootloader to 0.8.2 by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/807\r\n* update bootloader to 0.8.3 by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/808\r\n* update tinyusb and nrfcrypto lib by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/811\r\n* update tinyusb lib to 3.1.3 by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/819\r\n* Feather840 rev e by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/822\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_nRF52_Arduino/compare/1.6.0...1.6.1",
+          "tag": "1.6.1"
+        },
+        {
+          "body": "## What's Changed\r\n* Update BLEDiscovery.cpp by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/777\r\n* Add helper functions to HwPWM Instance by @jgartrel in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/760\r\n* FIX #197 : Replace varclr with arrclr for BLEAdvertising _data fields by @CSC-Sendance in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/784\r\n* Update bootloader 0.8.0, fix File namespace issue by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/796\r\n* Update config.yml by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/795\r\n* Fix _irq_handler by @rmccaskill in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/791\r\n* add more description to beacon example, use non-connectable scannable undirected type by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/801\r\n* Added support for directed BLE advertisements. by @UUSim in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/788\r\n* add availableForWrite() for uart by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/802\r\n* Implemented thread-safe realloc and calloc by @godario in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/744\r\n* nrfx_temp implemented by @neotje in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/747\r\n* bump up version for release 1.6.0 by @hathach in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/803\r\n\r\n## New Contributors\r\n* @jgartrel made their first contribution in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/760\r\n* @CSC-Sendance made their first contribution in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/784\r\n* @rmccaskill made their first contribution in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/791\r\n* @UUSim made their first contribution in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/788\r\n* @godario made their first contribution in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/744\r\n* @neotje made their first contribution in https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/747\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_nRF52_Arduino/compare/1.5.0...1.6.0",
+          "tag": "1.6.0"
+        }
+      ],
       "full_name": "adafruit/Adafruit_nRF52_Arduino",
       "has_actions": null,
       "has_examples": false,
@@ -19506,15 +19390,6 @@
           "number": 840,
           "title": "Adding Omnimo-nRF52840 board",
           "user": "OmarEMbed"
-        },
-        {
-          "created_at": "2024-08-14T18:13:25Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/831",
-          "labels": [],
-          "number": 831,
-          "title": "Update to LFS v1.7.2 tag - to fix filesystem corruption due to file renames",
-          "user": "geeksville"
         },
         {
           "created_at": "2024-08-14T03:12:28Z",
@@ -19616,7 +19491,7 @@
           "user": "mkirkhart"
         }
       ],
-      "pushed_at": "2025-06-26T10:53:28Z",
+      "pushed_at": "2026-03-18T12:16:30Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -20111,6 +19986,7 @@
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
+      "example_releases": [],
       "full_name": "adafruit/Agent_Skills",
       "has_actions": null,
       "has_examples": false,
@@ -20119,7 +19995,7 @@
       "lib_version": null,
       "name": "Agent_Skills",
       "prs": [],
-      "pushed_at": "2026-02-10T18:39:16Z",
+      "pushed_at": "2026-03-11T15:38:45Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -20387,6 +20263,20 @@
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
+      "example_releases": [
+        {
+          "body": "## What's Changed\r\n* updating TRRS Trinkey naming for case sensitivity by @BlitzCityDIY in https://github.com/adafruit/ArduinoCore-samd/pull/363\r\n* two more TRRS by @BlitzCityDIY in https://github.com/adafruit/ArduinoCore-samd/pull/364\r\n* update to 3.1.5 of Adafruit TinyUSB by @nerdyscout in https://github.com/adafruit/ArduinoCore-samd/pull/362\r\n* Add .ramfunc attribute to flash_with_bootloader.ld to enable keeping functions in RAM by @yosinski in https://github.com/adafruit/ArduinoCore-samd/pull/339\r\n* Fix hangs when transfer errors occur by @DennisErnst in https://github.com/adafruit/ArduinoCore-samd/pull/367\r\n* Pixel Trinkey Analog JST pin by @mikeysklar in https://github.com/adafruit/ArduinoCore-samd/pull/369\r\n* fix variant folder name case for trrstrinkey_m0 by @hathach in https://github.com/adafruit/ArduinoCore-samd/pull/370\r\n* add issue template by @hathach in https://github.com/adafruit/ArduinoCore-samd/pull/373\r\n* add missing _Val suffix on arguments to GCLK_GENCTRL_SRC() by @rlcamp in https://github.com/adafruit/ArduinoCore-samd/pull/366\r\n* fix tone with low frequency e.g 25 hz by @hathach in https://github.com/adafruit/ArduinoCore-samd/pull/374\r\n* Fix hang in noTone() by @hathach in https://github.com/adafruit/ArduinoCore-samd/pull/375\r\n* same51g19a: Fix missing ETC channel definitions in WVariant by @EllaFoxo in https://github.com/adafruit/ArduinoCore-samd/pull/377\r\n* Sercom: partially revert error handling change by @kaysievers in https://github.com/adafruit/ArduinoCore-samd/pull/378\r\n* Resolve a set of critical bugs in `SERCOM` and unify SPI/UART/I2C baudrate calculations by @crabel99 in https://github.com/adafruit/ArduinoCore-samd/pull/381\r\n\r\n## New Contributors\r\n* @BlitzCityDIY made their first contribution in https://github.com/adafruit/ArduinoCore-samd/pull/363\r\n* @nerdyscout made their first contribution in https://github.com/adafruit/ArduinoCore-samd/pull/362\r\n* @yosinski made their first contribution in https://github.com/adafruit/ArduinoCore-samd/pull/339\r\n* @DennisErnst made their first contribution in https://github.com/adafruit/ArduinoCore-samd/pull/367\r\n* @mikeysklar made their first contribution in https://github.com/adafruit/ArduinoCore-samd/pull/369\r\n* @EllaFoxo made their first contribution in https://github.com/adafruit/ArduinoCore-samd/pull/377\r\n* @crabel99 made their first contribution in https://github.com/adafruit/ArduinoCore-samd/pull/381\r\n\r\n**Full Changelog**: https://github.com/adafruit/ArduinoCore-samd/compare/1.7.16...1.7.17",
+          "tag": "1.7.17"
+        },
+        {
+          "body": "## What's Changed\r\n* bump up version 1.7.16 by @hathach in https://github.com/adafruit/ArduinoCore-samd/pull/361\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/ArduinoCore-samd/compare/1.7.15...1.7.16",
+          "tag": "1.7.16"
+        },
+        {
+          "body": "## What's Changed\r\n* Use the correct openocd flash driver for ATSAMD51 devices by @rcross-lc in https://github.com/adafruit/ArduinoCore-samd/pull/358\r\n* bump up version to 1.7.15 by @hathach in https://github.com/adafruit/ArduinoCore-samd/pull/359\r\n* update makeboards.py, fix board name typo by @hathach in https://github.com/adafruit/ArduinoCore-samd/pull/360\r\n\r\n## New Contributors\r\n* @rcross-lc made their first contribution in https://github.com/adafruit/ArduinoCore-samd/pull/358\r\n\r\n**Full Changelog**: https://github.com/adafruit/ArduinoCore-samd/compare/1.7.14...1.7.15",
+          "tag": "1.7.15"
+        }
+      ],
       "full_name": "adafruit/ArduinoCore-samd",
       "has_actions": null,
       "has_examples": false,
@@ -20504,7 +20394,7 @@
           "user": "freaklabs"
         }
       ],
-      "pushed_at": "2026-02-07T04:14:20Z",
+      "pushed_at": "2026-03-18T07:28:27Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -22425,16 +22315,16 @@
       "error": null,
       "example_releases": [
         {
+          "body": "Release 1.0.76",
+          "tag": "1.0.76"
+        },
+        {
           "body": "Release 1.0.75",
           "tag": "1.0.75"
         },
         {
           "body": "Release 1.0.74",
           "tag": "1.0.74"
-        },
-        {
-          "body": "Release 1.0.73",
-          "tag": "1.0.73"
         }
       ],
       "full_name": "adafruit/Fruit-Jam-OS",
@@ -22445,7 +22335,7 @@
       "lib_version": null,
       "name": "Fruit-Jam-OS",
       "prs": [],
-      "pushed_at": "2026-03-04T08:29:33Z",
+      "pushed_at": "2026-03-13T08:27:24Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -23421,7 +23311,7 @@
       "lib_version": null,
       "name": "MBAdafruitBoards",
       "prs": [],
-      "pushed_at": "2026-03-10T16:48:50Z",
+      "pushed_at": "2026-03-18T15:56:03Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -25949,7 +25839,9 @@
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
       "bump_type": "patch",
-      "categories": [],
+      "categories": [
+        "missing_actions"
+      ],
       "ci_only": false,
       "commits_behind": null,
       "compare_url": null,
@@ -25957,7 +25849,7 @@
       "details_loaded": true,
       "error": null,
       "full_name": "adafruit/TinyLoRa",
-      "has_actions": true,
+      "has_actions": false,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/TinyLoRa",
@@ -26669,7 +26561,7 @@
           "user": "MakeItYourself85"
         }
       ],
-      "pushed_at": "2026-03-06T20:33:49Z",
+      "pushed_at": "2026-03-12T18:55:31Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -26702,21 +26594,21 @@
       "name": "Wippersnapper_Components",
       "prs": [
         {
+          "created_at": "2026-03-18T23:40:47Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Wippersnapper_Components/pull/299",
+          "labels": [],
+          "number": 299,
+          "title": "Add TMP119 component definition",
+          "user": "tyeth"
+        },
+        {
           "created_at": "2026-02-25T16:35:37Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Wippersnapper_Components/pull/298",
           "labels": [],
           "number": 298,
           "title": "fix(ci): image validation changes 800<x<2160",
-          "user": "tyeth"
-        },
-        {
-          "created_at": "2026-02-20T15:33:22Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Wippersnapper_Components/pull/297",
-          "labels": [],
-          "number": 297,
-          "title": "add(i2c): Sensirion SGP41 (NOX/VOC index+raw)",
           "user": "tyeth"
         },
         {
@@ -26747,7 +26639,7 @@
           "user": "tyeth"
         }
       ],
-      "pushed_at": "2026-02-26T00:16:39Z",
+      "pushed_at": "2026-03-18T23:47:53Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -26819,13 +26711,15 @@
           "created_at": "2023-11-09T18:56:47Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Wippersnapper_Protobuf/pull/133",
-          "labels": [],
+          "labels": [
+            "v2"
+          ],
           "number": 133,
           "title": "API V2",
           "user": "brentru"
         }
       ],
-      "pushed_at": "2026-03-09T19:59:35Z",
+      "pushed_at": "2026-03-18T15:13:37Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -26951,7 +26845,7 @@
       "lib_version": null,
       "name": "adafruit-circuitpython-weekly-meeting",
       "prs": [],
-      "pushed_at": "2026-03-09T18:51:31Z",
+      "pushed_at": "2026-03-16T18:38:21Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -28132,16 +28026,25 @@
       "name": "circuitpython-org",
       "prs": [
         {
-          "created_at": "2026-02-25T14:37:00Z",
+          "created_at": "2026-03-18T22:40:23Z",
           "draft": false,
-          "html_url": "https://github.com/adafruit/circuitpython-org/pull/1740",
+          "html_url": "https://github.com/adafruit/circuitpython-org/pull/1745",
           "labels": [],
-          "number": 1740,
-          "title": "Added TinyCircuits Thumby and Thumby Color",
-          "user": "relic-se"
+          "number": 1745,
+          "title": "Fix board_id formatting in seeed_xiao_esp32s3_sense.md",
+          "user": "Timeline8"
+        },
+        {
+          "created_at": "2026-03-18T19:23:20Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/circuitpython-org/pull/1744",
+          "labels": [],
+          "number": 1744,
+          "title": "Add missing boards for latest CircuitPython",
+          "user": "makermelissa"
         }
       ],
-      "pushed_at": "2026-03-10T10:14:32Z",
+      "pushed_at": "2026-03-18T10:20:01Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -32176,7 +32079,7 @@
           "user": "Brandon-Hurst"
         }
       ],
-      "pushed_at": "2026-03-04T22:34:31Z",
+      "pushed_at": "2026-03-12T19:12:51Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -32185,5 +32088,5 @@
     }
   },
   "status": "done",
-  "total": 51
+  "total": 20
 }
