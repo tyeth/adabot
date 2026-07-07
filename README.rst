@@ -78,8 +78,17 @@ and password. These will be stored in the ~/.adabot-git-credentials file which
 makes this not very secure. Make sure your OAUTH token has only the permissions
 it needs in case it ends up in someone else's hands.
 
-Usage Example
-=============
+Arduino Library Release manager web UI
+======================================
+Adabot also has a web UI to manage Arduino library releases. This is built with 
+Flask and is located in the adabot_web directory. To run it see run_web.py
+
+This will kill and restart the server with gh creds (gh auth status to see who):
+`kill $(ps aux | grep '[r]un_web.py --port 8080' | awk '{print $2}') 2>/dev/null; ADABOT_GITHUB_ACCESS_TOKEN=$(gh auth token) .venv/bin/python run_web.py --port 8080`
+
+
+Normal Adabot Usage Example
+===========================
 
 To run Adabot we'll use screen to manage all of the individual pieces. Luckily,
 we have a screenrc file that manages starting everything up.
