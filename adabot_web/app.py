@@ -722,12 +722,17 @@ def _gh_bump_pr(default_branch, old_version, new_version, repo_name, version_fil
 
         with open(lib_props) as f:
             content = f.read()
+        ver_match = re.search(r"^version\s*=\s*(.*)$", content, flags=re.MULTILINE)
+        if ver_match is None:
+            return {"error": "version= line not found in library.properties"}
+        current_version = ver_match.group(1).strip()
+        if current_version == new_version:
+            return {"error": f"library.properties on {default_branch} is already at "
+                             f"{new_version} — state is stale, re-collect this repo"}
         new_content = re.sub(
             r"^(version\s*=\s*).*$", rf"\g<1>{new_version}",
             content, flags=re.MULTILINE
         )
-        if new_content == content:
-            return {"error": "version= line not found/changed in library.properties"}
         with open(lib_props, "w") as f:
             f.write(new_content)
 
