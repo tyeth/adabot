@@ -105,7 +105,7 @@
     "Adafruit INA237 and INA238 Library": "1.0.3",
     "Adafruit INA260 Library": "1.5.3",
     "Adafruit INA3221 Library": "1.0.3",
-    "Adafruit IO Arduino": "4.3.6",
+    "Adafruit IO Arduino": "4.3.7",
     "Adafruit IS31FL3731 Library": "2.0.2",
     "Adafruit IS31FL3741 Library": "1.2.3",
     "Adafruit ImageReader Library": "2.10.0",
@@ -160,7 +160,7 @@
     "Adafruit MPR121": "1.2.1",
     "Adafruit MPRLS Library": "1.2.2",
     "Adafruit MPU6050": "2.2.9",
-    "Adafruit MQTT Library": "2.6.5",
+    "Adafruit MQTT Library": "2.6.6",
     "Adafruit MS8607": "1.0.4",
     "Adafruit MSA301": "1.1.4",
     "Adafruit MiniMLX90614": "1.0.0",
@@ -316,9 +316,9 @@
     "adafruit_ina219_mock": "1.0.0"
   },
   "error": null,
-  "last_run_end": "2026-07-07T11:49:13.850283+00:00",
-  "last_run_start": "2026-07-07T11:31:44.156817+00:00",
-  "progress": 17,
+  "last_run_end": "2026-07-21T15:59:44.602039+00:00",
+  "last_run_start": "2026-07-21T15:12:57.596751+00:00",
+  "progress": 697,
   "repos": {
     "ARDX-Fritzing-Diagrams": {
       "arduino_registered": false,
@@ -1064,37 +1064,9 @@
     "Adafruit-GFX-Library": {
       "arduino_registered": true,
       "arduino_version": "1.12.6",
-      "branch_ci_status": "pass",
+      "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": {
-        "actions_need_approval": false,
-        "checks": [
-          {
-            "name": "build",
-            "run_id": "26390690392",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit-GFX-Library/actions/runs/26390690392/job/77679439679"
-          },
-          {
-            "name": "build",
-            "run_id": "24214315702",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit-GFX-Library/actions/runs/24214315702/job/70690969905"
-          }
-        ],
-        "ci_status": "pass",
-        "files_changed": [
-          "library.properties"
-        ],
-        "merged_at": "2026-04-09T21:30:17Z",
-        "new_version": "1.12.6",
-        "number": "509",
-        "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit-GFX-Library/pull/509"
-      },
+      "bump_pr": null,
       "bump_type": "patch",
       "categories": [],
       "ci_only": false,
@@ -1127,6 +1099,24 @@
       "lib_version": "1.12.6",
       "name": "Adafruit-GFX-Library",
       "prs": [
+        {
+          "created_at": "2026-07-18T06:16:44Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit-GFX-Library/pull/514",
+          "labels": [],
+          "number": 514,
+          "title": "Fix GFXfont range reads on big-endian targets",
+          "user": "94xhn"
+        },
+        {
+          "created_at": "2026-07-11T08:36:24Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit-GFX-Library/pull/513",
+          "labels": [],
+          "number": 513,
+          "title": "fix(GFX_Button): initialize currstate/laststate",
+          "user": "94xhn"
+        },
         {
           "created_at": "2026-03-24T20:59:11Z",
           "draft": false,
@@ -1288,42 +1278,13 @@
           "number": 441,
           "title": "BUGFIX: null pointer access violations in Canvas1/8/16 when buffer is not successfully malloc'd",
           "user": "aremmell"
-        },
-        {
-          "created_at": "2023-10-25T19:46:09Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit-GFX-Library/pull/438",
-          "labels": [],
-          "number": 438,
-          "title": "Added public functions for button label and button enable/disable.",
-          "user": "ihakov2"
-        },
-        {
-          "created_at": "2023-10-18T16:57:45Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit-GFX-Library/pull/436",
-          "labels": [],
-          "number": 436,
-          "title": "fontconvert: fractional point support for fine-grained font size control",
-          "user": "wydrych"
         }
       ],
       "pushed_at": "2026-04-09T22:24:06Z",
       "recent_commits": [],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "24216298221",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit-GFX-Library/actions/runs/24216298221/job/70697541496"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## What's Changed\n* Add drawRotatedRect and fillRotatedRect methods by @BillMerryman in https://github.com/adafruit/Adafruit-GFX-Library/pull/508\n\n**Full Changelog**: https://github.com/adafruit/Adafruit-GFX-Library/compare/1.12.5...1.12.6",
-      "release_status": "released",
+      "release_notes": null,
+      "release_status": null,
       "release_tag": "1.12.6",
-      "released_tag": "1.12.6",
       "version_files": []
     },
     "Adafruit-GPIO-Halt": {
@@ -1383,6 +1344,15 @@
       "lib_version": null,
       "name": "Adafruit-Git-Intro",
       "prs": [
+        {
+          "created_at": "2026-03-31T20:08:24Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit-Git-Intro/pull/15",
+          "labels": [],
+          "number": 15,
+          "title": "initial commit of CONTRIBUTORS.md",
+          "user": "circuitcameron"
+        },
         {
           "created_at": "2023-08-24T17:46:04Z",
           "draft": false,
@@ -1937,6 +1907,15 @@
       "name": "Adafruit-PN532",
       "prs": [
         {
+          "created_at": "2026-06-23T13:54:58Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit-PN532/pull/144",
+          "labels": [],
+          "number": 144,
+          "title": "Added NTag2xx authentification (PWD_AUTH command), otherwise undoable",
+          "user": "sisyffe"
+        },
+        {
           "created_at": "2026-02-22T22:45:40Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Adafruit-PN532/pull/141",
@@ -1971,15 +1950,6 @@
           "number": 136,
           "title": "Feature/begin without reset",
           "user": "timschr"
-        },
-        {
-          "created_at": "2024-12-27T21:12:43Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit-PN532/pull/132",
-          "labels": [],
-          "number": 132,
-          "title": "Increase `PN532_PACKBUFFSIZ` to 128 bytes",
-          "user": "ilyacodes"
         },
         {
           "created_at": "2024-01-30T12:25:26Z",
@@ -2693,6 +2663,15 @@
       "lib_version": "1.11.0",
       "name": "Adafruit-ST7735-Library",
       "prs": [
+        {
+          "created_at": "2026-07-11T15:17:39Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit-ST7735-Library/pull/224",
+          "labels": [],
+          "number": 224,
+          "title": "Fix INITR_REDTAB unreachable due to value collision with INITR_144GREENTAB",
+          "user": "94xhn"
+        },
         {
           "created_at": "2026-01-26T10:58:15Z",
           "draft": false,
@@ -3618,7 +3597,7 @@
       "prs": [],
       "pushed_at": "2016-05-27T20:44:31Z",
       "recent_commits": [],
-      "release_notes": "## Changes since last release\n\n* Changes since last release",
+      "release_notes": null,
       "release_status": null,
       "release_tag": null,
       "version_files": []
@@ -4443,7 +4422,7 @@
       "prs": [],
       "pushed_at": "2022-11-02T06:45:16Z",
       "recent_commits": [],
-      "release_notes": "## Changes since last release\n\n* Changes since last release",
+      "release_notes": null,
       "release_status": null,
       "release_tag": null,
       "version_files": []
@@ -4708,30 +4687,9 @@
     "Adafruit_AS7331": {
       "arduino_registered": true,
       "arduino_version": "1.0.1",
-      "branch_ci_status": "pass",
+      "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": {
-        "actions_need_approval": false,
-        "checks": [
-          {
-            "name": "build",
-            "run_id": "24216111782",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_AS7331/actions/runs/24216111782/job/70696932156"
-          }
-        ],
-        "ci_status": "pass",
-        "files_changed": [
-          "library.properties"
-        ],
-        "merged_at": "2026-04-09T22:18:37Z",
-        "new_version": "1.0.1",
-        "number": "4",
-        "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit_AS7331/pull/4"
-      },
+      "bump_pr": null,
       "bump_type": "patch",
       "categories": [],
       "ci_only": false,
@@ -4762,20 +4720,9 @@
       "prs": [],
       "pushed_at": "2026-04-09T22:24:07Z",
       "recent_commits": [],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "24216299184",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_AS7331/actions/runs/24216299184/job/70697544161"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## What's Changed\n* fix(docs): Update docstrings for break time methods to mention 8us by @tyeth in https://github.com/adafruit/Adafruit_AS7331/pull/3\n\n## New Contributors\n* @tyeth made their first contribution in https://github.com/adafruit/Adafruit_AS7331/pull/3\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_AS7331/compare/1.0.0...1.0.1",
-      "release_status": "released",
+      "release_notes": null,
+      "release_status": null,
       "release_tag": "1.0.1",
-      "released_tag": "1.0.1",
       "version_files": []
     },
     "Adafruit_AS7341": {
@@ -5441,6 +5388,15 @@
       "name": "Adafruit_BME280_Library",
       "prs": [
         {
+          "created_at": "2026-04-10T10:56:49Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_BME280_Library/pull/118",
+          "labels": [],
+          "number": 118,
+          "title": "Check connection",
+          "user": "ImogenWren"
+        },
+        {
           "created_at": "2022-12-17T05:20:56Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Adafruit_BME280_Library/pull/105",
@@ -5539,10 +5495,20 @@
       "lib_name": "Adafruit BME690",
       "lib_version": "1.0.0",
       "name": "Adafruit_BME690",
-      "prs": [],
+      "prs": [
+        {
+          "created_at": "2026-07-08T10:29:43Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_BME690/pull/1",
+          "labels": [],
+          "number": 1,
+          "title": "Fix gas resistance reading in endReading()",
+          "user": "Ethan-chen1234-zy"
+        }
+      ],
       "pushed_at": "2025-10-10T18:18:31Z",
       "recent_commits": [],
-      "release_notes": "## Changes since last release\n\n* Changes since last release",
+      "release_notes": null,
       "release_status": null,
       "release_tag": null,
       "version_files": []
@@ -6057,6 +6023,15 @@
       "name": "Adafruit_BNO08x",
       "prs": [
         {
+          "created_at": "2026-05-18T00:02:51Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_BNO08x/pull/38",
+          "labels": [],
+          "number": 38,
+          "title": "Increase post-reset settling delay (10 \u2192 100 ms) per BNO08X datasheet \u00a76.5.3",
+          "user": "NazikMGE"
+        },
+        {
           "created_at": "2021-12-23T18:28:58Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Adafruit_BNO08x/pull/16",
@@ -6174,7 +6149,7 @@
       "error": null,
       "example_releases": [
         {
-          "body": "## What's Changed\n\n- Fix generic Linux SPI write_readinto slice #1116 by @makermelissa\n- Add BeaglePlay (AM625X) board support #1115 by @makermelissa-piclaw\n- QCM6490 (Particle Tachyon): auto-detect gpiochip for f100000.pinctrl #1111 by @tyeth-ai-assisted\n- Ensure libgpiod resources are cleaned up on exit #1109 by @makermelissa-piclaw\n- Add helpful message when lgpio is not installed on Raspberry Pi #1108 by @makermelissa-piclaw\n- Remove Python 3.13 version cap on lgpio dependency #1107 by @makermelissa-piclaw\n\nTo use in CPython, `pip3 install adafruit-blinka`.\n\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
+          "body": "## What's Changed\n\n- Add PlatformDetect dependency update workflow #1118 by @makermelissa\n- Update Blinka to pyproject.toml #1114 by @makermelissa\n- Fix generic Linux SPI write_readinto slice #1116 by @makermelissa\n- Add BeaglePlay (AM625X) board support #1115 by @makermelissa-piclaw\n- QCM6490 (Particle Tachyon): auto-detect gpiochip for f100000.pinctrl #1111 by @tyeth-ai-assisted\n- Ensure libgpiod resources are cleaned up on exit #1109 by @makermelissa-piclaw\n- Add helpful message when lgpio is not installed on Raspberry Pi #1108 by @makermelissa-piclaw\n- Remove Python 3.13 version cap on lgpio dependency #1107 by @makermelissa-piclaw\n\nTo use in CPython, `pip3 install adafruit-blinka`.\n\nRead the [docs](https://circuitpython.readthedocs.io/projects/blinka/en/latest/) for info on how to use it.",
           "tag": "untagged-43c4de3bfa3319304c06"
         },
         {
@@ -6195,15 +6170,6 @@
       "name": "Adafruit_Blinka",
       "prs": [
         {
-          "created_at": "2026-06-23T20:55:56Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Blinka/pull/1114",
-          "labels": [],
-          "number": 1114,
-          "title": "Update Blinka to pyproject.toml",
-          "user": "makermelissa"
-        },
-        {
           "created_at": "2024-08-13T19:20:30Z",
           "draft": true,
           "html_url": "https://github.com/adafruit/Adafruit_Blinka/pull/884",
@@ -6213,7 +6179,7 @@
           "user": "elpekenin"
         }
       ],
-      "pushed_at": "2026-06-29T21:28:44Z",
+      "pushed_at": "2026-07-09T15:37:54Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -6336,67 +6302,43 @@
       "name": "Adafruit_Blinka_Raspberry_Pi5_Neopixel",
       "prs": [
         {
-          "created_at": "2026-05-26T18:43:07Z",
+          "created_at": "2026-07-20T11:04:55Z",
           "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Neopixel/pull/20",
+          "html_url": "https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Neopixel/pull/23",
           "labels": [
             "dependencies",
             "github_actions"
           ],
-          "number": 20,
-          "title": "Bump pypa/cibuildwheel from 3.2.1 to 3.4.1",
+          "number": 23,
+          "title": "Bump actions/setup-python from 6 to 7",
           "user": "dependabot[bot]"
         },
         {
-          "created_at": "2026-05-26T18:43:03Z",
+          "created_at": "2026-07-13T11:05:11Z",
           "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Neopixel/pull/19",
+          "html_url": "https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Neopixel/pull/22",
           "labels": [
             "dependencies",
             "github_actions"
           ],
-          "number": 19,
-          "title": "Bump docker/setup-qemu-action from 3 to 4",
+          "number": 22,
+          "title": "Bump pypa/cibuildwheel from 3.4.1 to 4.1.0",
           "user": "dependabot[bot]"
         },
         {
-          "created_at": "2026-05-26T18:43:01Z",
+          "created_at": "2026-07-13T11:05:03Z",
           "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Neopixel/pull/18",
+          "html_url": "https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Neopixel/pull/21",
           "labels": [
             "dependencies",
             "github_actions"
           ],
-          "number": 18,
-          "title": "Bump actions/upload-artifact from 5 to 7",
-          "user": "dependabot[bot]"
-        },
-        {
-          "created_at": "2026-05-26T18:42:58Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Neopixel/pull/17",
-          "labels": [
-            "dependencies",
-            "github_actions"
-          ],
-          "number": 17,
-          "title": "Bump actions/download-artifact from 6 to 8",
-          "user": "dependabot[bot]"
-        },
-        {
-          "created_at": "2026-05-26T18:42:55Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Blinka_Raspberry_Pi5_Neopixel/pull/16",
-          "labels": [
-            "dependencies",
-            "github_actions"
-          ],
-          "number": 16,
-          "title": "Bump actions/checkout from 5 to 6",
+          "number": 21,
+          "title": "Bump actions/checkout from 6 to 7",
           "user": "dependabot[bot]"
         }
       ],
-      "pushed_at": "2026-05-26T18:43:06Z",
+      "pushed_at": "2026-07-20T11:04:55Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -6523,19 +6465,20 @@
       "version_files": []
     },
     "Adafruit_BluefruitLE_nRF51": {
-      "arduino_registered": true,
-      "arduino_version": "1.10.0",
+      "arduino_registered": false,
+      "arduino_version": null,
       "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
       "bump_type": "patch",
       "categories": [
-        "missing_actions"
+        "no_release_tag",
+        "needs_release"
       ],
       "ci_only": false,
       "commits_behind": null,
       "compare_files": [],
-      "compare_url": null,
+      "compare_url": "https://github.com/adafruit/Adafruit_BluefruitLE_nRF51/compare/master...HEAD",
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
@@ -6554,7 +6497,7 @@
         }
       ],
       "full_name": "adafruit/Adafruit_BluefruitLE_nRF51",
-      "has_actions": false,
+      "has_actions": null,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_BluefruitLE_nRF51",
@@ -6639,7 +6582,7 @@
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
-      "release_tag": "1.10.0",
+      "release_tag": null,
       "version_files": [
         {
           "line": 39,
@@ -6995,6 +6938,24 @@
       "name": "Adafruit_BusIO",
       "prs": [
         {
+          "created_at": "2026-07-11T05:12:53Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_BusIO/pull/155",
+          "labels": [],
+          "number": 155,
+          "title": "fix: initialize _genericdevice in the I2C/SPI-only constructors",
+          "user": "94xhn"
+        },
+        {
+          "created_at": "2026-06-24T09:19:28Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_BusIO/pull/154",
+          "labels": [],
+          "number": 154,
+          "title": "add PSOC6 support",
+          "user": "ederjc"
+        },
+        {
           "created_at": "2025-10-22T01:56:05Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Adafruit_BusIO/pull/152",
@@ -7155,6 +7116,15 @@
       "name": "Adafruit_CAN",
       "prs": [
         {
+          "created_at": "2026-06-08T16:25:31Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_CAN/pull/11",
+          "labels": [],
+          "number": 11,
+          "title": "Non-blocking TX via hardware FIFO + whole-frame sendFrame()",
+          "user": "STRML"
+        },
+        {
           "created_at": "2024-05-16T14:17:13Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Adafruit_CAN/pull/6",
@@ -7278,6 +7248,48 @@
       "release_notes": null,
       "release_status": null,
       "release_tag": "1.1.3",
+      "version_files": []
+    },
+    "Adafruit_CH224": {
+      "arduino_registered": false,
+      "arduino_version": null,
+      "branch_ci_status": null,
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
+      "bump_pr": null,
+      "bump_type": "patch",
+      "categories": [
+        "no_examples"
+      ],
+      "ci_only": false,
+      "commits_behind": null,
+      "compare_url": null,
+      "default_branch": "main",
+      "details_loaded": true,
+      "error": null,
+      "example_releases": [],
+      "full_name": "adafruit/Adafruit_CH224",
+      "has_actions": null,
+      "has_examples": false,
+      "has_lib_props": false,
+      "html_url": "https://github.com/adafruit/Adafruit_CH224",
+      "lib_version": null,
+      "name": "Adafruit_CH224",
+      "prs": [
+        {
+          "created_at": "2026-07-20T22:42:34Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_CH224/pull/1",
+          "labels": [],
+          "number": 1,
+          "title": "Add CH224 Arduino library",
+          "user": "ladyada-eagleclaw"
+        }
+      ],
+      "pushed_at": "2026-07-20T22:30:07Z",
+      "recent_commits": [],
+      "release_notes": null,
+      "release_status": null,
+      "release_tag": null,
       "version_files": []
     },
     "Adafruit_CH9328": {
@@ -7748,7 +7760,7 @@
       "prs": [],
       "pushed_at": "2025-04-01T11:55:57Z",
       "recent_commits": [],
-      "release_notes": "## Changes since 1.0.2\n\n* Changes since 1.0.2\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_DACX578/compare/1.0.2...1.0.3",
+      "release_notes": null,
       "release_status": null,
       "release_tag": "1.0.2",
       "version_files": []
@@ -7757,7 +7769,7 @@
       "arduino_registered": true,
       "arduino_version": "1.8.3",
       "branch_ci_status": null,
-      "bump_justification": "Add support for additional SAMD51J19A and SAME51J19A device variants, expanding hardware compatibility.",
+      "bump_justification": "Add support for additional device chip variants for SAMD51J19A and SAME51J19A.",
       "bump_pr": null,
       "bump_type": "minor",
       "categories": [
@@ -7817,7 +7829,7 @@
         "1.0.1",
         "1.0.0"
       ],
-      "existing_tags_at": 1783433510.4058542,
+      "existing_tags_at": 1784671466.0357885,
       "full_name": "adafruit/Adafruit_DAP",
       "gh_auto_notes": "**Full Changelog**: https://github.com/adafruit/Adafruit_DAP/compare/1.8.3...1.9.0",
       "has_actions": true,
@@ -7857,7 +7869,7 @@
           "sha": "b5dc3cb"
         }
       ],
-      "release_notes": "## What's Changed\n* Add more device variants by @ladyada in https://github.com/adafruit/Adafruit_DAP/commit/b5dc3cb7c4d7fb7cbe012dffc2ebe9c36555fbb5\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_DAP/compare/1.8.3...1.9.0",
+      "release_notes": "## What's Changed\n- Add support for additional SAMD51J19A and SAME51J19A device variants by @ladyada in https://github.com/adafruit/Adafruit_DAP/commit/b5dc3cb7c4d7fb7cbe012dffc2ebe9c36555fbb5\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_DAP/compare/1.8.3...1.9.0",
       "release_status": null,
       "release_tag": "1.8.3",
       "version_files": [
@@ -8246,17 +8258,7 @@
       "lib_name": "Adafruit DotStar",
       "lib_version": "1.2.5",
       "name": "Adafruit_DotStar",
-      "prs": [
-        {
-          "created_at": "2018-09-30T10:50:58Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_DotStar/pull/30",
-          "labels": [],
-          "number": 30,
-          "title": "Shift",
-          "user": "ymauray"
-        }
-      ],
+      "prs": [],
       "pushed_at": "2023-11-15T15:27:11Z",
       "recent_commits": [],
       "release_notes": null,
@@ -8418,107 +8420,25 @@
     },
     "Adafruit_EPD": {
       "arduino_registered": true,
-      "arduino_version": "4.6.11",
-      "branch_ci_status": "pass",
-      "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": {
-        "actions_need_approval": false,
-        "checks": [
-          {
-            "name": "build (uno)",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554083"
-          },
-          {
-            "name": "clang_and_doxy",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554087"
-          },
-          {
-            "name": "build (esp32)",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554094"
-          },
-          {
-            "name": "build (esp8266)",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554105"
-          },
-          {
-            "name": "build (metro_m4_tinyusb)",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554113"
-          },
-          {
-            "name": "build (cpx)",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554138"
-          },
-          {
-            "name": "build (cpb)",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554153"
-          },
-          {
-            "name": "build (trinket_m0)",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554164"
-          },
-          {
-            "name": "build (mega2560)",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554168"
-          },
-          {
-            "name": "build (metro_m0)",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554178"
-          },
-          {
-            "name": "build (leonardo)",
-            "run_id": "28452015125",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452015125/job/84316554276"
-          }
-        ],
-        "ci_status": "pass",
-        "files_changed": [
-          "library.properties"
-        ],
-        "merged_at": "2026-06-30T14:28:52Z",
-        "new_version": "4.6.11",
-        "number": "108",
-        "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit_EPD/pull/108"
-      },
+      "arduino_version": "1.0.0",
+      "branch_ci_status": null,
+      "bump_justification": "Fixed SSD1680 tri-color regression and corrected update delay for tricolor displays.",
+      "bump_pr": null,
       "bump_type": "patch",
-      "categories": [],
+      "categories": [
+        "failed_lib_prop",
+        "needs_release"
+      ],
       "ci_only": false,
-      "commits_behind": null,
-      "compare_files": [],
-      "compare_url": null,
+      "commits_behind": 5,
+      "compare_files": [
+        {
+          "filename": "src/drivers/Adafruit_SSD1680.cpp",
+          "patch": "@@ -9,46 +9,23 @@\n \n // clang-format off\n \n-// Default init for FPC-A005 and unrecognized SSD1680 panels.\n-// VCOM, source voltage, and border corrected to match CircuitPython reference.\n-// Includes full 153-byte waveform LUT for grayscale operation.\n+// Default init for FPC-A005 (2.9\" tri-color, e.g. Adafruit #1028) and other\n+// SSD1680 mono/tri panels that supply no custom init code. Minimal bring-up\n+// only: the panel loads its own waveform LUT from OTP during the update\n+// sequence (Display Update Control 2 = 0xF4, the constructor default).\n+// Grayscale panels supply their own init code (e.g. ssd1680_fpc7519_init_code)\n+// and register setup in their own begin(); nothing grayscale-specific belongs here.\n const uint8_t ssd1680_default_init_code[] {\n-    SSD1680_SW_RESET, 0,        ",
+          "status": "modified"
+        }
+      ],
+      "compare_url": "https://github.com/adafruit/Adafruit_EPD/compare/4.6.11...HEAD",
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
@@ -8536,32 +8456,86 @@
           "tag": "4.6.9"
         }
       ],
+      "existing_tags": [
+        "4.6.11",
+        "4.6.10",
+        "4.6.9",
+        "4.6.8",
+        "4.6.7",
+        "4.6.6",
+        "4.6.5",
+        "4.6.4",
+        "4.6.3",
+        "4.6.2",
+        "4.6.1",
+        "4.6.0",
+        "4.5.6",
+        "4.5.5",
+        "4.5.4",
+        "4.5.3",
+        "4.5.2",
+        "4.5.1",
+        "4.5.0",
+        "4.4.5",
+        "4.4.4",
+        "4.4.3",
+        "4.4.2",
+        "4.4.1",
+        "4.4.0",
+        "4.3.3",
+        "4.3.2",
+        "4.3.1",
+        "4.3.0",
+        "4.2.0",
+        "4.1.0",
+        "4.0.5",
+        "4.0.4",
+        "4.0.3",
+        "4.0.2",
+        "4.0.1",
+        "4.0.0",
+        "3.0.0",
+        "2.5.3",
+        "2.5.2",
+        "2.5.1",
+        "2.5.0",
+        "2.4.3",
+        "2.4.2",
+        "2.4.1",
+        "2.3.0",
+        "2.2.0",
+        "2.1.1",
+        "2.0.2",
+        "2.0.1"
+      ],
+      "existing_tags_at": 1784672110.930883,
       "full_name": "adafruit/Adafruit_EPD",
+      "gh_auto_notes": "## What's Changed\n* Fix SSD1680 tri-color regression by @mikeysklar in https://github.com/adafruit/Adafruit_EPD/pull/109\n* Fix delay in update for tricolor ssd1680 displays by @brentru in https://github.com/adafruit/Adafruit_EPD/pull/110\n\n## New Contributors\n* @brentru made their first contribution in https://github.com/adafruit/Adafruit_EPD/pull/110\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_EPD/compare/4.6.11...4.6.12",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_EPD",
       "lib_name": "Adafruit EPD",
-      "lib_version": "4.6.11",
+      "lib_version": "4.6.12",
       "name": "Adafruit_EPD",
       "prs": [
         {
-          "created_at": "2026-07-03T01:41:41Z",
+          "created_at": "2026-07-16T01:15:35Z",
           "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_EPD/pull/109",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/pull/112",
           "labels": [],
-          "number": 109,
-          "title": "Fix SSD1680 tri-color regression",
+          "number": 112,
+          "title": "1.54\" gray4 (M05): fix speckle with the GxEPD2 waveform, 2x faster refresh",
           "user": "mikeysklar"
         },
         {
-          "created_at": "2026-06-19T09:46:01Z",
+          "created_at": "2026-07-15T21:28:48Z",
           "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_EPD/pull/106",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/pull/111",
           "labels": [],
-          "number": 106,
-          "title": "fix SSD1680 display update SPI parameter",
-          "user": "hferraud"
+          "number": 111,
+          "title": "Honor default_refresh_delay on SSD1681/SSD1683, raise gray4 delays",
+          "user": "mikeysklar"
         },
         {
           "created_at": "2026-06-06T17:39:25Z",
@@ -8618,92 +8592,47 @@
           "user": "lisbravo"
         }
       ],
-      "pushed_at": "2026-06-30T14:39:46Z",
-      "recent_commits": [],
-      "release_ci_checks": [
+      "pushed_at": "2026-07-21T20:26:43Z",
+      "recent_commits": [
         {
-          "name": "clang_and_doxy",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163425"
+          "author": "Mikey Sklar",
+          "date": "2026-07-03T00:39:15Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/78d36807f8f843ae7b79e2b9c53f80beeb699519",
+          "message": "Restore SSD1680 shared default init; keep grayscale init self-contained",
+          "sha": "78d3680"
         },
         {
-          "name": "build (esp32)",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163438"
+          "author": "brentru",
+          "date": "2026-07-14T19:10:33Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/b314fd8bcecc008a0feff143615e7c99d160743b",
+          "message": "Fix delay in update for tricolor ssd1680 displays",
+          "sha": "b314fd8"
         },
         {
-          "name": "build (esp8266)",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163456"
+          "author": "Brent Rubell",
+          "date": "2026-07-14T19:10:58Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/0b50cca217c0df4d3ae64b5cc9afa93557f4caf0",
+          "message": "Merge pull request #109 from mikeysklar/restore-ssd1680-default-init",
+          "sha": "0b50cca"
         },
         {
-          "name": "build (uno)",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163479"
+          "author": "Brent Rubell",
+          "date": "2026-07-15T18:04:22Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/a4d9ff3f59f5922aa7c5ef83202c39d1ee6f7a35",
+          "message": "Merge branch 'adafruit:master' into fix/ssd1680-wait",
+          "sha": "a4d9ff3"
         },
         {
-          "name": "build (mega2560)",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163487"
-        },
-        {
-          "name": "build (metro_m0)",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163534"
-        },
-        {
-          "name": "build (cpb)",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163540"
-        },
-        {
-          "name": "build (trinket_m0)",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163550"
-        },
-        {
-          "name": "build (leonardo)",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163607"
-        },
-        {
-          "name": "build (cpx)",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163669"
-        },
-        {
-          "name": "build (metro_m4_tinyusb)",
-          "run_id": "28452746389",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_EPD/actions/runs/28452746389/job/84319163684"
+          "author": "Brent Rubell",
+          "date": "2026-07-21T20:26:43Z",
+          "html_url": "https://github.com/adafruit/Adafruit_EPD/commit/f2cf83b658b74c9ecde81fa666b7153ec74be14a",
+          "message": "Merge pull request #110 from brentru/fix/ssd1680-wait",
+          "sha": "f2cf83b"
         }
       ],
-      "release_ci_status": "pass",
-      "release_notes": "## Changes since 4.6.10\n\n### Changed\n* ThinkInk_gray4: enrich grayscale panel comments with PID + ribbon IDs\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_EPD/compare/4.6.10...4.6.11",
-      "release_status": "released",
+      "release_notes": "## What's Changed\n* Fix SSD1680 tri-color regression by @mikeysklar in https://github.com/adafruit/Adafruit_EPD/pull/109\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_EPD/compare/4.6.11...4.6.12",
+      "release_status": null,
       "release_tag": "4.6.11",
-      "released_tag": "4.6.11",
       "version_files": []
     },
     "Adafruit_ESP8266": {
@@ -9059,30 +8988,9 @@
     "Adafruit_FRAM_SPI": {
       "arduino_registered": true,
       "arduino_version": "2.6.3",
-      "branch_ci_status": "pass",
+      "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": {
-        "actions_need_approval": false,
-        "checks": [
-          {
-            "name": "build",
-            "run_id": "28449827803",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_FRAM_SPI/actions/runs/28449827803/job/84308753876"
-          }
-        ],
-        "ci_status": "pass",
-        "files_changed": [
-          "library.properties"
-        ],
-        "merged_at": "2026-06-30T13:56:18Z",
-        "new_version": "2.6.3",
-        "number": "37",
-        "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit_FRAM_SPI/pull/37"
-      },
+      "bump_pr": null,
       "bump_type": "patch",
       "categories": [],
       "ci_only": false,
@@ -9127,20 +9035,9 @@
       ],
       "pushed_at": "2026-06-30T14:29:54Z",
       "recent_commits": [],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "28452082644",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_FRAM_SPI/actions/runs/28452082644/job/84316801689"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## Changes since 2.6.2\n\n### New Features\n* Add device ID for MB85RS64VYPNF\n\n### Bug Fixes\n* Fix MB85RS64VYPNF entry: sort order and clang-format\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_FRAM_SPI/compare/2.6.2...2.6.3",
-      "release_status": "released",
+      "release_notes": null,
+      "release_status": null,
       "release_tag": "2.6.3",
-      "released_tag": "2.6.3",
       "version_files": []
     },
     "Adafruit_FT5336": {
@@ -9544,6 +9441,41 @@
       "release_notes": null,
       "release_status": null,
       "release_tag": "1.1.1",
+      "version_files": []
+    },
+    "Adafruit_GP8403": {
+      "arduino_registered": false,
+      "arduino_version": null,
+      "branch_ci_status": null,
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
+      "bump_pr": null,
+      "bump_type": "patch",
+      "categories": [
+        "no_release_tag",
+        "needs_release"
+      ],
+      "ci_only": false,
+      "commits_behind": null,
+      "compare_files": [],
+      "compare_url": "https://github.com/adafruit/Adafruit_GP8403/compare/main...HEAD",
+      "default_branch": "main",
+      "details_loaded": true,
+      "error": null,
+      "example_releases": [],
+      "full_name": "adafruit/Adafruit_GP8403",
+      "has_actions": null,
+      "has_examples": true,
+      "has_lib_props": true,
+      "html_url": "https://github.com/adafruit/Adafruit_GP8403",
+      "lib_name": "Adafruit GP8403",
+      "lib_version": "1.0.0",
+      "name": "Adafruit_GP8403",
+      "prs": [],
+      "pushed_at": "2026-07-21T14:40:00Z",
+      "recent_commits": [],
+      "release_notes": null,
+      "release_status": null,
+      "release_tag": null,
       "version_files": []
     },
     "Adafruit_GPS": {
@@ -10307,6 +10239,15 @@
       "name": "Adafruit_ILI9341",
       "prs": [
         {
+          "created_at": "2026-07-16T12:19:30Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_ILI9341/pull/106",
+          "labels": [],
+          "number": 106,
+          "title": "Scope address-window cache to each display instance",
+          "user": "94xhn"
+        },
+        {
           "created_at": "2026-01-21T18:24:21Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Adafruit_ILI9341/pull/103",
@@ -10707,34 +10648,24 @@
     },
     "Adafruit_IO_Arduino": {
       "arduino_registered": true,
-      "arduino_version": "4.3.6",
+      "arduino_version": "4.3.7",
       "branch_ci_status": null,
-      "bump_justification": "Remove obsolete ESP8266 SSL fingerprint documentation comments that are no longer relevant for the library.",
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
       "bump_type": "patch",
-      "categories": [
-        "failed_lib_prop",
-        "needs_release"
-      ],
+      "categories": [],
       "ci_only": false,
-      "commits_behind": 2,
-      "compare_files": [
-        {
-          "filename": "src/wifi/AdafruitIO_ESP8266.cpp",
-          "patch": "@@ -21,11 +21,6 @@ AdafruitIO_ESP8266::AdafruitIO_ESP8266(const char *user, const char *key,\n     : AdafruitIO(user, key) {\n   _ssid = ssid;\n   _pass = pass;\n-  // Uncomment the following lines and remove the existing WiFiClient and MQTT\n-  // client constructors to use Secure MQTT with ESP8266.\n-  // _client = new WiFiClientSecure;\n-  // _client->setFingerprint(AIO_SSL_FINGERPRINT);\n-  // _mqtt = new Adafruit_MQTT_Client(_client, _host, _mqtt_port);\n   _client = new WiFiClient;\n   _mqtt = new Adafruit_MQTT_Client(_client, _host, 1883);\n   _http = new HttpClient(*_client, _host, _http_port);",
-          "status": "modified"
-        },
-        {
-          "filename": "src/wifi/AdafruitIO_ESP8266.h",
-          "patch": "@@ -22,18 +22,14 @@\n #include \"Adafruit_MQTT_Client.h\"\n #include \"Arduino.h\"\n #include \"ESP8266WiFi.h\"\n-/* NOTE - Projects that require \"Secure MQTT\" (TLS/SSL) also require a new\n- * SSL certificate every year. If adding Secure MQTT to your ESP8266 project is\n- * important  - please switch to using the modern ESP32 (and related models)\n- * instead of the ESP8266 to avoid updating the SSL fingerprint every 6 months.\n- *\n- * If you've read through this and still want to use \"Secure MQTT\" with your\n- * ESP8266 project, we've left the \"WiFiClientSecure\" lines commented out. To\n- * use them, uncomment the commented out lines within `AdafruitIO_ESP8266.h` and\n- * `AdafruitIO_ESP8266.cpp`, update fingerprint in `AdafruitIO_Definitions.h`,\n- *  and then recompile the library.\n+\n+/* NOTE - As of 07",
-          "status": "modified"
-        }
-      ],
-      "compare_url": "https://github.com/adafruit/Adafruit_IO_Arduino/compare/4.3.6...HEAD",
+      "commits_behind": null,
+      "compare_files": [],
+      "compare_url": null,
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
       "example_releases": [
+        {
+          "body": "## What's Changed\n* Update - Remove ESP8266 SSL Fingerprint Comments by @brentru in https://github.com/adafruit/Adafruit_IO_Arduino/pull/183\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_IO_Arduino/compare/4.3.6...4.3.7",
+          "tag": "4.3.7"
+        },
         {
           "body": "## What's Changed\r\n* docs(ssl): Update TLS/SSL certificate fingerprint instructions by @tyeth in https://github.com/adafruit/Adafruit_IO_Arduino/pull/177\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_IO_Arduino/compare/4.3.5...4.3.6",
           "tag": "4.3.6"
@@ -10742,67 +10673,9 @@
         {
           "body": "## What's Changed\r\n* Fix _parseCSV() array index bug: combined PR #180 and PR #181 by @mikeysklar in https://github.com/adafruit/Adafruit_IO_Arduino/pull/182\r\n* Fix parse_csv() dropping the final CSV field by @mikeysklar in https://github.com/adafruit/Adafruit_IO_Arduino/pull/181\r\n\r\n## New Contributors\r\n* @mikeysklar made their first contribution in https://github.com/adafruit/Adafruit_IO_Arduino/pull/182\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_IO_Arduino/compare/4.3.4...4.3.5",
           "tag": "4.3.5"
-        },
-        {
-          "body": "## What's Changed\r\n* Fix clang-format CI errors by @ladyada-piclaw in https://github.com/adafruit/Adafruit_IO_Arduino/pull/178\r\n* Update version to 4.3.4 by @tyeth-ai-assisted in https://github.com/adafruit/Adafruit_IO_Arduino/pull/179\r\n\r\n## New Contributors\r\n* @ladyada-piclaw made their first contribution in https://github.com/adafruit/Adafruit_IO_Arduino/pull/178\r\n* @tyeth-ai-assisted made their first contribution in https://github.com/adafruit/Adafruit_IO_Arduino/pull/179\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_IO_Arduino/compare/4.3.3...4.3.4",
-          "tag": "4.3.4"
         }
       ],
-      "existing_tags": [
-        "4.3.7",
-        "4.3.6",
-        "4.3.5",
-        "4.3.4",
-        "4.3.3",
-        "4.3.2",
-        "4.3.1",
-        "4.3.0",
-        "4.2.9",
-        "4.2.8",
-        "4.2.7",
-        "4.2.6",
-        "4.2.5",
-        "4.2.4",
-        "4.2.3",
-        "4.2.2",
-        "4.2.1",
-        "4.2.0",
-        "4.1.1",
-        "4.1.0",
-        "4.0.2",
-        "4.0.1",
-        "4.0.0",
-        "3.9.1",
-        "3.9.0",
-        "3.8.0",
-        "3.7.0",
-        "3.6.4",
-        "3.6.3",
-        "3.6.2",
-        "3.6.1",
-        "3.6.0",
-        "3.5.1",
-        "3.5.0",
-        "3.4.0",
-        "3.3.1",
-        "3.3.0",
-        "3.2.3",
-        "3.2.2",
-        "3.2.1",
-        "3.2.0",
-        "3.1.0",
-        "2.7.23",
-        "2.7.22",
-        "2.7.21",
-        "2.7.19",
-        "2.7.18",
-        "2.7.17",
-        "2.7.16",
-        "2.7.15"
-      ],
-      "existing_tags_at": 1783433548.793862,
       "full_name": "adafruit/Adafruit_IO_Arduino",
-      "gh_auto_notes": "## What's Changed\n* Update - Remove ESP8266 SSL Fingerprint Comments by @brentru in https://github.com/adafruit/Adafruit_IO_Arduino/pull/183\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_IO_Arduino/compare/4.3.6...4.3.7",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
@@ -10830,65 +10703,11 @@
           "user": "markwal"
         }
       ],
-      "pushed_at": "2026-07-02T19:16:22Z",
-      "recent_commits": [
-        {
-          "author": "brentru",
-          "date": "2026-07-02T18:25:40Z",
-          "html_url": "https://github.com/adafruit/Adafruit_IO_Arduino/commit/09f5e0d0bf1bc6cff65f22541450197640ed8ccb",
-          "message": "add files",
-          "sha": "09f5e0d"
-        },
-        {
-          "author": "Brent Rubell",
-          "date": "2026-07-02T19:16:22Z",
-          "html_url": "https://github.com/adafruit/Adafruit_IO_Arduino/commit/12e8bbdf7b57d010ed9fdc8bd4cdbdfa97c90499",
-          "message": "Merge pull request #183 from brentru/update/2026-ssl-update",
-          "sha": "12e8bbd"
-        }
-      ],
-      "release_ci_checks": [
-        {
-          "name": "build (esp32)",
-          "run_id": "28872927518",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_IO_Arduino/actions/runs/28872927518/job/85640234178"
-        },
-        {
-          "name": "build (esp8266)",
-          "run_id": "28872927518",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_IO_Arduino/actions/runs/28872927518/job/85640234184"
-        },
-        {
-          "name": "build (picow_rp2040_tinyusb)",
-          "run_id": "28872927518",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_IO_Arduino/actions/runs/28872927518/job/85640234246"
-        },
-        {
-          "name": "build (metro_m4_airliftlite)",
-          "run_id": "28872927518",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_IO_Arduino/actions/runs/28872927518/job/85640234273"
-        },
-        {
-          "name": "build (pyportal)",
-          "run_id": "28872927518",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_IO_Arduino/actions/runs/28872927518/job/85640234396"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## What's Changed\n* Update - Remove ESP8266 SSL Fingerprint Comments by @brentru in https://github.com/adafruit/Adafruit_IO_Arduino/pull/183\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_IO_Arduino/compare/4.3.6...4.3.7",
-      "release_status": "released",
-      "release_tag": "4.3.6",
-      "released_tag": "4.3.7",
+      "pushed_at": "2026-07-07T14:12:27Z",
+      "recent_commits": [],
+      "release_notes": null,
+      "release_status": null,
+      "release_tag": "4.3.7",
       "version_files": [
         {
           "line": 30,
@@ -11019,6 +10838,15 @@
       "lib_version": "2.0.2",
       "name": "Adafruit_IS31FL3731",
       "prs": [
+        {
+          "created_at": "2026-05-13T05:56:47Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_IS31FL3731/pull/22",
+          "labels": [],
+          "number": 22,
+          "title": "Add Adafruit_IS31FL3731_Matrix class for independent A/B matrix addressing",
+          "user": "Dav1dyang"
+        },
         {
           "created_at": "2024-09-25T10:03:12Z",
           "draft": false,
@@ -11172,6 +11000,15 @@
       "lib_version": "2.10.0",
       "name": "Adafruit_ImageReader",
       "prs": [
+        {
+          "created_at": "2026-07-07T16:17:51Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_ImageReader/pull/66",
+          "labels": [],
+          "number": 66,
+          "title": "Add - Loading/displaying in-memory BMPs",
+          "user": "brentru"
+        },
         {
           "created_at": "2020-11-03T16:12:49Z",
           "draft": false,
@@ -12349,15 +12186,15 @@
       "example_releases": [
         {
           "body": "Select the zip file corresponding to your board from the list below.",
-          "tag": "20260707"
+          "tag": "20260721"
         },
         {
           "body": "Select the zip file corresponding to your board from the list below.",
-          "tag": "20260706"
+          "tag": "20260720"
         },
         {
           "body": "Select the zip file corresponding to your board from the list below.",
-          "tag": "20260705"
+          "tag": "20260719"
         }
       ],
       "full_name": "adafruit/Adafruit_Learning_System_Guides",
@@ -12495,7 +12332,7 @@
           "user": "dcbriccetti"
         }
       ],
-      "pushed_at": "2026-07-07T11:00:56Z",
+      "pushed_at": "2026-07-21T10:42:22Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -12752,7 +12589,7 @@
       "prs": [],
       "pushed_at": "2016-06-08T19:13:20Z",
       "recent_commits": [],
-      "release_notes": "## Changes since last release\n\n* Changes since last release",
+      "release_notes": null,
       "release_status": null,
       "release_tag": null,
       "version_files": []
@@ -13950,6 +13787,15 @@
       "name": "Adafruit_MPU6050",
       "prs": [
         {
+          "created_at": "2026-04-23T09:18:08Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_MPU6050/pull/48",
+          "labels": [],
+          "number": 48,
+          "title": "Add ability to set custom DEVICE_ID when using knockoff sensors",
+          "user": "ngsenecal"
+        },
+        {
           "created_at": "2024-02-24T13:21:44Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Adafruit_MPU6050/pull/38",
@@ -14027,29 +13873,24 @@
     },
     "Adafruit_MQTT_Library": {
       "arduino_registered": true,
-      "arduino_version": "2.6.5",
+      "arduino_version": "2.6.6",
       "branch_ci_status": null,
-      "bump_justification": "Update SSL fingerprint documentation and improve example code formatting.",
+      "bump_justification": "Fixes, cleanup, or CI-only changes",
       "bump_pr": null,
       "bump_type": "patch",
-      "categories": [
-        "failed_lib_prop",
-        "needs_release"
-      ],
+      "categories": [],
       "ci_only": false,
-      "commits_behind": 4,
-      "compare_files": [
-        {
-          "filename": "examples/adafruitio_secure_esp8266/adafruitio_secure_esp8266.ino",
-          "patch": "@@ -22,56 +22,69 @@\n \n /************************* WiFi Access Point *********************************/\n \n-#define WLAN_SSID       \"WLAN_SSID\"\n-#define WLAN_PASS       \"WIFI_PASSWORD\"\n+#define WLAN_SSID \"WLAN_SSID\"\n+#define WLAN_PASS \"WIFI_PASSWORD\"\n \n /************************* Adafruit.io Setup *********************************/\n \n-#define AIO_SERVER      \"io.adafruit.com\"\n+#define AIO_SERVER \"io.adafruit.com\"\n // Using port 8883 for MQTTS\n-#define AIO_SERVERPORT  8883\n+#define AIO_SERVERPORT 8883\n // Adafruit IO Account Configuration\n-// (to obtain these values, visit https://io.adafruit.com and click on Active Key)\n-#define AIO_USERNAME    \"YOUR_ADAFRUIT_IO_USERNAME\"\n-#define AIO_KEY         \"YOUR_ADAFRUIT_IO_KEY\"\n+// (to obtain these values, visit https://io.adafruit.com and click on A",
-          "status": "modified"
-        }
-      ],
-      "compare_url": "https://github.com/adafruit/Adafruit_MQTT_Library/compare/2.6.5...HEAD",
+      "commits_behind": null,
+      "compare_files": [],
+      "compare_url": null,
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
       "example_releases": [
+        {
+          "body": "## What's Changed\n* Update for SSL Fingerprint Notice by @brentru in https://github.com/adafruit/Adafruit_MQTT_Library/pull/242\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_MQTT_Library/compare/2.6.5...2.6.6",
+          "tag": "2.6.6"
+        },
         {
           "body": "## Changes since 2.6.4\n\n### New Features\n* Add workflow_dispatch event to CI configuration\n* Add skip files for new CI platforms (esp32, qtpy_esp32c3, picow_rp2040)\n\n### Changed\n* Update test platforms in GitHub CI workflow\n* Delete examples/adafruitio_secure_esp32/.picow_rp2040.test.skip\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_MQTT_Library/compare/2.6.4...2.6.5",
           "tag": "2.6.5"
@@ -14057,67 +13898,9 @@
         {
           "body": "## What's Changed\n* docs(ssl): Update TLS/SSL certificate fingerprint instructions by @tyeth in https://github.com/adafruit/Adafruit_MQTT_Library/pull/236\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_MQTT_Library/compare/2.6.3...2.6.4",
           "tag": "2.6.4"
-        },
-        {
-          "body": "## What's Changed\r\n* new example mqtt_airlift_subscribe_time_keepalive.ino by @mikeysklar in https://github.com/adafruit/Adafruit_MQTT_Library/pull/235\r\n\r\n## New Contributors\r\n* @mikeysklar made their first contribution in https://github.com/adafruit/Adafruit_MQTT_Library/pull/235\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_MQTT_Library/compare/2.6.1...2.6.3",
-          "tag": "2.6.3"
         }
       ],
-      "existing_tags": [
-        "2.6.6",
-        "2.6.5",
-        "2.6.4",
-        "2.6.3",
-        "2.6.1",
-        "2.6.0",
-        "2.5.9",
-        "2.5.8",
-        "2.5.7",
-        "2.5.6",
-        "2.5.5",
-        "2.5.4",
-        "2.5.3",
-        "2.5.2",
-        "2.5.1",
-        "2.5.0",
-        "2.4.3",
-        "2.4.2",
-        "2.4.1",
-        "2.4.0",
-        "2.3.0",
-        "2.2.0",
-        "2.1.0",
-        "2.0.0",
-        "1.3.0",
-        "1.1.0",
-        "1.0.3",
-        "1.0.1",
-        "1.0.0",
-        "0.20.4",
-        "0.20.3",
-        "0.20.2",
-        "0.20.1",
-        "0.20.0",
-        "0.17.0",
-        "0.16.2",
-        "0.16.1",
-        "0.16.0",
-        "0.15.0",
-        "0.14.3",
-        "0.14.2",
-        "0.14.1",
-        "0.14.0",
-        "0.13.3",
-        "0.13.2",
-        "0.13.1",
-        "0.13.0",
-        "0.12.3",
-        "0.12.2",
-        "0.12.1"
-      ],
-      "existing_tags_at": 1783433576.6427884,
       "full_name": "adafruit/Adafruit_MQTT_Library",
-      "gh_auto_notes": "## What's Changed\n* Update for SSL Fingerprint Notice by @brentru in https://github.com/adafruit/Adafruit_MQTT_Library/pull/242\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_MQTT_Library/compare/2.6.5...2.6.6",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
@@ -14289,51 +14072,11 @@
           "user": "DirtyJerz"
         }
       ],
-      "pushed_at": "2026-07-02T19:16:14Z",
-      "recent_commits": [
-        {
-          "author": "brentru",
-          "date": "2026-07-02T18:07:59Z",
-          "html_url": "https://github.com/adafruit/Adafruit_MQTT_Library/commit/7daf60f44dc9a556ef1add34f66e4a249f9707d4",
-          "message": "update for fingerprint notice",
-          "sha": "7daf60f"
-        },
-        {
-          "author": "brentru",
-          "date": "2026-07-02T18:09:27Z",
-          "html_url": "https://github.com/adafruit/Adafruit_MQTT_Library/commit/e3269a77bfe0d0b39a5204fa044f81f1e40d3db1",
-          "message": "update lib",
-          "sha": "e3269a7"
-        },
-        {
-          "author": "brentru",
-          "date": "2026-07-02T18:47:56Z",
-          "html_url": "https://github.com/adafruit/Adafruit_MQTT_Library/commit/94b5e5b87c11d62cc4d8904f311852e67e521b9a",
-          "message": "address tyeth review",
-          "sha": "94b5e5b"
-        },
-        {
-          "author": "Brent Rubell",
-          "date": "2026-07-02T19:16:14Z",
-          "html_url": "https://github.com/adafruit/Adafruit_MQTT_Library/commit/38948a92e1ef88a046e872240e04db60e208e645",
-          "message": "Merge pull request #242 from brentru/update/ssl-fingerprint-2026",
-          "sha": "38948a9"
-        }
-      ],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "28872959180",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_MQTT_Library/actions/runs/28872959180/job/85640344982"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## What's Changed\n* Update for SSL Fingerprint Notice by @brentru in https://github.com/adafruit/Adafruit_MQTT_Library/pull/242\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_MQTT_Library/compare/2.6.5...2.6.6",
-      "release_status": "released",
-      "release_tag": "2.6.5",
-      "released_tag": "2.6.6",
+      "pushed_at": "2026-07-07T14:12:55Z",
+      "recent_commits": [],
+      "release_notes": null,
+      "release_status": null,
+      "release_tag": "2.6.6",
       "version_files": []
     },
     "Adafruit_MS8607": {
@@ -14925,30 +14668,9 @@
     "Adafruit_NeoPixel": {
       "arduino_registered": true,
       "arduino_version": "1.15.5",
-      "branch_ci_status": "pass",
+      "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": {
-        "actions_need_approval": false,
-        "checks": [
-          {
-            "name": "build",
-            "run_id": "25733189343",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_NeoPixel/actions/runs/25733189343/job/75563305116"
-          }
-        ],
-        "ci_status": "pass",
-        "files_changed": [
-          "library.properties"
-        ],
-        "merged_at": "2026-05-12T12:03:37Z",
-        "new_version": "1.15.5",
-        "number": "460",
-        "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit_NeoPixel/pull/460"
-      },
+      "bump_pr": null,
       "bump_type": "patch",
       "categories": [],
       "ci_only": false,
@@ -14981,6 +14703,33 @@
       "lib_version": "1.15.5",
       "name": "Adafruit_NeoPixel",
       "prs": [
+        {
+          "created_at": "2026-07-11T08:43:36Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_NeoPixel/pull/463",
+          "labels": [],
+          "number": 463,
+          "title": "fix: match espShow's pin parameter type across translation units",
+          "user": "94xhn"
+        },
+        {
+          "created_at": "2026-07-09T12:33:54Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_NeoPixel/pull/462",
+          "labels": [],
+          "number": 462,
+          "title": "Fix getPixelColor() rounding when reversing brightness scaling",
+          "user": "Harry2907"
+        },
+        {
+          "created_at": "2026-07-07T12:54:59Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_NeoPixel/pull/461",
+          "labels": [],
+          "number": 461,
+          "title": "Add SPI-based WS2812 driver for ESP32-C2/ESP8684 (no RMT)",
+          "user": "Harry2907"
+        },
         {
           "created_at": "2026-02-10T17:22:03Z",
           "draft": false,
@@ -15133,51 +14882,13 @@
           "number": 205,
           "title": "Initial Apollo3 Implementation",
           "user": "csonsino"
-        },
-        {
-          "created_at": "2018-05-29T18:33:29Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_NeoPixel/pull/166",
-          "labels": [],
-          "number": 166,
-          "title": "Added user-friendly support for commonly used colors",
-          "user": "patrick9958"
-        },
-        {
-          "created_at": "2016-12-21T22:42:03Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_NeoPixel/pull/121",
-          "labels": [],
-          "number": 121,
-          "title": "Fixed overflow issue with getPixelColor",
-          "user": "dmadison"
-        },
-        {
-          "created_at": "2016-08-15T21:24:24Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_NeoPixel/pull/111",
-          "labels": [],
-          "number": 111,
-          "title": "allow to specify the framebuffer from the outside.",
-          "user": "simon-budig"
         }
       ],
       "pushed_at": "2026-05-12T13:21:31Z",
       "recent_commits": [],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "25737235232",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_NeoPixel/actions/runs/25737235232/job/75577406317"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## What's Changed\n* boards: support Zephyr-based STM32 boards by @facchinm in https://github.com/adafruit/Adafruit_NeoPixel/pull/458\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_NeoPixel/compare/1.15.4...1.15.5",
-      "release_status": "released",
+      "release_notes": null,
+      "release_status": null,
       "release_tag": "1.15.5",
-      "released_tag": "1.15.5",
       "version_files": []
     },
     "Adafruit_NeoPixel_ZeroDMA": {
@@ -15217,7 +14928,17 @@
       "lib_name": "Adafruit DMA neopixel library",
       "lib_version": "1.3.3",
       "name": "Adafruit_NeoPixel_ZeroDMA",
-      "prs": [],
+      "prs": [
+        {
+          "created_at": "2026-04-13T00:18:35Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_NeoPixel_ZeroDMA/pull/29",
+          "labels": [],
+          "number": 29,
+          "title": "Generalize and Extend SAMD/E support",
+          "user": "crabel99"
+        }
+      ],
       "pushed_at": "2024-04-23T23:11:36Z",
       "recent_commits": [],
       "release_notes": null,
@@ -16000,7 +15721,7 @@
       "prs": [],
       "pushed_at": "2016-05-27T20:46:12Z",
       "recent_commits": [],
-      "release_notes": "## Changes since last release\n\n* Changes since last release",
+      "release_notes": null,
       "release_status": null,
       "release_tag": null,
       "version_files": []
@@ -16344,14 +16065,28 @@
       "arduino_registered": true,
       "arduino_version": "2.1.14",
       "branch_ci_status": null,
-      "bump_justification": "Fixes, cleanup, or CI-only changes",
+      "bump_justification": "Bug fix: GrayOLED initialization failures are now properly propagated from the `begin()` method instead of being silently ignored, improving error handling reliability.",
       "bump_pr": null,
       "bump_type": "patch",
-      "categories": [],
+      "categories": [
+        "failed_lib_prop",
+        "needs_release"
+      ],
       "ci_only": false,
-      "commits_behind": null,
-      "compare_files": [],
-      "compare_url": null,
+      "commits_behind": 3,
+      "compare_files": [
+        {
+          "filename": "Adafruit_SH1106G.cpp",
+          "patch": "@@ -134,7 +134,9 @@ Adafruit_SH1106G::~Adafruit_SH1106G(void) {}\n */\n bool Adafruit_SH1106G::begin(uint8_t addr, bool reset) {\n \n-  Adafruit_GrayOLED::_init(addr, reset);\n+  if (!Adafruit_GrayOLED::_init(addr, reset)) {\n+    return false;\n+  }\n \n   _page_start_offset =\n       2; // the SH1106 display we have found requires a small offset into memory",
+          "status": "modified"
+        },
+        {
+          "filename": "Adafruit_SH1107.cpp",
+          "patch": "@@ -134,7 +134,9 @@ Adafruit_SH1107::~Adafruit_SH1107(void) {}\n */\n bool Adafruit_SH1107::begin(uint8_t addr, bool reset) {\n \n-  Adafruit_GrayOLED::_init(addr, reset);\n+  if (!Adafruit_GrayOLED::_init(addr, reset)) {\n+    return false;\n+  }\n \n   setContrast(0x2F);\n ",
+          "status": "modified"
+        }
+      ],
+      "compare_url": "https://github.com/adafruit/Adafruit_SH110x/compare/2.1.14...HEAD",
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
@@ -16369,13 +16104,36 @@
           "tag": "2.1.12"
         }
       ],
+      "existing_tags": [
+        "2.1.14",
+        "2.1.13",
+        "2.1.12",
+        "2.1.11",
+        "2.1.10",
+        "2.1.9",
+        "2.1.8",
+        "2.1.7",
+        "2.1.6",
+        "2.1.5",
+        "2.1.4",
+        "2.1.3",
+        "2.1.2",
+        "2.1.1",
+        "2.1.0",
+        "2.0.0",
+        "1.2.1",
+        "1.2.0",
+        "1.0.0"
+      ],
+      "existing_tags_at": 1784671377.195616,
       "full_name": "adafruit/Adafruit_SH110x",
+      "gh_auto_notes": "## What's Changed\n* Propagate GrayOLED initialization failures from begin by @94xhn in https://github.com/adafruit/Adafruit_SH110x/pull/32\n\n## New Contributors\n* @94xhn made their first contribution in https://github.com/adafruit/Adafruit_SH110x/pull/32\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_SH110x/compare/2.1.14...2.1.15",
       "has_actions": true,
       "has_examples": true,
       "has_lib_props": true,
       "html_url": "https://github.com/adafruit/Adafruit_SH110x",
       "lib_name": "Adafruit SH110X",
-      "lib_version": "2.1.14",
+      "lib_version": "2.1.15",
       "name": "Adafruit_SH110x",
       "prs": [
         {
@@ -16397,9 +16155,31 @@
           "user": "MrDoctorASAP"
         }
       ],
-      "pushed_at": "2025-09-03T09:11:56Z",
-      "recent_commits": [],
-      "release_notes": null,
+      "pushed_at": "2026-07-16T16:49:46Z",
+      "recent_commits": [
+        {
+          "author": "94xhn",
+          "date": "2026-07-16T04:28:38Z",
+          "html_url": "https://github.com/adafruit/Adafruit_SH110x/commit/958a7a09531f2c1279e8ea6c094851a903da3dd6",
+          "message": "Return begin failures before display setup",
+          "sha": "958a7a0"
+        },
+        {
+          "author": "94xhn",
+          "date": "2026-07-16T16:20:05Z",
+          "html_url": "https://github.com/adafruit/Adafruit_SH110x/commit/a098a64adad515c85cb74ff42712278b5c2e0310",
+          "message": "Prepare the approved fix for release",
+          "sha": "a098a64"
+        },
+        {
+          "author": "Brent Rubell",
+          "date": "2026-07-16T16:49:46Z",
+          "html_url": "https://github.com/adafruit/Adafruit_SH110x/commit/f29762e0c2de7d31364acb427b3b69efc7b8913e",
+          "message": "Merge pull request #32 from 94xhn/fix/begin-init-failure",
+          "sha": "f29762e"
+        }
+      ],
+      "release_notes": "## What's Changed\n* Propagate GrayOLED initialization failures from begin by @94xhn in https://github.com/adafruit/Adafruit_SH110x/pull/32\n\n## New Contributors\n* @94xhn made their first contribution in https://github.com/adafruit/Adafruit_SH110x/pull/32\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_SH110x/compare/2.1.14...2.1.15",
       "release_status": null,
       "release_tag": "2.1.14",
       "version_files": []
@@ -16936,30 +16716,9 @@
     "Adafruit_SSD1306": {
       "arduino_registered": true,
       "arduino_version": "2.5.17",
-      "branch_ci_status": "pass",
+      "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": {
-        "actions_need_approval": false,
-        "checks": [
-          {
-            "name": "build",
-            "run_id": "26637269671",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_SSD1306/actions/runs/26637269671/job/78500664618"
-          }
-        ],
-        "ci_status": "pass",
-        "files_changed": [
-          "library.properties"
-        ],
-        "merged_at": "2026-05-29T12:29:23Z",
-        "new_version": "2.5.17",
-        "number": "304",
-        "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit_SSD1306/pull/304"
-      },
+      "bump_pr": null,
       "bump_type": "patch",
       "categories": [],
       "ci_only": false,
@@ -16992,6 +16751,15 @@
       "lib_version": "2.5.17",
       "name": "Adafruit_SSD1306",
       "prs": [
+        {
+          "created_at": "2026-07-11T10:24:50Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_SSD1306/pull/305",
+          "labels": [],
+          "number": 305,
+          "title": "Fix invalid hardcoded page-end address in display()",
+          "user": "94xhn"
+        },
         {
           "created_at": "2026-05-21T05:35:09Z",
           "draft": false,
@@ -17162,33 +16930,13 @@
           "number": 87,
           "title": "Extracting HW specific code to a driver class",
           "user": "grafalex82"
-        },
-        {
-          "created_at": "2016-05-02T02:58:11Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_SSD1306/pull/64",
-          "labels": [],
-          "number": 64,
-          "title": "Added scrolling capability",
-          "user": "agprimatic"
         }
       ],
       "pushed_at": "2026-05-29T12:51:49Z",
       "recent_commits": [],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "26638309627",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_SSD1306/actions/runs/26638309627/job/78504159052"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## What's Changed\n* Add Wire.setWireTimeout to avoid I2C bus hangs (closes #288) by @adityachilka1 in https://github.com/adafruit/Adafruit_SSD1306/pull/303\n\n## New Contributors\n* @adityachilka1 made their first contribution in https://github.com/adafruit/Adafruit_SSD1306/pull/303\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_SSD1306/compare/2.5.17...2.5.17",
-      "release_status": "released",
+      "release_notes": null,
+      "release_status": null,
       "release_tag": "2.5.17",
-      "released_tag": "2.5.17",
       "version_files": []
     },
     "Adafruit_SSD1325_Library": {
@@ -17471,7 +17219,17 @@
       "lib_name": "Adafruit STSPIN",
       "lib_version": "1.0.1",
       "name": "Adafruit_STSPIN",
-      "prs": [],
+      "prs": [
+        {
+          "created_at": "2026-06-25T18:17:15Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_STSPIN/pull/1",
+          "labels": [],
+          "number": 1,
+          "title": "Update Adafruit STSPIN220 product link in README",
+          "user": "DLAB-ian"
+        }
+      ],
       "pushed_at": "2025-05-28T14:36:50Z",
       "recent_commits": [],
       "release_notes": null,
@@ -17888,27 +17646,9 @@
       ],
       "pushed_at": "2026-06-30T13:47:15Z",
       "recent_commits": [],
-      "release_ci_checks": [
-        {
-          "name": "clang-format",
-          "run_id": "28449235183",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_Si5351_Library/actions/runs/28449235183/job/84306648067"
-        },
-        {
-          "name": "build",
-          "run_id": "28449235183",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_Si5351_Library/actions/runs/28449235183/job/84306684729"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## Changes since 1.4.3\n\n### New Features\n* Add RP2040 (arduino-pico) pgmspace compatibility\n* Add 8-channel (CLK0..CLK7) support for SI5351C-B\n* eightoutput example: add per-output Serial prints, delay(10) in error trap\n* Add setFrequency() helper to auto-compute dividers from a target frequency\n* Add Doxygen docs for setupRdiv() and writeN()\n* Add device status / interrupt register API (reg 0/1/2)\n* Add setupPLLSource() API for reg 15 (PLL input source / CLKIN divider)\n\n### Bug Fixes\n* Fix >150 MHz output: set MSx_DIVBY4 bits for div==4 (#18)\n\n### Changed\n* Use Adafruit_BusIO RegisterBits for register-bitfield writes\n* Collapse setupMultisynth6/7 into setupMultisynthInteger(output, ...)\n* Merge setupMultisynthInt: handle CLK6/7 integer-only path internally\n* DIVBY4: reject fractional div==4 (integer-only mode)\n* Move setFrequency() Doxygen out of header (inline //!< style)\n* Apply clang-format to setupPLLSource() (Google style, 80col)\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Si5351_Library/compare/1.5.0...1.5.1",
-      "release_status": "released",
+      "release_notes": null,
+      "release_status": null,
       "release_tag": "1.5.0",
-      "released_tag": "1.5.0",
       "version_files": []
     },
     "Adafruit_Si7021": {
@@ -17959,37 +17699,9 @@
     "Adafruit_SleepyDog": {
       "arduino_registered": true,
       "arduino_version": "1.8.4",
-      "branch_ci_status": "pass",
+      "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": {
-        "actions_need_approval": false,
-        "checks": [
-          {
-            "name": "build",
-            "run_id": "23654015485",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_SleepyDog/actions/runs/23654015485/job/68906204406"
-          },
-          {
-            "name": "build",
-            "run_id": "23626125898",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_SleepyDog/actions/runs/23626125898/job/68815623686"
-          }
-        ],
-        "ci_status": "pass",
-        "files_changed": [
-          "library.properties"
-        ],
-        "merged_at": "2026-03-27T01:11:16Z",
-        "new_version": "1.8.3",
-        "number": "70",
-        "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit_SleepyDog/pull/70"
-      },
+      "bump_pr": null,
       "bump_type": "patch",
       "categories": [],
       "ci_only": false,
@@ -18061,20 +17773,9 @@
       ],
       "pushed_at": "2026-03-27T15:30:22Z",
       "recent_commits": [],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "23626342463",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_SleepyDog/actions/runs/23626342463/job/68816257283"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## What's Changed\n* Add Windows USB re-enumeration fix for SleepRP2350Timer with USB unplug note after upload by @mikeysklar in https://github.com/adafruit/Adafruit_SleepyDog/pull/65\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_SleepyDog/compare/1.8.2...1.8.3",
-      "release_status": "released",
+      "release_notes": null,
+      "release_status": null,
       "release_tag": "1.8.4",
-      "released_tag": "1.8.3",
       "version_files": []
     },
     "Adafruit_SoftServo": {
@@ -18727,7 +18428,7 @@
       "prs": [],
       "pushed_at": "2026-02-28T00:29:23Z",
       "recent_commits": [],
-      "release_notes": "## Changes since last release\n\n* Changes since last release",
+      "release_notes": null,
       "release_status": null,
       "release_tag": null,
       "version_files": []
@@ -19125,7 +18826,17 @@
       "lib_name": "Adafruit TestBed",
       "lib_version": "1.14.2",
       "name": "Adafruit_TestBed",
-      "prs": [],
+      "prs": [
+        {
+          "created_at": "2026-05-31T23:34:28Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_TestBed/pull/30",
+          "labels": [],
+          "number": 30,
+          "title": "Philhower's platform_def defines PICO_RP2040 and PICO_RP2350",
+          "user": "markwal"
+        }
+      ],
       "pushed_at": "2025-08-05T12:34:23Z",
       "recent_commits": [],
       "release_notes": null,
@@ -19271,219 +18982,9 @@
     "Adafruit_TinyUSB_Arduino": {
       "arduino_registered": true,
       "arduino_version": "3.7.7",
-      "branch_ci_status": "pass",
+      "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": {
-        "actions_need_approval": false,
-        "checks": [
-          {
-            "name": "pre-commit",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590448223"
-          },
-          {
-            "name": "build (feather_esp32s3)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486112"
-          },
-          {
-            "name": "build (feather_rp2040_tinyusb)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486117"
-          },
-          {
-            "name": "build (feather_esp32_v2)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486122"
-          },
-          {
-            "name": "build (esp32p4)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486124"
-          },
-          {
-            "name": "build (metro_m0_tinyusb)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486126"
-          },
-          {
-            "name": "build (nrf52840)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486127"
-          },
-          {
-            "name": "build (feather_esp32s2)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486130"
-          },
-          {
-            "name": "build (cpb)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486132"
-          },
-          {
-            "name": "build (pico_rp2040_tinyusb_host)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486138"
-          },
-          {
-            "name": "build (metro_m4_tinyusb)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486148"
-          },
-          {
-            "name": "build (CH32V20x_EVT)",
-            "run_id": "27911937413",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/27911937413/job/82590486150"
-          },
-          {
-            "name": "copilot-pull-request-reviewer",
-            "run_id": "26506527240",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/26506527240/job/78060229775"
-          },
-          {
-            "name": "pre-commit",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573208360"
-          },
-          {
-            "name": "build (nrf52840)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305679"
-          },
-          {
-            "name": "build (cpb)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305683"
-          },
-          {
-            "name": "build (feather_esp32s2)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305689"
-          },
-          {
-            "name": "build (pico_rp2040_tinyusb_host)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305743"
-          },
-          {
-            "name": "build (CH32V20x_EVT)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305770"
-          },
-          {
-            "name": "build (feather_esp32_v2)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305773"
-          },
-          {
-            "name": "build (metro_m0_tinyusb)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305778"
-          },
-          {
-            "name": "build (feather_esp32s3)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305781"
-          },
-          {
-            "name": "build (metro_m4_tinyusb)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305787"
-          },
-          {
-            "name": "build (feather_rp2040_tinyusb)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305788"
-          },
-          {
-            "name": "build (esp32p4)",
-            "run_id": "25736036727",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736036727/job/75573305804"
-          },
-          {
-            "name": "build",
-            "run_id": "25736034983",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736034983/job/75573208556"
-          },
-          {
-            "name": "report-build-status",
-            "run_id": "25736034983",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736034983/job/75573374849"
-          },
-          {
-            "name": "deploy",
-            "run_id": "25736034983",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25736034983/job/75573374895"
-          }
-        ],
-        "ci_status": "pass",
-        "files_changed": [
-          "library.properties"
-        ],
-        "merged_at": "2026-05-12T12:59:45Z",
-        "new_version": "3.7.7",
-        "number": "579",
-        "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/579"
-      },
+      "bump_pr": null,
       "bump_type": "patch",
       "categories": [],
       "ci_only": false,
@@ -19517,6 +19018,60 @@
       "name": "Adafruit_TinyUSB_Arduino",
       "prs": [
         {
+          "created_at": "2026-07-08T09:05:34Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/587",
+          "labels": [],
+          "number": 587,
+          "title": "Support for STM32F4xx, STM32F7xx, STM32H7xx, STM32WBxx",
+          "user": "pschatzmann"
+        },
+        {
+          "created_at": "2026-07-06T21:49:39Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/586",
+          "labels": [],
+          "number": 586,
+          "title": "Fix uninitialized value warnings in CDC",
+          "user": "earlephilhower"
+        },
+        {
+          "created_at": "2026-06-22T15:53:15Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/585",
+          "labels": [],
+          "number": 585,
+          "title": "SAME5x support",
+          "user": "crabel99"
+        },
+        {
+          "created_at": "2026-06-21T17:56:30Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/584",
+          "labels": [],
+          "number": 584,
+          "title": "Increase size of desc_str for USBD_Device",
+          "user": "FromDarkHell"
+        },
+        {
+          "created_at": "2026-06-21T17:31:11Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/583",
+          "labels": [],
+          "number": 583,
+          "title": "Add configurable CFG_TUD_ENDPOINT0_SIZE and CFG_TUD_HID_EP_BUFSIZE",
+          "user": "FromDarkHell"
+        },
+        {
+          "created_at": "2026-05-26T19:55:12Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/580",
+          "labels": [],
+          "number": 580,
+          "title": "Respect user-defined CDC string descriptor",
+          "user": "verylowfreq"
+        },
+        {
           "created_at": "2026-02-26T03:26:19Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/569",
@@ -19546,97 +19101,9 @@
       ],
       "pushed_at": "2026-05-12T13:21:32Z",
       "recent_commits": [],
-      "release_ci_checks": [
-        {
-          "name": "pre-commit",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577414562"
-        },
-        {
-          "name": "build (nrf52840)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525629"
-        },
-        {
-          "name": "build (esp32p4)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525712"
-        },
-        {
-          "name": "build (feather_esp32s3)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525746"
-        },
-        {
-          "name": "build (pico_rp2040_tinyusb_host)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525786"
-        },
-        {
-          "name": "build (feather_esp32_v2)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525793"
-        },
-        {
-          "name": "build (CH32V20x_EVT)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525807"
-        },
-        {
-          "name": "build (metro_m4_tinyusb)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525820"
-        },
-        {
-          "name": "build (feather_rp2040_tinyusb)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525831"
-        },
-        {
-          "name": "build (cpb)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525839"
-        },
-        {
-          "name": "build (metro_m0_tinyusb)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525893"
-        },
-        {
-          "name": "build (feather_esp32s2)",
-          "run_id": "25737237312",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_TinyUSB_Arduino/actions/runs/25737237312/job/75577525894"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## What's Changed\n* Fix tusb_init() warnings and add AGENTS.md project documentation by @hathach in https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/577\n* Update TinyUSB core to commit dcd2a4b by @hathach in https://github.com/adafruit/Adafruit_TinyUSB_Arduino/pull/578\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_TinyUSB_Arduino/compare/3.7.6...3.7.7",
-      "release_status": "released",
+      "release_notes": null,
+      "release_status": null,
       "release_tag": "3.7.7",
-      "released_tag": "3.7.7",
       "version_files": [
         {
           "line": 11,
@@ -20416,30 +19883,9 @@
     "Adafruit_VL53L5": {
       "arduino_registered": true,
       "arduino_version": "1.0.1",
-      "branch_ci_status": "pass",
+      "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": {
-        "actions_need_approval": false,
-        "checks": [
-          {
-            "name": "build",
-            "run_id": "24214323603",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_VL53L5/actions/runs/24214323603/job/70690997122"
-          }
-        ],
-        "ci_status": "pass",
-        "files_changed": [
-          "library.properties"
-        ],
-        "merged_at": "2026-04-09T21:30:27Z",
-        "new_version": "1.0.1",
-        "number": "5",
-        "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit_VL53L5/pull/5"
-      },
+      "bump_pr": null,
       "bump_type": "patch",
       "categories": [],
       "ci_only": false,
@@ -20470,20 +19916,9 @@
       "prs": [],
       "pushed_at": "2026-04-09T22:24:10Z",
       "recent_commits": [],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "24216300939",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_VL53L5/actions/runs/24216300939/job/70697550257"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "## Changes since 1.0.0\n\n* Changes since 1.0.0\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_VL53L5/compare/1.0.0...1.0.1",
-      "release_status": "released",
+      "release_notes": null,
+      "release_status": null,
       "release_tag": "1.0.1",
-      "released_tag": "1.0.1",
       "version_files": []
     },
     "Adafruit_VL53L5CX_NoST": {
@@ -20516,7 +19951,7 @@
       "prs": [],
       "pushed_at": "2026-03-17T20:48:43Z",
       "recent_commits": [],
-      "release_notes": "## Changes since last release\n\n* Changes since last release",
+      "release_notes": null,
       "release_status": null,
       "release_tag": null,
       "version_files": []
@@ -20793,30 +20228,9 @@
     "Adafruit_WF100DPZ": {
       "arduino_registered": true,
       "arduino_version": "1.0.2",
-      "branch_ci_status": "pass",
+      "branch_ci_status": null,
       "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": {
-        "actions_need_approval": false,
-        "checks": [
-          {
-            "name": "build",
-            "run_id": "23809907786",
-            "run_label": "merge CI",
-            "state": "SUCCESS",
-            "url": "https://github.com/adafruit/Adafruit_WF100DPZ/actions/runs/23809907786/job/69393748986"
-          }
-        ],
-        "ci_status": "pass",
-        "files_changed": [
-          "library.properties"
-        ],
-        "merged_at": "2026-03-31T17:08:47Z",
-        "new_version": "1.0.2",
-        "number": "4",
-        "pending_approval_run_ids": [],
-        "state": "merged",
-        "url": "https://github.com/adafruit/Adafruit_WF100DPZ/pull/4"
-      },
+      "bump_pr": null,
       "bump_type": "patch",
       "categories": [],
       "ci_only": false,
@@ -20851,20 +20265,9 @@
       "prs": [],
       "pushed_at": "2026-03-31T17:25:04Z",
       "recent_commits": [],
-      "release_ci_checks": [
-        {
-          "name": "build",
-          "run_id": "23810585906",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_WF100DPZ/actions/runs/23810585906/job/69396183534"
-        }
-      ],
-      "release_ci_status": "pass",
-      "release_notes": "Add support for 40 kPa gauge variant with new TFT demo and diagnostic examples.\n\n## Features\n- Support for 40 kPa variant (Part ID 0x51) alongside existing 200 kPa sensor by @ladyada-piclaw (#3)\n- New TFT demo for ESP32-S2 TFT Feather with color-coded pressure display by @clawpi ([`83a6622`](https://github.com/adafruit/Adafruit_WF100DPZ/commit/83a6622c1fe33d4b7ed2157743e6655249a8868e))\n- New diagnostic pressure test example\n\n## Updates\n- Enhanced fulltest and simpletest examples to display detected variant type\n- Clarified I2C bus documentation in DESIGN.md\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_WF100DPZ/compare/1.0.1...1.0.2",
-      "release_status": "released",
+      "release_notes": null,
+      "release_status": null,
       "release_tag": "1.0.2",
-      "released_tag": "1.0.2",
       "version_files": []
     },
     "Adafruit_WavePlayer": {
@@ -21135,7 +20538,7 @@
       "prs": [],
       "pushed_at": "2021-10-18T13:39:23Z",
       "recent_commits": [],
-      "release_notes": "## Changes since last release\n\n* Changes since last release",
+      "release_notes": null,
       "release_status": null,
       "release_tag": null,
       "version_files": []
@@ -21144,33 +20547,24 @@
       "arduino_registered": true,
       "arduino_version": "1.0.0",
       "branch_ci_status": null,
-      "bump_justification": "Prerelease bump including ESP32 BSP upgrade to 3.3.10 and removal of deprecated SSL fingerprint comments for ESP8266 Secure MQTT.",
+      "bump_justification": "Continuing prerelease cycle",
       "bump_pr": null,
       "bump_type": "prerelease",
       "categories": [
-        "failed_lib_prop",
-        "needs_release",
         "missing_actions"
       ],
       "ci_only": false,
-      "commits_behind": 5,
-      "compare_files": [
-        {
-          "filename": "src/Wippersnapper.h",
-          "patch": "@@ -167,7 +167,7 @@\n #endif\r\n \r\n #define WS_VERSION                                                             \\\r\n-  \"1.0.0-beta.130\" ///< WipperSnapper app. version (semver-formatted)\r\n+  \"1.0.0-beta.131\" ///< WipperSnapper app. version (semver-formatted)\r\n \r\n // Reserved Adafruit IO MQTT topics\r\n #define TOPIC_IO_THROTTLE \"/throttle\" ///< Adafruit IO Throttle MQTT Topic\r",
-          "status": "modified"
-        },
-        {
-          "filename": "src/network_interfaces/Wippersnapper_ESP8266.h",
-          "patch": "@@ -24,20 +24,13 @@\n #include \"ESP8266WiFiMulti.h\"\n #include \"Wippersnapper.h\"\n \n-/* NOTE - Projects that require \"Secure MQTT\" (TLS/SSL) also require a new\n- * SSL certificate every year. If adding Secure MQTT to your ESP8266 project is\n- * important  - please switch to using the modern ESP32 (and related models)\n- * instead of the ESP8266 to avoid updating the SSL fingerprint every year.\n- *\n- * The commented-out fingerprint below was last updated on 07/14/2025.\n- *\n- * If you've read through this and still want to use \"Secure MQTT\" with your\n- * ESP8266 project, we've left the \"WiFiClientSecure\" lines commented out. To\n- * use them, uncomment the commented out lines within this file and re-compile\n- * the library.\n+/* NOTE - As of 07/21/26, this library no longer supports \"Secure MQTT\"\n",
-          "status": "modified"
-        }
-      ],
-      "compare_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.130...HEAD",
+      "commits_behind": null,
+      "compare_files": [],
+      "compare_url": null,
       "default_branch": "main",
       "details_loaded": true,
       "error": null,
       "example_releases": [
+        {
+          "body": "## Installing WipperSnapper\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\n\n## Upgrade a device running WipperSnapper\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\n\n## What's Changed\n* Bump version to v1.0.0-beta.131 (ESP32 BSP upgrade to 3.3.10) by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/934\n* Update - Remove SSL Fingerprint Comments for ESP8266 by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/945\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.130...1.0.0-beta.131",
+          "tag": "1.0.0-beta.131"
+        },
         {
           "body": "## Installing WipperSnapper\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\n\n## Upgrade a device running WipperSnapper\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\n\n## What's Changed\n* fix(pixels): Initialise all members of strands array by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/927\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.129...1.0.0-beta.130",
           "tag": "1.0.0-beta.130"
@@ -21178,67 +20572,9 @@
         {
           "body": "## Installing WipperSnapper\r\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\r\n\r\n## Upgrade a device running WipperSnapper\r\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\r\n\r\n## What's Changed\r\n* CI: Move \"Doxygen and Clang\" step by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/923\r\n* Disambiguate WipperSnapper and AirLift firmware versions in bootlog.txt by @tyeth/@Copilot in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/846\r\n\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.128...1.0.0-beta.129",
           "tag": "1.0.0-beta.129"
-        },
-        {
-          "body": "## Installing WipperSnapper\r\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\r\n\r\n## Upgrade a device running WipperSnapper\r\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\r\n\r\n## What's Changed\r\n* Add Lux sensor type implementation, migrate MAX44009 + VEML7700 drivers by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/915\r\n\r\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.127...1.0.0-beta.128",
-          "tag": "1.0.0-beta.128"
         }
       ],
-      "existing_tags": [
-        "1.0.0-beta.131",
-        "1.0.0-beta.130",
-        "1.0.0-beta.129",
-        "1.0.0-beta.128",
-        "1.0.0-beta.127",
-        "1.0.0-beta.126",
-        "1.0.0-beta.125",
-        "1.0.0-beta.124",
-        "1.0.0-beta.123",
-        "1.0.0-beta.122",
-        "1.0.0-beta.121",
-        "1.0.0-beta.120",
-        "1.0.0-beta.119",
-        "1.0.0-beta.118",
-        "1.0.0-beta.117",
-        "1.0.0-beta.116",
-        "1.0.0-offline-beta.5",
-        "1.0.0-beta.115",
-        "1.0.0-beta.114",
-        "1.0.0-beta.113",
-        "1.0.0-beta.112",
-        "1.0.0-beta.111",
-        "1.0.0-offline-beta.4",
-        "1.0.0-beta.110",
-        "1.0.0-beta.109",
-        "1.0.0-beta.108",
-        "1.0.0-beta.107",
-        "1.0.0-beta.106",
-        "1.0.0-beta.105",
-        "1.0.0-beta.104",
-        "1.0.0-beta.103",
-        "1.0.0-beta.102",
-        "1.0.0-beta.101",
-        "1.0.0-offline-beta.3",
-        "1.0.0-offline-beta.2",
-        "1.0.0-beta.100",
-        "1.0.0-beta.99",
-        "1.0.0-beta.98",
-        "1.0.0-offline-beta.1",
-        "1.0.0-beta.97",
-        "1.0.0-beta.96",
-        "1.0.0-beta.95",
-        "1.0.0-beta.94",
-        "1.0.0-beta.93",
-        "1.0.0-beta.92",
-        "1.0.0-beta.91",
-        "1.0.0-beta.90",
-        "1.0.0-beta.89",
-        "1.0.0-alpha.89",
-        "1.0.0-beta.88"
-      ],
-      "existing_tags_at": 1783450559.2235007,
       "full_name": "adafruit/Adafruit_Wippersnapper_Arduino",
-      "gh_auto_notes": "## What's Changed\n* Bump version to v1.0.0-beta.131 (ESP32 BSP upgrade to 3.3.10) by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/934\n* Update - Remove SSL Fingerprint Comments for ESP8266 by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/945\n\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.130...1.0.0-beta.131",
       "has_actions": false,
       "has_examples": true,
       "has_lib_props": true,
@@ -21247,6 +20583,42 @@
       "lib_version": "1.0.0-beta.131",
       "name": "Adafruit_Wippersnapper_Arduino",
       "prs": [
+        {
+          "created_at": "2026-07-21T15:29:36Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/954",
+          "labels": [],
+          "number": 954,
+          "title": "fix: memset nanopb message re-inits instead of init_zero assignment (ESP8266 GCC)",
+          "user": "tyeth"
+        },
+        {
+          "created_at": "2026-07-17T20:00:59Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/953",
+          "labels": [],
+          "number": 953,
+          "title": "api-v2: pin-name review fixes + expander pin resolution utility (#943 follow-up)",
+          "user": "tyeth"
+        },
+        {
+          "created_at": "2026-07-14T15:55:24Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/949",
+          "labels": [],
+          "number": 949,
+          "title": "add(board): LilyGO T-Dongle C5 (ESP32-C5) + ST7735 display driver",
+          "user": "tyeth"
+        },
+        {
+          "created_at": "2026-07-10T14:05:29Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/946",
+          "labels": [],
+          "number": 946,
+          "title": "feat(telemetry): RSSI + boot reason telemetry components",
+          "user": "tyeth"
+        },
         {
           "created_at": "2026-07-02T11:55:14Z",
           "draft": false,
@@ -21390,411 +20762,13 @@
           "number": 868,
           "title": "fix(demo): switch adapter based on defines, add PICO_CYW43_SUPPORTED",
           "user": "tyeth"
-        },
-        {
-          "created_at": "2026-02-11T19:14:26Z",
-          "draft": true,
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/866",
-          "labels": [],
-          "number": 866,
-          "title": "Offline-mode-ens161",
-          "user": "tyeth"
-        },
-        {
-          "created_at": "2026-01-28T19:08:20Z",
-          "draft": true,
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/864",
-          "labels": [],
-          "number": 864,
-          "title": "Waveshare p4 wifi6 stick",
-          "user": "tyeth"
-        },
-        {
-          "created_at": "2025-12-19T14:19:59Z",
-          "draft": true,
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/853",
-          "labels": [],
-          "number": 853,
-          "title": "Add uc8253 plus uc8179 uc8151 ssd1683",
-          "user": "tyeth"
-        },
-        {
-          "created_at": "2025-12-17T01:08:57Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/851",
-          "labels": [],
-          "number": 851,
-          "title": "Add uc8253 3.7\" mono ",
-          "user": "tyeth"
         }
       ],
-      "pushed_at": "2026-07-03T17:01:40Z",
-      "recent_commits": [
-        {
-          "author": "Tyeth Gundry",
-          "date": "2026-06-19T17:50:28Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/cf2723d5d0ae5f1d7db58604779a34d0eef41040",
-          "message": "Bump version to 1.0.0-beta.131",
-          "sha": "cf2723d"
-        },
-        {
-          "author": "Tyeth Gundry",
-          "date": "2026-06-19T17:50:56Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/a0f4def153c4b4e3a537611db7568a40a8bc4b03",
-          "message": "Update Wippersnapper.h documentation and code",
-          "sha": "a0f4def"
-        },
-        {
-          "author": "Tyeth Gundry",
-          "date": "2026-06-19T18:18:00Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/c4b9dd68d63492e21ecd24551b06a771036fa4fe",
-          "message": "Merge pull request #934 from adafruit/bump131",
-          "sha": "c4b9dd6"
-        },
-        {
-          "author": "brentru",
-          "date": "2026-07-02T18:28:50Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/45ada256bf697226b7825ddf668e4317fc0cc2cb",
-          "message": "update esp8266 net iface",
-          "sha": "45ada25"
-        },
-        {
-          "author": "Brent Rubell",
-          "date": "2026-07-02T19:17:10Z",
-          "html_url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/commit/63223a42a508e9d7db96490c2f0f545cd77125a9",
-          "message": "Merge pull request #945 from adafruit/update/2026-ssl-update",
-          "sha": "63223a4"
-        }
-      ],
-      "release_ci_checks": [
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fSAMD (pyportal_titano_tinyusb)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230252"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx(DEV) (wippersnapper_feather_esp32c6_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230264"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fRP2040 (picow_rp2040_tinyusb)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230272"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (metro_esp32s3)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230275"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fRP2040 (fruit_jam_tinyusb)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230282"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fSAMD (metro_m4_airliftlite_tinyusb)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230283"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx(DEV) (espressif_esp32c5_devkitc_1_n8r4_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230291"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (qtpy_esp32s3)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230296"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP8266 (feather_esp8266)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230298"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s3)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230301"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (wippersnapper_feather_esp32c6)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230303"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (feather_esp32s2_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230305"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (qtpy_esp32s2)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230312"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (esp32s3_devkitc_1_n8_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230317"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fSAMD (pyportal_tinyusb)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230319"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (qtpy_esp32)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230322"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fRP2040 (picow_rp2350_tinyusb)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230323"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (feather_esp32s3_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230325"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (feather_esp32s3_4mbflash_2mbpsram_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230333"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (wippersnapper_qtpy_esp32c3)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230339"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (metroesp32s2)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230348"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (sparklemotionstick_esp32)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230353"
-        },
-        {
-          "name": "call-workflow-build / \ud83d\udd0eClang & Doxygen",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "SUCCESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230358"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s3_reverse_tft)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230360"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (feather_esp32_v2)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230363"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s2_tft)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230367"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (espressif_esp32c5_devkitc_1_n8r4)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230382"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (feather_esp32s2_tft_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230388"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (metroesp32s2_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230405"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (metro_esp32s3_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230409"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (sparklemotion_esp32)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230414"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (wippersnapper_feather_esp32s3_reverse_tft_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230422"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s3_4mbflash_2mbpsram)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230430"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (itsybitsy_esp32)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230440"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx(DEV) (feather_esp32s3_tft_debug)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230454"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (magtag)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230458"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (esp32s3_devkitc_1_n8)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230479"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (wippersnapper_feather_esp32)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230486"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (qtpy_esp32s3_n4r2)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230491"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (funhouse_noota)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230492"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s2)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230497"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s3_tft)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230518"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (dfrobot_beetle_esp32c3)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230535"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32/Cx (sparklemotionmini_esp32)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230559"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (feather_esp32s2_reverse_tft)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230566"
-        },
-        {
-          "name": "call-workflow-build / \ud83c\udfd7\ufe0fESP32-Sx (xiao_esp32s3)",
-          "run_id": "28890951477",
-          "run_label": "release CI",
-          "state": "IN_PROGRESS",
-          "url": "https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/actions/runs/28890951477/job/85703230725"
-        }
-      ],
-      "release_ci_status": "pending",
-      "release_notes": "## Installing WipperSnapper\nFollow [this learning system guide](https://learn.adafruit.com/quickstart-adafruit-io-wippersnapper/installing-wippersnapper) to learn how to install WipperSnapper on your board.\n\n## Upgrade a device running WipperSnapper\nLocate the device you want to upgrade on [io.adafruit.com/devices](https://io.adafruit.com/devices). Then, click \"Update\".\n\n## What's Changed\n* Bump version to v1.0.0-beta.131 (ESP32 BSP upgrade to 3.3.10) by @tyeth in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/934\n* Update - Remove SSL Fingerprint Comments for ESP8266 by @brentru in https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/pull/945\n\n**Full Changelog**: https://github.com/adafruit/Adafruit_Wippersnapper_Arduino/compare/1.0.0-beta.130...1.0.0-beta.131",
-      "release_status": "released",
-      "release_tag": "1.0.0-beta.130",
-      "released_tag": "1.0.0-beta.131",
+      "pushed_at": "2026-07-20T15:51:10Z",
+      "recent_commits": [],
+      "release_notes": null,
+      "release_status": null,
+      "release_tag": "1.0.0-beta.131",
       "version_files": [
         {
           "line": 170,
@@ -21852,6 +20826,15 @@
       "lib_version": "1.1.4",
       "name": "Adafruit_ZeroDMA",
       "prs": [
+        {
+          "created_at": "2026-06-22T13:25:06Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_ZeroDMA/pull/33",
+          "labels": [],
+          "number": 33,
+          "title": "Add SAME5x DMA register support",
+          "user": "crabel99"
+        },
         {
           "created_at": "2024-01-31T04:43:58Z",
           "draft": false,
@@ -22283,6 +21266,24 @@
       "lib_version": null,
       "name": "Adafruit_nRF52_Arduino",
       "prs": [
+        {
+          "created_at": "2026-07-03T10:24:20Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/872",
+          "labels": [],
+          "number": 872,
+          "title": "fix: TWIM EasyDMA ordering and add writeThenRead() for atomic I2C transactions",
+          "user": "usernameLoophole"
+        },
+        {
+          "created_at": "2026-06-18T08:17:58Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Adafruit_nRF52_Arduino/pull/871",
+          "labels": [],
+          "number": 871,
+          "title": "Fix I2C slave GPIO pin configuration (INPUT_Connect + S0D1)",
+          "user": "UCSIG"
+        },
         {
           "created_at": "2026-04-08T07:58:53Z",
           "draft": false,
@@ -23223,6 +22224,42 @@
       "lib_version": null,
       "name": "ArduinoCore-samd",
       "prs": [
+        {
+          "created_at": "2026-06-21T12:03:11Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/ArduinoCore-samd/pull/393",
+          "labels": [],
+          "number": 393,
+          "title": "ADC DMA library",
+          "user": "crabel99"
+        },
+        {
+          "created_at": "2026-06-20T21:04:00Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/ArduinoCore-samd/pull/392",
+          "labels": [],
+          "number": 392,
+          "title": "Add shared PendSV deferred service dispatcher",
+          "user": "crabel99"
+        },
+        {
+          "created_at": "2026-06-20T20:18:17Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/ArduinoCore-samd/pull/391",
+          "labels": [],
+          "number": 391,
+          "title": "Same5x core compat clean",
+          "user": "crabel99"
+        },
+        {
+          "created_at": "2026-06-20T13:40:43Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/ArduinoCore-samd/pull/390",
+          "labels": [],
+          "number": 390,
+          "title": "Uart shared variant emitter",
+          "user": "crabel99"
+        },
         {
           "created_at": "2026-05-14T04:27:49Z",
           "draft": false,
@@ -25172,6 +24209,15 @@
       "name": "FifteenStep",
       "prs": [
         {
+          "created_at": "2026-05-07T20:34:34Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/FifteenStep/pull/12",
+          "labels": [],
+          "number": 12,
+          "title": "Improve timing precision, add float tempo, getters, direct shuffle se\u2026",
+          "user": "stevecooley"
+        },
+        {
           "created_at": "2020-09-16T12:43:23Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/FifteenStep/pull/9",
@@ -25324,16 +24370,16 @@
       "error": null,
       "example_releases": [
         {
+          "body": "Release 1.0.92",
+          "tag": "1.0.92"
+        },
+        {
           "body": "Release 1.0.91",
           "tag": "1.0.91"
         },
         {
           "body": "Release 1.0.90",
           "tag": "1.0.90"
-        },
-        {
-          "body": "Release 1.0.89",
-          "tag": "1.0.89"
         }
       ],
       "full_name": "adafruit/Fruit-Jam-OS",
@@ -25343,8 +24389,18 @@
       "html_url": "https://github.com/adafruit/Fruit-Jam-OS",
       "lib_version": null,
       "name": "Fruit-Jam-OS",
-      "prs": [],
-      "pushed_at": "2026-06-10T09:32:54Z",
+      "prs": [
+        {
+          "created_at": "2026-07-08T21:19:57Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Fruit-Jam-OS/pull/95",
+          "labels": [],
+          "number": 95,
+          "title": "Fix `CIRCUITPY_DISPLAY_WIDTH` environmental variable type",
+          "user": "relic-se"
+        }
+      ],
+      "pushed_at": "2026-07-16T09:01:54Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -26448,7 +25504,7 @@
       "lib_version": null,
       "name": "MBAdafruitBoards",
       "prs": [],
-      "pushed_at": "2026-07-07T03:09:04Z",
+      "pushed_at": "2026-07-20T23:46:19Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -29279,6 +28335,7 @@
       "default_branch": "master",
       "details_loaded": true,
       "error": null,
+      "example_releases": [],
       "full_name": "adafruit/Tweet-a-Watt",
       "has_actions": null,
       "has_examples": false,
@@ -29672,6 +28729,15 @@
       "name": "WiFiNINA",
       "prs": [
         {
+          "created_at": "2026-06-08T22:02:56Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/WiFiNINA/pull/18",
+          "labels": [],
+          "number": 18,
+          "title": "Fix sockets not closing properly by connected()",
+          "user": "indutny"
+        },
+        {
           "created_at": "2024-01-23T20:44:52Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/WiFiNINA/pull/12",
@@ -29782,8 +28848,26 @@
       "name": "Wippersnapper_Boards",
       "prs": [
         {
+          "created_at": "2026-07-17T12:29:12Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Wippersnapper_Boards/pull/263",
+          "labels": [],
+          "number": 263,
+          "title": "magic_schema: allow i8080 parallel display pin fields (split from #259)",
+          "user": "tyeth-ai-assisted"
+        },
+        {
+          "created_at": "2026-07-14T15:56:09Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/Wippersnapper_Boards/pull/262",
+          "labels": [],
+          "number": 262,
+          "title": "add(board): LilyGO T-Dongle C5 (ESP32-C5)",
+          "user": "tyeth"
+        },
+        {
           "created_at": "2026-06-30T22:02:30Z",
-          "draft": true,
+          "draft": false,
           "html_url": "https://github.com/adafruit/Wippersnapper_Boards/pull/260",
           "labels": [],
           "number": 260,
@@ -29798,15 +28882,6 @@
           "number": 259,
           "title": "Add LilyGo T-Display-S3 board (i8080 ST7789 display)",
           "user": "tyeth-ai-assisted"
-        },
-        {
-          "created_at": "2026-06-23T11:40:58Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Wippersnapper_Boards/pull/258",
-          "labels": [],
-          "number": 258,
-          "title": "Add second I2C port (STEMMA QT / Wire1) to QT Py boards",
-          "user": "tyeth"
         },
         {
           "created_at": "2026-05-20T14:31:33Z",
@@ -29908,7 +28983,7 @@
           "user": "MakeItYourself85"
         }
       ],
-      "pushed_at": "2026-07-03T13:02:42Z",
+      "pushed_at": "2026-07-14T15:55:55Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -30068,31 +29143,13 @@
           "user": "tyeth-ai-assisted"
         },
         {
-          "created_at": "2026-07-02T11:10:05Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Wippersnapper_Protobuf/pull/207",
-          "labels": [],
-          "number": 207,
-          "title": "api-v2: use string pin names for i2c bus and uart rx/tx pins",
-          "user": "tyeth"
-        },
-        {
           "created_at": "2026-06-29T20:03:23Z",
           "draft": false,
           "html_url": "https://github.com/adafruit/Wippersnapper_Protobuf/pull/205",
           "labels": [],
           "number": 205,
-          "title": "(DO NOT MERGE) Spike - Canvas Feature",
+          "title": "(DO NOT MERGE) FEAT - Marquee",
           "user": "brentru"
-        },
-        {
-          "created_at": "2026-06-05T16:31:44Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/Wippersnapper_Protobuf/pull/204",
-          "labels": [],
-          "number": 204,
-          "title": "Adds - Telemetry API",
-          "user": "tyeth"
         },
         {
           "created_at": "2025-12-18T15:33:14Z",
@@ -30124,7 +29181,7 @@
           "user": "brentru"
         }
       ],
-      "pushed_at": "2026-07-02T13:40:11Z",
+      "pushed_at": "2026-07-16T17:02:35Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -30262,7 +29319,7 @@
       "lib_version": null,
       "name": "adafruit-circuitpython-weekly-meeting",
       "prs": [],
-      "pushed_at": "2026-07-06T19:03:17Z",
+      "pushed_at": "2026-07-20T18:42:03Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -31524,27 +30581,8 @@
       "html_url": "https://github.com/adafruit/circuitpython-org",
       "lib_version": null,
       "name": "circuitpython-org",
-      "prs": [
-        {
-          "created_at": "2026-07-07T00:03:01Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/circuitpython-org/pull/1789",
-          "labels": [],
-          "number": 1789,
-          "title": "Update Franzininho WiFi Wroom board images",
-          "user": "FBSeletronica"
-        },
-        {
-          "created_at": "2026-07-01T00:44:24Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/circuitpython-org/pull/1788",
-          "labels": [],
-          "number": 1788,
-          "title": "Compressed Images Nightly",
-          "user": "github-actions[bot]"
-        }
-      ],
-      "pushed_at": "2026-07-07T11:02:12Z",
+      "prs": [],
+      "pushed_at": "2026-07-21T10:43:16Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -32654,7 +31692,17 @@
       "html_url": "https://github.com/adafruit/fruitjam-doom",
       "lib_version": null,
       "name": "fruitjam-doom",
-      "prs": [],
+      "prs": [
+        {
+          "created_at": "2026-07-10T14:38:27Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/fruitjam-doom/pull/1",
+          "labels": [],
+          "number": 1,
+          "title": "Multiple updates in Audio, Video, USB controllers",
+          "user": "fhoedemakers"
+        }
+      ],
       "pushed_at": "2025-09-22T21:15:23Z",
       "recent_commits": [],
       "release_notes": null,
@@ -32979,13 +32027,22 @@
       "name": "io-actions",
       "prs": [
         {
-          "created_at": "2026-04-14T13:25:08Z",
+          "created_at": "2026-07-20T21:04:40Z",
           "draft": false,
-          "html_url": "https://github.com/adafruit/io-actions/pull/47",
+          "html_url": "https://github.com/adafruit/io-actions/pull/49",
           "labels": [],
-          "number": 47,
-          "title": "Enforce type-matched inputs on trigger matcher comparator blocks",
-          "user": "Copilot"
+          "number": 49,
+          "title": "Design PR refactor",
+          "user": "lorennorman"
+        },
+        {
+          "created_at": "2026-07-09T21:53:08Z",
+          "draft": false,
+          "html_url": "https://github.com/adafruit/io-actions/pull/48",
+          "labels": [],
+          "number": 48,
+          "title": "Front-end design refresh for the Blockly editor",
+          "user": "tylerdcooper"
         },
         {
           "created_at": "2026-04-03T20:50:22Z",
@@ -32995,15 +32052,6 @@
           "number": 45,
           "title": "Upgrade to blockly 12",
           "user": "jwcooper"
-        },
-        {
-          "created_at": "2026-02-14T19:32:30Z",
-          "draft": true,
-          "html_url": "https://github.com/adafruit/io-actions/pull/44",
-          "labels": [],
-          "number": 44,
-          "title": "Add explicit oEmbed metadata to `/oembed` embed page head",
-          "user": "Copilot"
         },
         {
           "created_at": "2025-12-05T17:43:45Z",
@@ -33042,7 +32090,7 @@
           "user": "tyeth"
         }
       ],
-      "pushed_at": "2026-04-14T14:07:05Z",
+      "pushed_at": "2026-07-20T21:02:30Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -33217,7 +32265,7 @@
       "prs": [],
       "pushed_at": "2024-07-23T16:59:36Z",
       "recent_commits": [],
-      "release_notes": "## Changes since last release\n\n* Changes since last release",
+      "release_notes": null,
       "release_status": null,
       "release_tag": null,
       "version_files": []
@@ -33281,7 +32329,7 @@
       "prs": [],
       "pushed_at": "2025-11-10T17:57:21Z",
       "recent_commits": [],
-      "release_notes": "## Changes since last release\n\n* Changes since last release",
+      "release_notes": null,
       "release_status": null,
       "release_tag": null,
       "version_files": []
@@ -34501,48 +33549,6 @@
       "name": "platform-espressif32",
       "prs": [],
       "pushed_at": "2021-02-09T18:45:47Z",
-      "recent_commits": [],
-      "release_notes": null,
-      "release_status": null,
-      "release_tag": null,
-      "version_files": []
-    },
-    "protomq": {
-      "arduino_registered": false,
-      "arduino_version": null,
-      "branch_ci_status": null,
-      "bump_justification": "Fixes, cleanup, or CI-only changes",
-      "bump_pr": null,
-      "bump_type": "patch",
-      "categories": [
-        "no_examples"
-      ],
-      "ci_only": false,
-      "commits_behind": null,
-      "compare_url": null,
-      "default_branch": "main",
-      "details_loaded": true,
-      "error": null,
-      "example_releases": [],
-      "full_name": "adafruit/protomq",
-      "has_actions": null,
-      "has_examples": false,
-      "has_lib_props": false,
-      "html_url": "https://github.com/adafruit/protomq",
-      "lib_version": null,
-      "name": "protomq",
-      "prs": [
-        {
-          "created_at": "2026-06-01T16:50:19Z",
-          "draft": false,
-          "html_url": "https://github.com/adafruit/protomq/pull/1",
-          "labels": [],
-          "number": 1,
-          "title": "Displays V2 Testing - Adjustments for nested messages, auto-responder \"play scripts\", clients dying after 100messages",
-          "user": "tyeth"
-        }
-      ],
-      "pushed_at": "2026-06-30T16:17:51Z",
       "recent_commits": [],
       "release_notes": null,
       "release_status": null,
@@ -36073,5 +35079,5 @@
     }
   },
   "status": "done",
-  "total": 17
+  "total": 697
 }
