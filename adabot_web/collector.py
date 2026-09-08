@@ -4,14 +4,15 @@
 Data collector: reuses arduino_libraries checks and saves results incrementally
 to web_state.json so the web UI can display live progress and resume.
 """
+import io
 import json
 import logging
 import os
 import re
 import subprocess
+import tarfile
 import threading
 import time
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
 import requests
@@ -749,79 +750,61 @@ def _fetch_commits(repo, entry, from_ref, to_ref):
 
 def _find_version_files(repo, lib_version):
     """
-    Scan repo tree for files that may contain version strings (other than library.properties).
-    Returns list of {path, url, note} dicts.
+    Scan ALL text-ish files in the repo (other than library.properties) for
+    version strings — sources, json, markdown, configs — so stale semvers
+    anywhere in the tree get flagged. Downloads one tarball per repo from
+    codeload (a single request, no API rate cost) and scans locally instead
+    of fetching each file individually.
+    Returns list of {path, line, url, version_found, matches, note} dicts.
     """
     results = []
     name = repo["name"]
     branch = repo.get("default_branch", "main")
 
+    # Extensions worth scanning for version strings
+    scan_ext_re = re.compile(
+        r"\.(h|hpp|hh|c|cpp|cc|cxx|ino|json|md|rst|txt|ini|cfg|toml|py|cmake|yml|yaml)$",
+        re.IGNORECASE,
+    )
+    ver_re = re.compile(
+        r'(?:VERSION|version|ver)["\']?\s*[="\s:]\s*["\']?([\d]+\.[\d]+\.[\d]+(?:-[\w.]+)?)["\']?',
+        re.IGNORECASE,
+    )
+    # Standalone quoted semver (for #define continuation lines)
+    bare_ver_re = re.compile(r'^\s*["\'](\d+\.\d+\.\d+(?:-[\w.]+)?)["\']')
+    define_cont_re = re.compile(r'(?:VERSION|version|ver)\s*\\?\s*$', re.IGNORECASE)
+
     try:
-        tree_resp = gh_reqs.get(
-            f"/repos/adafruit/{name}/git/trees/{branch}",
-            params={"recursive": "1"}
-        )
-        if not tree_resp.ok:
+        with requests_cache.disabled():
+            tar_resp = requests.get(
+                f"https://codeload.github.com/adafruit/{name}/tar.gz/refs/heads/{branch}",
+                timeout=120,
+            )
+        if not tar_resp.ok:
+            logger.debug("tarball fetch failed for %s: %s", name, tar_resp.status_code)
             return results
 
-        # Files worth checking for version strings. Version defines live in a
-        # narrow set of places — don't fetch every vendored/example source.
-        source_re = re.compile(r"\.(h|hpp|H|cpp|c|ino)$")
-        named_files = (
-            "changelog.md", "changelog.rst",
-            "library.json",
-            "platformio.ini", "setup.py", "pyproject.toml",
-            "cmakelists.txt",
-        )
-
-        def _is_candidate(path):
-            lower = path.lower()
-            if lower in named_files:  # named files at repo root only
-                return True
-            if not source_re.search(path):
-                return False
-            if lower.startswith(("examples/", "test/", "tests/", "extras/")):
-                return False
-            if "version" in lower.rsplit("/", 1)[-1]:
-                return True  # version.h, foo_version.hpp — any depth
-            # main library sources live at the root or directly under src/
-            depth = path.count("/")
-            return depth == 0 or (path.startswith("src/") and depth == 1)
-
-        interesting = [
-            item["path"] for item in tree_resp.json().get("tree", [])
-            if item.get("type") == "blob"
-            and not item["path"].startswith(".")
-            and _is_candidate(item["path"])
-        ]
-
-        def _fetch_raw(path):
-            try:
-                resp = requests.get(
-                    f"https://raw.githubusercontent.com/adafruit/{name}/{branch}/{path}"
-                )
-                return resp.text if resp.ok else None
-            except requests.RequestException:
-                return None
-
-        with ThreadPoolExecutor(max_workers=8) as pool:
-            contents = list(pool.map(_fetch_raw, interesting))
-
-        for path, content in zip(interesting, contents):
-            if content is None:
+        tar = tarfile.open(fileobj=io.BytesIO(tar_resp.content), mode="r:gz")
+        for member in tar.getmembers():
+            if not member.isfile() or member.size > 1_000_000:
+                continue
+            # Strip the top-level "<owner>-<repo>-<sha>/" directory
+            path = member.name.split("/", 1)[1] if "/" in member.name else member.name
+            if any(seg.startswith(".") for seg in path.split("/")):
+                continue
+            if path == "library.properties":
+                continue  # the primary version file, handled separately
+            if not scan_ext_re.search(path):
                 continue
 
-            # Look for version-like strings matching lib_version; track line number
+            fileobj = tar.extractfile(member)
+            if fileobj is None:
+                continue
+            content = fileobj.read().decode("utf-8", errors="replace")
+
+            # Look for version-like strings; track line number
             found_ver = None
             found_line = None
-            ver_re = re.compile(
-                r'(?:VERSION|version|ver)["\']?\s*[="\s:]\s*["\']?([\d]+\.[\d]+\.[\d]+(?:-[\w.]+)?)["\']?',
-                re.IGNORECASE,
-            )
-            # Standalone quoted semver (for #define continuation lines)
-            bare_ver_re = re.compile(
-                r'^\s*["\'](\d+\.\d+\.\d+(?:-[\w.]+)?)["\']'
-            )
             lines = content.splitlines()
             for lineno, line in enumerate(lines, 1):
                 m = ver_re.search(line)
@@ -830,7 +813,7 @@ def _find_version_files(repo, lib_version):
                     found_line = lineno
                     break
                 # #define SOMETHING_VERSION  \ (continuation on next line)
-                if re.search(r'(?:VERSION|version|ver)\s*\\?\s*$', line, re.IGNORECASE):
+                if define_cont_re.search(line):
                     if lineno < len(lines):
                         m2 = bare_ver_re.search(lines[lineno])  # next line (0-indexed = lineno)
                         if m2:
