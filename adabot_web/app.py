@@ -740,7 +740,7 @@ def _gh_bump_pr(default_branch, old_version, new_version, repo_name, version_fil
 
         # --- Update other version files if they match old_version exactly ---
         ver_pattern = re.compile(
-            r'((?:VERSION|version)\s*[="\s]\s*["\']?)' + re.escape(old_version) + r'(["\']?)',
+            r'((?:VERSION|version)["\']?\s*[=:"\s]\s*["\']?)' + re.escape(old_version) + r'(["\']?)',
         )
         for vf in (version_files or []):
             if not vf.get("matches"):

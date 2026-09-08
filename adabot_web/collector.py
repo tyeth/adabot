@@ -781,7 +781,7 @@ def _find_version_files(repo, lib_version):
             found_ver = None
             found_line = None
             ver_re = re.compile(
-                r'(?:VERSION|version|ver)\s*[="\s:]\s*["\']?([\d]+\.[\d]+\.[\d]+(?:-[\w.]+)?)["\']?',
+                r'(?:VERSION|version|ver)["\']?\s*[="\s:]\s*["\']?([\d]+\.[\d]+\.[\d]+(?:-[\w.]+)?)["\']?',
                 re.IGNORECASE,
             )
             # Standalone quoted semver (for #define continuation lines)
