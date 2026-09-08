@@ -10,6 +10,8 @@ import os
 import re
 import subprocess
 import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
 import requests
@@ -37,6 +39,52 @@ CATEGORY_NO_RELEASE_TAG   = "no_release_tag"
 CATEGORY_ERROR            = "error"
 
 STALE_DAYS = 3
+
+# In-memory cache of the parsed Arduino library index. The raw index is a
+# ~58 MB download, so never fetch it more than once an hour except for a
+# full collect run, which always gets a fresh copy.
+_ARDUINO_INDEX_TTL = 3600
+_arduino_index_cache = {"ts": 0.0, "data": None}
+
+
+def _fetch_arduino_index(force=False):
+    """Download + parse the Arduino library index (Adafruit entries only).
+
+    Returns {lib_name: newest_version}. Raises on failure; callers fall back
+    to the copy stored in web_state.json.
+    """
+    now = time.time()
+    if (not force and _arduino_index_cache["data"] is not None
+            and now - _arduino_index_cache["ts"] < _ARDUINO_INDEX_TTL):
+        return _arduino_index_cache["data"]
+
+    with requests_cache.disabled():
+        reply = requests.get(
+            "http://downloads.arduino.cc/libraries/library_index.json",
+            timeout=600,
+        )
+    if not reply.ok:
+        raise RuntimeError("Could not fetch Arduino library index")
+
+    arduino_index = {}
+    for lib in reply.json().get("libraries", []):
+        if "adafruit" in lib.get("url", ""):
+            lib_name = lib.get("name", "")
+            ver = lib.get("version", "")
+            if not lib_name or not ver:
+                continue
+            if lib_name not in arduino_index:
+                arduino_index[lib_name] = ver
+            else:
+                try:
+                    if semver.compare(ver, arduino_index[lib_name]) > 0:
+                        arduino_index[lib_name] = ver
+                except ValueError:
+                    pass  # non-semver version strings, keep first
+
+    _arduino_index_cache["data"] = arduino_index
+    _arduino_index_cache["ts"] = now
+    return arduino_index
 
 
 # ---------------------------------------------------------------------------
@@ -186,19 +234,7 @@ def _run_single_repo(name):
 
     # Fetch Arduino library index (needed for registration check)
     try:
-        with requests_cache.disabled():
-            idx_reply = requests.get(
-                "http://downloads.arduino.cc/libraries/library_index.json",
-                timeout=60,
-            )
-        arduino_index = {}
-        if idx_reply.ok:
-            for lib in idx_reply.json().get("libraries", []):
-                if "adafruit" in lib.get("url", ""):
-                    lib_name = lib.get("name", "")
-                    ver = lib.get("version", "")
-                    if lib_name and ver and lib_name not in arduino_index:
-                        arduino_index[lib_name] = ver
+        arduino_index = _fetch_arduino_index()
     except Exception as e:
         logger.warning("Single-repo refresh: could not fetch Arduino index: %s", e)
         arduino_index = state.get("arduino_library_index", {})
@@ -316,33 +352,8 @@ def _run_collection():
     save_state(state)
 
     try:
-        # Arduino library index
-        with requests_cache.disabled():
-            reply = requests.get(
-                "http://downloads.arduino.cc/libraries/library_index.json",
-                timeout=600,
-            )
-        if not reply.ok:
-            raise RuntimeError("Could not fetch Arduino library index")
-
-        arduino_index = {}
-        for lib in reply.json().get("libraries", []):
-            if "adafruit" in lib.get("url", ""):
-                name = lib.get("name", "")
-                ver = lib.get("version", "")
-                try:
-                    if not name or not ver:
-                        continue
-                    if name not in arduino_index:
-                        arduino_index[name] = ver
-                    else:
-                        try:
-                            if semver.compare(ver, arduino_index[name]) > 0:
-                                arduino_index[name] = ver
-                        except ValueError:
-                            pass  # non-semver version strings, keep first
-                except Exception:
-                    pass
+        # Arduino library index — full runs always get a fresh copy
+        arduino_index = _fetch_arduino_index(force=True)
         state["arduino_library_index"] = arduino_index
 
         # ── Phase 1: basic info (categories, versions, registration) ──
@@ -753,29 +764,52 @@ def _find_version_files(repo, lib_version):
         if not tree_resp.ok:
             return results
 
-        # Files worth checking for version strings
+        # Files worth checking for version strings. Version defines live in a
+        # narrow set of places — don't fetch every vendored/example source.
         source_re = re.compile(r"\.(h|hpp|H|cpp|c|ino)$")
+        named_files = (
+            "changelog.md", "changelog.rst",
+            "library.json",
+            "platformio.ini", "setup.py", "pyproject.toml",
+            "cmakelists.txt",
+        )
+
+        def _is_candidate(path):
+            lower = path.lower()
+            if lower in named_files:  # named files at repo root only
+                return True
+            if not source_re.search(path):
+                return False
+            if lower.startswith(("examples/", "test/", "tests/", "extras/")):
+                return False
+            if "version" in lower.rsplit("/", 1)[-1]:
+                return True  # version.h, foo_version.hpp — any depth
+            # main library sources live at the root or directly under src/
+            depth = path.count("/")
+            return depth == 0 or (path.startswith("src/") and depth == 1)
+
         interesting = [
             item["path"] for item in tree_resp.json().get("tree", [])
             if item.get("type") == "blob"
-            and (source_re.search(item["path"])
-                 or item["path"].lower() in (
-                     "changelog.md", "changelog.rst",
-                     "version.h", "version.hpp",
-                     "library.json",
-                     "platformio.ini", "setup.py", "pyproject.toml",
-                     "cmakelists.txt",
-                 ))
             and not item["path"].startswith(".")
+            and _is_candidate(item["path"])
         ]
 
-        for path in interesting:
-            file_resp = requests.get(
-                f"https://raw.githubusercontent.com/adafruit/{name}/{branch}/{path}"
-            )
-            if not file_resp.ok:
+        def _fetch_raw(path):
+            try:
+                resp = requests.get(
+                    f"https://raw.githubusercontent.com/adafruit/{name}/{branch}/{path}"
+                )
+                return resp.text if resp.ok else None
+            except requests.RequestException:
+                return None
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            contents = list(pool.map(_fetch_raw, interesting))
+
+        for path, content in zip(interesting, contents):
+            if content is None:
                 continue
-            content = file_resp.text
 
             # Look for version-like strings matching lib_version; track line number
             found_ver = None

@@ -74,8 +74,19 @@ def _adaptive_throttle():
     20–100 remaining → 1 s between requests
     <20 remaining    → 3 s between requests
     """
+    global rate_limit_remaining, rate_limit_reset_at
     if rate_limit_remaining is None or rate_limit_remaining > 100:
         return  # plenty of budget — go fast
+    # A low count from before the hourly reset is stale — clear it and go fast
+    # (cached responses never update the count, so it can stick for hours)
+    if rate_limit_reset_at:
+        try:
+            if datetime.datetime.now() >= datetime.datetime.fromisoformat(rate_limit_reset_at):
+                rate_limit_remaining = None
+                rate_limit_reset_at = None
+                return
+        except (ValueError, TypeError):
+            pass
     if rate_limit_remaining > 20:
         delay = 1.0
     else:
@@ -147,7 +158,12 @@ def request(method, url, _retries_left=MAX_ERROR_RETRIES, **kwargs):
         else:
             rate_limit_reset_at = None
         if remaining % 10 == 0 or remaining < 20:
-            logging.info("%d requests remaining this hour", remaining)
+            logging.info(
+                "%d/%s requests remaining this hour (pool: %s)",
+                remaining,
+                response.headers.get("X-RateLimit-Limit", "?"),
+                response.headers.get("X-RateLimit-Resource", "?"),
+            )
     if not from_cache and remaining == 0:
         logger.warning(
             "GitHub API Rate Limit reached. Pausing until Rate Limit reset."
@@ -173,7 +189,7 @@ def request(method, url, _retries_left=MAX_ERROR_RETRIES, **kwargs):
             time.sleep(reset_diff.seconds + 1)
 
         if remaining % 10 == 0:
-            logger.info(remaining, "requests remaining this hour")
+            logger.info("%d requests remaining this hour", remaining)
 
     if not from_cache and remaining == -1:
         # No rate limit headers — assume we're fine; clear any stale warning
