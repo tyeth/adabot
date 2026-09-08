@@ -750,20 +750,23 @@ def _fetch_commits(repo, entry, from_ref, to_ref):
 
 def _find_version_files(repo, lib_version):
     """
-    Scan ALL text-ish files in the repo (other than library.properties) for
-    version strings — sources, json, markdown, configs — so stale semvers
-    anywhere in the tree get flagged. Downloads one tarball per repo from
-    codeload (a single request, no API rate cost) and scans locally instead
-    of fetching each file individually.
+    Scan ALL text files in the repo (other than library.properties) for
+    version strings — sources, json, markdown, configs, dotfiles, dot
+    directories, extensionless files — so stale semvers anywhere in the
+    tree get flagged. Downloads one tarball per repo from codeload (a
+    single request, no API rate cost) and scans locally instead of
+    fetching each file individually.
     Returns list of {path, line, url, version_found, matches, note} dicts.
     """
     results = []
     name = repo["name"]
     branch = repo.get("default_branch", "main")
 
-    # Extensions worth scanning for version strings
-    scan_ext_re = re.compile(
-        r"\.(h|hpp|hh|c|cpp|cc|cxx|ino|json|md|rst|txt|ini|cfg|toml|py|cmake|yml|yaml)$",
+    # Known-binary formats are skipped; everything else gets a text sniff
+    binary_ext_re = re.compile(
+        r"\.(png|jpe?g|gif|bmp|ico|webp|svgz|pdf|zip|gz|tgz|bz2|xz|7z|rar|jar"
+        r"|uf2|bin|hex|elf|o|a|so|dylib|dll|exe|wav|mp3|ogg|mp4|avi|mov"
+        r"|ttf|otf|woff2?|eot|pyc)$",
         re.IGNORECASE,
     )
     ver_re = re.compile(
@@ -786,21 +789,22 @@ def _find_version_files(repo, lib_version):
 
         tar = tarfile.open(fileobj=io.BytesIO(tar_resp.content), mode="r:gz")
         for member in tar.getmembers():
-            if not member.isfile() or member.size > 1_000_000:
+            if not member.isfile() or member.size > 2 * 1024 * 1024:
                 continue
             # Strip the top-level "<owner>-<repo>-<sha>/" directory
             path = member.name.split("/", 1)[1] if "/" in member.name else member.name
-            if any(seg.startswith(".") for seg in path.split("/")):
-                continue
             if path == "library.properties":
                 continue  # the primary version file, handled separately
-            if not scan_ext_re.search(path):
+            if binary_ext_re.search(path):
                 continue
 
             fileobj = tar.extractfile(member)
             if fileobj is None:
                 continue
-            content = fileobj.read().decode("utf-8", errors="replace")
+            raw = fileobj.read()
+            if b"\0" in raw[:8192]:
+                continue  # binary content
+            content = raw.decode("utf-8", errors="replace")
 
             # Look for version-like strings; track line number
             found_ver = None
