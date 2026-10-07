@@ -109,7 +109,7 @@ window._releaseBlocked = {{ (release_blocked | tojson) if release_blocked else '
       {% if repo.has_actions %}
         <span style="color:var(--green)">&#10003; CI</span>
       {% else %}
-        <span style="color:var(--red)" title="No .github/workflows/githubci.yml found">&#10007; No CI workflow</span>
+        <span style="color:var(--red)" title="No .github/workflows/*.yml with jobs and a push/pull_request/release/schedule/dispatch trigger">&#10007; No CI workflow</span>
       {% endif %}
     {% endif %}
   </div>

@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 import requests
 import requests_cache
 import semver
+import yaml
 
 from adabot import arduino_libraries as al
 from adabot import github_requests as gh_reqs
@@ -542,17 +543,87 @@ def _process_repo_inner(repo, arduino_index, entry):
     return entry
 
 
-# Trigger events that count as "real CI" (push/PR-driven or release-driven)
-_CI_TRIGGER_EVENTS = {"push", "pull_request", "release", "repository_dispatch", "workflow_dispatch"}
+# Trigger events that count as "real CI". We are deliberately tolerant here:
+# anything that causes lint/test/build jobs to run on code changes, releases,
+# a schedule, or on demand is good enough.
+_CI_TRIGGER_EVENTS = {
+    "push", "pull_request", "pull_request_target", "merge_group",
+    "release", "schedule",
+    "repository_dispatch", "workflow_dispatch", "workflow_call", "workflow_run",
+}
+
+_WORKFLOW_EXTS = (".yml", ".yaml")
+
+
+def _workflow_ci_events(content):
+    """
+    Return the set of trigger events declared by a GitHub Actions workflow
+    file that count as CI (see _CI_TRIGGER_EVENTS).
+
+    Parses the YAML properly so every layout GitHub accepts is handled:
+
+        on: push
+        on: [push, pull_request]
+        on:
+          push:
+          pull_request:
+            branches: [main]
+          release:
+            types: [published]
+
+    Note that PyYAML (YAML 1.1) parses the bare key ``on`` as boolean True,
+    so both ``"on"`` and ``True`` are looked up. If the file does not parse
+    as YAML a tolerant text scan is used instead. A workflow with no ``jobs``
+    is ignored since nothing would actually run.
+    """
+    events = set()
+    doc = None
+    try:
+        doc = yaml.safe_load(content)
+    except yaml.YAMLError:
+        doc = None
+
+    if isinstance(doc, dict):
+        if not isinstance(doc.get("jobs"), dict) or not doc["jobs"]:
+            return events
+        on = doc.get("on", doc.get(True))
+        if isinstance(on, str):
+            declared = {on}
+        elif isinstance(on, list):
+            declared = {str(e) for e in on}
+        elif isinstance(on, dict):
+            declared = {str(k) for k in on}
+        else:
+            declared = set()
+        return {e.strip().lower() for e in declared} & _CI_TRIGGER_EVENTS
+
+    # Fallback: unparseable YAML. Look for any known trigger name that appears
+    # as a key, list item, or inside a flow list, at any indentation.
+    if not re.search(r"^\s*jobs\s*:", content, re.MULTILINE):
+        return events
+    names = "|".join(sorted(_CI_TRIGGER_EVENTS))
+    for m in re.finditer(r"(?m)^\s*-?\s*[\"']?(" + names + r")[\"']?\s*:?\s*(#.*)?$", content):
+        events.add(m.group(1))
+    for m in re.finditer(r"(?m)^\s*[\"']?on[\"']?\s*:\s*\[([^\]]*)\]", content):
+        for e in m.group(1).split(","):
+            e = e.strip().strip("\"'").lower()
+            if e in _CI_TRIGGER_EVENTS:
+                events.add(e)
+    for m in re.finditer(r"(?m)^\s*[\"']?on[\"']?\s*:\s*[\"']?([a-z_]+)[\"']?\s*(#.*)?$", content):
+        if m.group(1) in _CI_TRIGGER_EVENTS:
+            events.add(m.group(1))
+    return events
 
 
 def _validate_actions(repo):
     """
     Returns True if the repo has at least one .github/workflows/*.yml file
-    with an appropriate trigger event (push, pull_request, release,
-    repository_dispatch, or workflow_dispatch).
+    that defines jobs and is triggered by a CI-style event (push, pull_request,
+    release, schedule, workflow_dispatch, ... see _CI_TRIGGER_EVENTS).
 
-    Replaces al.validate_actions() which only checks for 'githubci.yml' by name.
+    Any workflow file name and any trigger layout is accepted, as long as
+    some lint/test/build actually runs. Replaces al.validate_actions() which
+    only checks for 'githubci.yml' by name.
     """
     name = repo["name"]
     resp = gh_reqs.get(f"/repos/adafruit/{name}/contents/.github/workflows")
@@ -564,9 +635,7 @@ def _validate_actions(repo):
         return False
 
     yml_files = [f for f in files if isinstance(f, dict)
-                 and f.get("name", "").lower().endswith((".yml", ".yaml"))]
-    if not yml_files:
-        return False
+                 and f.get("name", "").lower().endswith(_WORKFLOW_EXTS)]
 
     for wf_file in yml_files:
         raw_url = wf_file.get("download_url")
@@ -576,34 +645,8 @@ def _validate_actions(repo):
             wf_resp = requests.get(raw_url, timeout=10)
             if not wf_resp.ok:
                 continue
-            content = wf_resp.text
-            # Quick YAML parse: look for 'on:' key and check for trigger events.
-            # We do a simple text scan rather than a full YAML parse to avoid
-            # pulling in pyyaml as a hard dependency here.
-            in_on_block = False
-            for line in content.splitlines():
-                stripped = line.strip()
-                # Top-level 'on:' key (flow or block form)
-                if re.match(r"^on\s*:", stripped) or re.match(r"^\"on\"\s*:", stripped):
-                    in_on_block = True
-                    # Flow form: on: [push, pull_request, ...]
-                    flow = re.search(r"\[([^\]]+)\]", stripped)
-                    if flow:
-                        events = [e.strip().lower() for e in flow.group(1).split(",")]
-                        if _CI_TRIGGER_EVENTS.intersection(events):
-                            return True
-                    continue
-                # Once we hit another top-level key, the 'on' block is over
-                if in_on_block and re.match(r"^\S", line) and not re.match(r"^\s*#", line):
-                    if not stripped.startswith("-"):
-                        in_on_block = False
-                if in_on_block:
-                    # Block form: each trigger is either '  push:' or '  - push'
-                    event_match = re.match(r"^\s+([a-z_]+)\s*[:\[]?", stripped)
-                    if event_match:
-                        event = event_match.group(1).lower()
-                        if event in _CI_TRIGGER_EVENTS:
-                            return True
+            if _workflow_ci_events(wf_resp.text):
+                return True
         except Exception:
             continue
 
