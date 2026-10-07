@@ -18,8 +18,10 @@ import re
 import subprocess
 import sys
 
-# Set credentials if not already in environment
-os.environ.setdefault("ADABOT_GITHUB_USER", "tyeth")
+# The GitHub owner used for forks/PR heads is derived from the token at runtime
+# (see adabot_web.app._gh_user). ADABOT_GITHUB_USER is only a fallback if that
+# lookup fails, so it is intentionally NOT defaulted here — a stale default that
+# disagrees with the token causes fork lookups to target the wrong account.
 # os.environ.setdefault(
 #     "ADABOT_GITHUB_ACCESS_TOKEN",
 #     "MISSING_TOKEN",
@@ -145,9 +147,9 @@ def _log_gh_identity():
     user_env  = os.environ.get("ADABOT_GITHUB_USER")
     token_env = os.environ.get("ADABOT_GITHUB_ACCESS_TOKEN")
 
-    user  = user_env  or "tyeth-ai-assisted (default)"
-    label = user_env  and "ADABOT_GITHUB_USER"  or "built-in default"
-    logging.info("GitHub user : %s  [%s]", user, label)
+    if user_env:
+        logging.info("GitHub user : %s  [ADABOT_GITHUB_USER fallback only — "
+                     "actual owner is resolved from the token]", user_env)
 
     if token_env:
         masked = token_env[:5] + "*" * (len(token_env) - 9) + token_env[-4:] if len(token_env) > 9 else "****"
@@ -167,6 +169,20 @@ def _log_gh_identity():
         line = line.strip()
         if line:
             logging.info("gh auth: %s", line)
+
+    who = subprocess.run(
+        ["gh", "api", "user", "--jq", ".login"],
+        capture_output=True, text=True, env=env, timeout=10,
+    )
+    login = who.stdout.strip()
+    if who.returncode == 0 and login:
+        logging.info("GitHub owner: %s  [resolved from token — forks/PRs use this account]", login)
+        if user_env and user_env != login:
+            logging.warning("ADABOT_GITHUB_USER=%s disagrees with token account %s; "
+                            "the token account wins", user_env, login)
+    else:
+        logging.warning("Could not resolve GitHub login from token: %s",
+                        (who.stderr or who.stdout).strip() or "no output")
 
     git_result = subprocess.run(
         ["git", "config", "--get-regexp", "user"],

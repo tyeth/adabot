@@ -269,8 +269,35 @@ def _gh_token():
     return os.environ.get("ADABOT_GITHUB_ACCESS_TOKEN") or _DEFAULT_GH_TOKEN
 
 
+_gh_login_cache = {}  # token -> login resolved via `gh api user`
+
+
 def _gh_user():
-    return os.environ.get("ADABOT_GITHUB_USER") or _DEFAULT_GH_USER
+    """Return the GitHub login that owns the active token.
+
+    The owner is resolved from the token itself (``gh api user``) so forks and
+    PR heads always match the account we can actually push as. ADABOT_GITHUB_USER
+    is only a fallback when the API lookup fails; if it disagrees with the token
+    we log a warning and trust the token.
+    """
+    tok = _gh_token()
+    configured = os.environ.get("ADABOT_GITHUB_USER") or _DEFAULT_GH_USER
+    login = _gh_login_cache.get(tok)
+    if login is None:
+        ok, out, err = _gh("api", "user", "--jq", ".login")
+        if ok and out:
+            login = out
+            _gh_login_cache[tok] = login
+            if login != configured:
+                logger.warning(
+                    "ADABOT_GITHUB_USER=%s does not match the token's account (%s); "
+                    "using %s", configured, login, login,
+                )
+        else:
+            logger.warning("Could not resolve GitHub login from token (%s); "
+                           "falling back to %s", err or "no output", configured)
+            return configured
+    return login
 
 
 def _gh(*args, **kwargs):
@@ -679,11 +706,21 @@ def _gh_bump_pr(default_branch, old_version, new_version, repo_name, version_fil
     ok, _, _ = _gh("repo", "view", fork_name, "--json", "name")
     if not ok:
         logger.info("Fork %s not found, creating…", fork_name)
-        ok, _, err = _gh("repo", "fork", upstream, "--clone=false",
-                         f"--fork-name=adafruit-{repo_name}")
+        ok, out, err = _gh("repo", "fork", upstream, "--clone=false",
+                           f"--fork-name=adafruit-{repo_name}")
         if not ok:
             logger.error("Fork failed (user=%s token=%s): %s", owner, tok_hint, err)
             return {"error": f"fork failed: {err}"}
+        # gh prints either "Created fork OWNER/NAME" or "OWNER/NAME already exists".
+        # If the account already had a fork of this upstream (possibly under a
+        # different name), GitHub returns that one instead of creating ours, so
+        # trust whatever name gh reports rather than the one we asked for.
+        m = re.search(r"([\w.-]+/[\w.-]+)(?: already exists|$)", (out + "\n" + err).strip(), re.M)
+        reported = m.group(1) if m else None
+        if reported and reported != fork_name:
+            logger.warning("gh reported fork %s instead of %s — using it", reported, fork_name)
+            fork_name = reported
+            owner = fork_name.split("/", 1)[0]
         logger.info("Fork created: %s — waiting for GitHub to make it accessible…", fork_name)
         # Poll until the fork is actually resolvable (can take 10-30s on GitHub)
         for attempt in range(12):  # up to ~60s
